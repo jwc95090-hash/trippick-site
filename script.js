@@ -243,11 +243,11 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ---------- 6. 찜 버튼 / 하단 탭 ---------- */
-  document.querySelectorAll('.p-like').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.preventDefault();
-      btn.classList.toggle('on');
-    });
+  document.addEventListener('click', (e) => {
+    const likeBtn = e.target.closest('.p-like');
+    if (!likeBtn) return;
+    e.preventDefault();
+    likeBtn.classList.toggle('on');
   });
 
   document.querySelectorAll('.bottom-tab .tab-item').forEach(btn => {
@@ -328,5 +328,94 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
+
+  /* ---------- 9. 고캠핑(한국관광공사) 공공데이터 연동 ----------
+     "이번 주 가장 많이 찾은 캠핑장" 4장을 실제 공공데이터로 채웁니다.
+     * 참고: 고캠핑 API에는 "인기순" 지표가 없어 이미지가 등록된 캠핑장 위주로 노출합니다. */
+  (function initGoCamping(){
+    const campGrid = document.getElementById('campGrid');
+    if (!campGrid) return; // 이 페이지에는 해당 영역이 없음
+
+    const GOCAMPING_SERVICE_KEY = 'c306dc04fc05af17071334c0c38412e0ed9c5b7066c10dfd5bfffeda36aeb8a4';
+    const GOCAMPING_ENDPOINT = 'https://apis.data.go.kr/B551011/GoCamping/basedList';
+    const FALLBACK_IMG = 'https://images.unsplash.com/photo-1508873696983-2dfd5898f08b?auto=format&fit=crop&w=600&q=70';
+
+    function escapeHtml(str){
+      return String(str ?? '').replace(/[&<>"']/g, (c) => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      }[c]));
+    }
+
+    function extractLink(item){
+      const raw = item.homepage || '';
+      const hrefMatch = raw.match(/href=["']([^"']+)["']/i);
+      if (hrefMatch) return hrefMatch[1];
+      const urlMatch = raw.match(/https?:\/\/[^\s"'<>]+/i);
+      if (urlMatch) return urlMatch[0];
+      if (item.tel) return 'tel:' + item.tel.replace(/[^0-9]/g, '');
+      return '#';
+    }
+
+    function shortAddr(addr1){
+      if (!addr1) return '주소 정보 없음';
+      return addr1.split(' ').slice(0, 2).join(' ');
+    }
+
+    function typeDesc(induty){
+      return (induty || '').split(',').map(s => s.trim()).filter(Boolean).slice(0, 2).join(' · ') || '캠핑장';
+    }
+
+    // 이번 주 인기 카드: 이미지 위에 지역/이름을 얹은 에디토리얼 스타일
+    function popularCardHTML(item, rank){
+      const name = escapeHtml(item.facltNm || '이름 미상 캠핑장');
+      const img = item.firstImageUrl ? escapeHtml(item.firstImageUrl) : FALLBACK_IMG;
+      const link = escapeHtml(extractLink(item));
+      const external = /^https?:/.test(link);
+      const linkAttrs = external ? ' target="_blank" rel="noopener"' : '';
+      return `
+        <article class="p-card p-card-feature">
+          <a href="${link}" class="p-thumb"${linkAttrs}>
+            <img src="${img}" alt="${name}" loading="lazy" onerror="this.onerror=null;this.src='${FALLBACK_IMG}';">
+            <span class="p-tag p-tag-rank"><svg width="10" height="10" viewBox="0 0 20 20" fill="currentColor"><path d="M10 2l1.9 5.8H18l-4.9 3.6 1.9 5.8L10 13.6l-4.9 3.6 1.9-5.8L2 7.8h6.1L10 2z"/></svg>BEST ${rank}</span>
+            <button class="p-like" aria-label="찜하기" onclick="event.preventDefault()"><svg width="15" height="15" viewBox="0 0 22 22" fill="none"><path d="M11 18s-7-4.5-7-9a4 4 0 018 0 4 4 0 018 0c0 4.5-7 9-7 9z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></button>
+            <span class="p-thumb-caption">
+              <span class="p-thumb-region">${escapeHtml(shortAddr(item.addr1))}</span>
+              <span class="p-thumb-name">${name}</span>
+            </span>
+          </a>
+          <div class="p-body p-body-feature">
+            <p class="p-desc"><svg width="11" height="11" viewBox="0 0 20 20" fill="none" style="vertical-align:-1px; margin-right:4px;"><path d="M10 2c-3 0-5.5 2.4-5.5 5.5C4.5 11.8 10 18 10 18s5.5-6.2 5.5-10.5C15.5 4.4 13 2 10 2z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/><circle cx="10" cy="7.5" r="1.8" stroke="currentColor" stroke-width="1.1"/></svg>${escapeHtml(typeDesc(item.induty))}</p>
+          </div>
+        </article>`;
+    }
+
+    async function fetchCampingList(numOfRows, pageNo){
+      const url = `${GOCAMPING_ENDPOINT}?serviceKey=${GOCAMPING_SERVICE_KEY}&numOfRows=${numOfRows}&pageNo=${pageNo}&MobileOS=ETC&MobileApp=Trippick&_type=json`;
+      const res = await fetch(url);
+      if (!res.ok) throw new Error('고캠핑 API 요청 실패 (' + res.status + ')');
+      const data = await res.json();
+      const header = data && data.response && data.response.header;
+      if (header && header.resultCode && header.resultCode !== '0000') {
+        throw new Error(header.resultMsg || '고캠핑 API 오류');
+      }
+      const items = data && data.response && data.response.body && data.response.body.items && data.response.body.items.item;
+      if (!items) return [];
+      return Array.isArray(items) ? items : [items];
+    }
+
+    function renderPopular(list){
+      if (!list.length) return;
+      campGrid.innerHTML = list.slice(0, 4).map((item, i) => popularCardHTML(item, i + 1)).join('');
+    }
+
+    fetchCampingList(60, 1).then(list => {
+      if (!list.length) throw new Error('empty');
+      const withImage = list.filter(it => it.firstImageUrl);
+      renderPopular(withImage.length >= 4 ? withImage : list);
+    }).catch(err => {
+      console.error('고캠핑 데이터를 불러오지 못했습니다:', err);
+      // 실패 시 기존 정적 카드가 그대로 남아있으므로 별도 처리 없음
+    });
+  })();
 
 });

@@ -277,10 +277,18 @@ button{cursor:pointer; background:none; border:none;}
   will-change:transform, opacity;
 }
 @media (max-width:640px){
-  .hero-content{justify-content:flex-end; padding-bottom:72px; max-width:100%;}
-  .hero-overlay{
-    background:linear-gradient(0deg, rgba(10,18,13,.78) 0%, rgba(10,18,13,.15) 42%, rgba(10,18,13,0) 60%);
+  .hero-content{
+    justify-content:flex-end; padding:0 26px 64px; max-width:100%; gap:18px;
   }
+  .hero-overlay{
+    background:linear-gradient(0deg, rgba(10,18,13,.82) 0%, rgba(10,18,13,.22) 46%, rgba(10,18,13,0) 64%);
+  }
+  .hero-content .btn{
+    border-radius:999px; padding:15px 30px;
+    background:rgba(10,18,13,.28);
+    backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+  }
+  .hero-content .btn:hover{background:var(--brass-light);}
 }
 .hero-content h1{
   font-family:var(--serif); font-weight:600; font-size:clamp(34px,6.2vw,64px);
@@ -353,15 +361,22 @@ button{cursor:pointer; background:none; border:none;}
 .filter-submit:hover{background:var(--forest);}
 .filter-submit:active{transform:scale(.97);}
 @media (max-width:760px){
-  .filter-wrap{position:static; margin-top:-46px;}
+  .filter-wrap{position:static; margin-top:22px; padding:0 18px;}
+  .filter-wrap .wrap{padding:0;}
   .filter-bar{
-    display:grid; grid-template-columns:1fr 1fr; column-gap:14px;
-    padding:14px 20px 16px;
+    display:grid; grid-template-columns:1fr 1fr; column-gap:18px;
+    padding:24px 20px 20px;
+    border-radius:22px;
+    box-shadow:0 22px 46px -18px rgba(35,26,14,.34), 0 2px 8px rgba(35,26,14,.06);
   }
   .filter-div{display:none;}
-  .filter-field{padding:9px 0;}
-  .filter-field:nth-of-type(1), .filter-field:nth-of-type(4){grid-column:1 / -1;}
-  .filter-submit{grid-column:1 / -1; margin:8px 0 2px; padding:14px; justify-content:center;}
+  .filter-field{padding:13px 0; border-bottom:1px solid var(--line-soft);}
+  .filter-field-wide{grid-column:1 / -1;}
+  .filter-field-last{border-bottom:none;}
+  .filter-submit{
+    grid-column:1 / -1; margin:16px 0 2px; padding:15px;
+    border-radius:12px; justify-content:center; letter-spacing:.14em;
+  }
 }
 
 /* ---------- 인트로 / 브랜드 스토리 ---------- */
@@ -559,8 +574,18 @@ button{cursor:pointer; background:none; border:none;}
   position:absolute; top:10px; right:10px; width:32px; height:32px;
   display:flex; align-items:center; justify-content:center;
   background:rgba(251,248,241,.85); color:var(--ink);
+  transition:transform .18s ease, background .2s ease, color .2s ease;
 }
-.p-like.on{color:var(--ember);}
+.p-like svg path{transition:fill .2s ease, stroke .2s ease;}
+.p-like:active{transform:scale(.85);}
+.p-like.on{color:var(--ember); animation:heartPop .4s ease;}
+.p-like.on svg path{fill:var(--ember); stroke:var(--ember);}
+@keyframes heartPop{
+  0%{transform:scale(1);}
+  35%{transform:scale(1.32);}
+  60%{transform:scale(.94);}
+  100%{transform:scale(1);}
+}
 .p-body{padding-top:14px;}
 .p-region{font-size:11.5px; color:var(--text-mute); letter-spacing:.04em; margin-bottom:3px;}
 .p-name{font-family:var(--serif); font-size:16px; font-weight:600; margin-bottom:6px;}
@@ -570,6 +595,52 @@ button{cursor:pointer; background:none; border:none;}
 .p-price .old{font-size:12px; color:#B4AB93; text-decoration:line-through;}
 .p-price .pct{font-size:12px; color:var(--ember); font-weight:700;}
 .p-price .now{font-size:15px; font-weight:700; color:var(--ink);}
+
+/* ---------- 이번 주 가장 많이 찾은 캠핑장 (에디토리얼 카드) ---------- */
+.bento-grid .p-card-feature{
+  border-radius:18px; overflow:hidden; background:var(--paper);
+  box-shadow:0 1px 3px rgba(35,26,14,.06);
+  transition:transform .4s cubic-bezier(.22,1,.36,1), box-shadow .4s ease;
+}
+.bento-grid .p-card-feature:hover{
+  transform:translateY(-7px);
+  box-shadow:0 26px 40px -18px rgba(35,26,14,.32);
+}
+.bento-grid .p-card-feature .p-thumb{
+  border-radius:0; aspect-ratio:4/5; position:relative;
+}
+.bento-grid .p-card-feature .p-thumb::after{
+  content:''; position:absolute; inset:0; pointer-events:none;
+  background:linear-gradient(180deg, rgba(19,32,24,0) 38%, rgba(19,20,14,.82) 100%);
+}
+.bento-grid .p-card-feature .p-thumb img{transition:transform .7s cubic-bezier(.22,1,.36,1);}
+.bento-grid .p-card-feature:hover .p-thumb img{transform:scale(1.09);}
+.p-tag-rank{
+  display:flex; align-items:center; gap:5px;
+  background:linear-gradient(120deg, var(--secondary), var(--secondary-deep));
+  z-index:2;
+}
+.p-tag-rank svg{flex-shrink:0;}
+.bento-grid .p-card-feature .p-like{
+  z-index:2; background:rgba(19,20,14,.38); color:var(--ivory);
+  backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+}
+.bento-grid .p-card-feature .p-like.on{color:var(--ember);}
+.p-thumb-caption{
+  position:absolute; left:0; right:0; bottom:0; z-index:1;
+  padding:18px 16px 14px; display:flex; flex-direction:column; gap:3px;
+}
+.p-thumb-region{
+  font-family:var(--caps); font-size:10.5px; letter-spacing:.08em; color:var(--brass-light);
+}
+.p-thumb-name{
+  font-family:var(--serif); font-size:17px; font-weight:600; color:var(--ivory); line-height:1.3;
+}
+.grid.bento-grid .p-card-feature:nth-child(1) .p-thumb-name{font-size:21px;}
+.p-body-feature{padding:12px 4px 2px;}
+.p-body-feature .p-desc{
+  display:flex; align-items:center; margin-bottom:0; color:var(--text-mute);
+}
 
 /* ---------- 스토리 스크롤 ---------- */
 .story-scroll{
