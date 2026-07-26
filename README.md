@@ -7,12 +7,12 @@
 ## 주요 기능
 
 - 🏕️ 캠핑장 검색 및 목록 조회
-- 📋 캠핑장 상세 정보 확인 (`detail.html`)
-- 📅 예약 진행 (`booking.html`)
-- 💳 결제 처리 (`payment.html`)
-- 👤 로그인 / 회원가입 (`login.html`, `signup.html`)
-- 📖 마이페이지 - 예약 내역 관리 (`mypage.html`)
-- 📘 이용 가이드 (`guide.html`)
+- 📋 캠핑장 상세 정보 확인 (`pages/detail.html`)
+- 📅 예약 진행 (`pages/booking.html`)
+- 💳 결제 처리 (`pages/payment.html`)
+- 👤 로그인 / 회원가입 (`pages/login.html`, `pages/signup.html`)
+- 📖 마이페이지 - 예약 내역 관리 (`pages/mypage.html`)
+- 📘 이용 가이드 (`pages/guide.html`)
 
 ## 기술 스택
 
@@ -24,19 +24,27 @@
 
 ```
 trippick-site/
-├── index.html          # 메인 홈
-├── detail.html          # 캠핑장 상세
-├── booking.html         # 예약
-├── payment.html         # 결제
-├── login.html            # 로그인
-├── signup.html           # 회원가입
-├── mypage.html           # 마이페이지
-├── guide.html             # 이용 가이드
-├── 404.html               # 예외 페이지
-├── styles.css             # 공통 스타일
-├── script.js              # 공통 스크립트
-├── jquery-1.12.3.js
-└── hero-video.mp4         # 메인 히어로 영상
+├── index.html              # 메인 홈
+├── 404.html                # 예외 페이지 (호스팅 호환을 위해 루트 유지)
+├── README.md
+├── pages/
+│   ├── detail.html         # 캠핑장 상세
+│   ├── booking.html        # 예약
+│   ├── payment.html        # 결제
+│   ├── login.html          # 로그인
+│   ├── signup.html         # 회원가입
+│   ├── mypage.html         # 마이페이지
+│   └── guide.html          # 이용 가이드
+├── css/
+│   └── styles.css          # 공통 스타일
+├── js/
+│   ├── script.js           # 공통 스크립트
+│   └── jquery-1.12.3.js
+├── videos/
+│   └── hero-video.mp4      # 메인 히어로 영상
+└── docs/
+    ├── app_redesign_portfolio.pdf
+    └── trippick_portfolio.pdf
 ```
 
 ## 관련 저장소

@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700;800&family=Noto+Serif+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 
@@ -39,8 +39,8 @@
           <ul class="sub"><li><a href="#story">이달의 추천</a></li><li><a href="#story">인기급상승</a></li><li><a href="#benefit">지금 할인중</a></li><li><a href="#benefit">마감임박</a></li></ul>
         </li>
         <li>
-          <a href="guide.html">가이드</a>
-          <ul class="sub"><li><a href="guide.html">캠핑입문가이드</a></li><li><a href="#guide">준비물체크리스트</a></li><li><a href="#guide">캠핑주의사항</a></li><li><a href="#guide">FAQ</a></li></ul>
+          <a href="pages/guide.html">가이드</a>
+          <ul class="sub"><li><a href="pages/guide.html">캠핑입문가이드</a></li><li><a href="#guide">준비물체크리스트</a></li><li><a href="#guide">캠핑주의사항</a></li><li><a href="#guide">FAQ</a></li></ul>
         </li>
       </ul>
     </nav>
@@ -51,9 +51,9 @@
           <svg width="18" height="18" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="7.6" r="3.9" stroke="currentColor" stroke-width="1.4"/><path d="M3.6 19c0-3.6 3.3-6.4 7.4-6.4s7.4 2.8 7.4 6.4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
         </button>
         <div class="account-dropdown" id="accountDropdown" role="menu">
-          <a href="login.html" role="menuitem">로그인</a>
-          <a href="signup.html" role="menuitem">회원가입</a>
-          <a href="mypage.html" role="menuitem">마이페이지</a>
+          <a href="pages/login.html" role="menuitem">로그인</a>
+          <a href="pages/signup.html" role="menuitem">회원가입</a>
+          <a href="pages/mypage.html" role="menuitem">마이페이지</a>
         </div>
       </div>
       <button class="icon-btn burger" id="menuOpen" aria-label="메뉴 열기">
@@ -75,9 +75,9 @@
     <a href="#top">홈</a>
     <a href="#pick">유형별예약</a>
     <a href="#story">트립픽 pick</a>
-    <a href="guide.html">가이드</a>
+    <a href="pages/guide.html">가이드</a>
   </nav>
-  <a href="login.html" class="mobile-menu-login">로그인 · 회원가입</a>
+  <a href="pages/login.html" class="mobile-menu-login">로그인 · 회원가입</a>
 </div>
 
 <main id="top">
@@ -85,7 +85,7 @@
   <!-- ============ 히어로 ============ -->
   <section class="hero" id="search">
     <video class="hero-video" autoplay muted loop playsinline preload="auto" poster="https://images.unsplash.com/photo-1631635589499-afd87d52bf64?auto=format&fit=crop&w=1800&q=80">
-      <source src="hero-video.mp4" type="video/mp4">
+      <source src="videos/hero-video.mp4" type="video/mp4">
     </video>
     <div class="hero-overlay"></div>
     <div class="wrap hero-content">
@@ -241,56 +241,56 @@
 
       <div class="grid bento-grid" id="campGrid">
         <article class="p-card">
-          <a href="detail.html" class="p-thumb">
+          <a href="pages/detail.html" class="p-thumb">
             <img src="https://images.unsplash.com/photo-1508873696983-2dfd5898f08b?auto=format&fit=crop&w=600&q=70" alt="반려견과 함께 호숫가 텐트에서 쉬는 모습" loading="lazy">
             <span class="p-tag">신규오픈</span>
             <button class="p-like" aria-label="찜하기" onclick="event.preventDefault()"><svg width="14" height="14" viewBox="0 0 22 22" fill="none"><path d="M11 18s-7-4.5-7-9a4 4 0 018 0 4 4 0 018 0c0 4.5-7 9-7 9z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></button>
           </a>
           <div class="p-body">
             <p class="p-region">경기 여주</p>
-            <h3 class="p-name"><a href="detail.html">여주 블루마린 캠핑장</a></h3>
+            <h3 class="p-name"><a href="pages/detail.html">여주 블루마린 캠핑장</a></h3>
             <p class="p-desc">강변 뷰 · 전기 · 반려동물 동반</p>
             <div class="p-price"><span class="old">80,000원</span><span class="pct">20%</span><span class="now">64,000원~</span></div>
           </div>
         </article>
 
         <article class="p-card">
-          <a href="detail.html" class="p-thumb">
+          <a href="pages/detail.html" class="p-thumb">
             <img src="https://images.unsplash.com/photo-1632367294096-4e77d53c4ae9?auto=format&fit=crop&w=600&q=70" alt="산 능선이 보이는 들판의 캠핑 텐트" loading="lazy">
             <span class="p-tag sale">SALE</span>
             <button class="p-like on" aria-label="찜하기" onclick="event.preventDefault()"><svg width="14" height="14" viewBox="0 0 22 22" fill="none"><path d="M11 18s-7-4.5-7-9a4 4 0 018 0 4 4 0 018 0c0 4.5-7 9-7 9z" fill="currentColor"/></svg></button>
           </a>
           <div class="p-body">
             <p class="p-region">강원 홍천</p>
-            <h3 class="p-name"><a href="detail.html">홍천 리버사이드 오토캠핑</a></h3>
+            <h3 class="p-name"><a href="pages/detail.html">홍천 리버사이드 오토캠핑</a></h3>
             <p class="p-desc">마운틴뷰 · 차박 가능</p>
             <div class="p-price"><span class="old">95,000원</span><span class="pct">15%</span><span class="now">80,750원~</span></div>
           </div>
         </article>
 
         <article class="p-card">
-          <a href="detail.html" class="p-thumb">
+          <a href="pages/detail.html" class="p-thumb">
             <img src="https://images.unsplash.com/photo-1641569618527-68e26db76db0?auto=format&fit=crop&w=600&q=70" alt="초록 언덕 위에 자리한 하얀 돔형 글램핑 텐트" loading="lazy">
             <span class="p-tag">마감임박</span>
             <button class="p-like" aria-label="찜하기" onclick="event.preventDefault()"><svg width="14" height="14" viewBox="0 0 22 22" fill="none"><path d="M11 18s-7-4.5-7-9a4 4 0 018 0 4 4 0 018 0c0 4.5-7 9-7 9z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></button>
           </a>
           <div class="p-body">
             <p class="p-region">경기 가평</p>
-            <h3 class="p-name"><a href="detail.html">가평 포레스트 글램핑</a></h3>
+            <h3 class="p-name"><a href="pages/detail.html">가평 포레스트 글램핑</a></h3>
             <p class="p-desc">키즈 놀이존 · 온수 완비</p>
             <div class="p-price"><span class="old">120,000원</span><span class="pct">10%</span><span class="now">108,000원~</span></div>
           </div>
         </article>
 
         <article class="p-card">
-          <a href="detail.html" class="p-thumb">
+          <a href="pages/detail.html" class="p-thumb">
             <img src="https://images.unsplash.com/photo-1749047899565-6f026c3bb809?auto=format&fit=crop&w=600&q=70" alt="해변에서 노을을 맞이하는 캠핑 텐트" loading="lazy">
             <span class="p-tag p-tag-alt">바다근처</span>
             <button class="p-like" aria-label="찜하기" onclick="event.preventDefault()"><svg width="14" height="14" viewBox="0 0 22 22" fill="none"><path d="M11 18s-7-4.5-7-9a4 4 0 018 0 4 4 0 018 0c0 4.5-7 9-7 9z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></button>
           </a>
           <div class="p-body">
             <p class="p-region">충남 태안</p>
-            <h3 class="p-name"><a href="detail.html">태안 선셋 캠프사이트</a></h3>
+            <h3 class="p-name"><a href="pages/detail.html">태안 선셋 캠프사이트</a></h3>
             <p class="p-desc">오션뷰 · 노을 명소</p>
             <div class="p-price"><span class="old">89,000원</span><span class="pct">20%</span><span class="now">71,200원~</span></div>
           </div>
@@ -304,20 +304,20 @@
     <div class="wrap">
       <div class="section-head">
         <div><span class="eyebrow"><i></i>Trippick Story</span><h2>캠핑, 처음이라면 먼저 읽어보세요</h2></div>
-        <a href="guide.html" class="link-underline">매거진 전체보기</a>
+        <a href="pages/guide.html" class="link-underline">매거진 전체보기</a>
       </div>
       <div class="story-scroll">
-        <a class="story-card" href="guide.html">
+        <a class="story-card" href="pages/guide.html">
           <div class="story-thumb"><img src="https://images.unsplash.com/photo-1600452556550-9ff29bb0e6cf?auto=format&fit=crop&w=700&q=70" alt="캠핑 준비물이 놓인 아늑한 캠핑장 풍경" loading="lazy"></div>
           <span class="story-num">01</span>
           <h3>첫 캠핑, 준비물 열두 가지면 충분합니다</h3>
         </a>
-        <a class="story-card" href="guide.html">
+        <a class="story-card" href="pages/guide.html">
           <div class="story-thumb"><img src="https://images.unsplash.com/photo-1638284647862-0dac1edeb8ab?auto=format&fit=crop&w=700&q=70" alt="캠핑장에서 함께 식사하는 사람들" loading="lazy"></div>
           <span class="story-num">02</span>
           <h3>매너타임, 왜 지켜야 다시 초대받을까</h3>
         </a>
-        <a class="story-card" href="guide.html">
+        <a class="story-card" href="pages/guide.html">
           <div class="story-thumb"><img src="https://images.unsplash.com/photo-1638284648387-3f946944713e?auto=format&fit=crop&w=700&q=70" alt="숲속에 자리 잡은 여러 대의 캠핑 텐트" loading="lazy"></div>
           <span class="story-num">03</span>
           <h3>차박 vs 오토캠핑, 나에게 맞는 스타일 찾기</h3>
@@ -438,7 +438,7 @@
     <div class="footer-cols">
       <div class="footer-col"><h4>예약</h4><a href="#">캠핑</a><a href="#">글램핑</a><a href="#">카라반</a><a href="#">차박</a></div>
       <div class="footer-col"><h4>트립픽 pick</h4><a href="#">감성스팟</a><a href="#">인기급상승</a><a href="#">에디터픽</a></div>
-      <div class="footer-col"><h4>가이드</h4><a href="guide.html">캠핑입문가이드</a><a href="#guide">준비물체크리스트</a><a href="#guide">FAQ</a></div>
+      <div class="footer-col"><h4>가이드</h4><a href="pages/guide.html">캠핑입문가이드</a><a href="#guide">준비물체크리스트</a><a href="#guide">FAQ</a></div>
       <div class="footer-col"><h4>고객지원</h4><a href="#">공지사항</a><a href="#">1:1 문의</a><a href="#">입점 신청</a></div>
     </div>
   </div>
@@ -493,7 +493,7 @@
     </div>
     <p class="coupon-desc">지금 회원가입하면 첫 예약에 바로 쓸 수 있는 10% 할인 쿠폰을 즉시 드립니다.</p>
     <div class="coupon-actions">
-      <a href="signup.html" class="btn popup-cta">회원가입하고 쿠폰받기</a>
+      <a href="pages/signup.html" class="btn popup-cta">회원가입하고 쿠폰받기</a>
       <button type="button" class="coupon-skip" data-popup-close>다음에 받을게요</button>
     </div>
   </div>
@@ -541,6 +541,6 @@
   </div>
 </div>
 
-<script src="script.js"></script>
+<script src="js/script.js"></script>
 </body>
 </html>

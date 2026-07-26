@@ -11,6 +11,9 @@
    ============================================================ */
 document.addEventListener('DOMContentLoaded', () => {
 
+  /* pages/ 하위 페이지와 루트 페이지에서 모두 동작하도록 상대 경로 접두사 계산 */
+  const pagePrefix = location.pathname.includes('/pages/') ? '' : 'pages/';
+
   /* ---------- 1. 모바일 메뉴 ---------- */
   const menuOpen = document.getElementById('menuOpen');
   const menuClose = document.getElementById('menuClose');
@@ -264,7 +267,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M10 15V5M5 9l5-5 5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
       <div class="fab-quick-list" id="fabQuickList">
-        <a href="mypage.html" class="fab-quick-item">
+        <a href="${pagePrefix}mypage.html" class="fab-quick-item">
           <svg width="14" height="14" viewBox="0 0 22 22" fill="none"><rect x="3" y="4" width="16" height="15" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M3 9h16" stroke="currentColor" stroke-width="1.3"/></svg>
           <span class="fab-quick-label">예약확인</span>
         </a>
@@ -272,7 +275,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <svg width="14" height="14" viewBox="0 0 22 22" fill="none"><path d="M4 4h4l2 5-2.5 1.5a11 11 0 006 6L15 14l5 2v4a2 2 0 01-2 2C9.5 22 2 14.5 2 6a2 2 0 012-2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
           <span class="fab-quick-label">고객센터</span>
         </a>
-        <a href="login.html" class="fab-quick-item">
+        <a href="${pagePrefix}login.html" class="fab-quick-item">
           <svg width="14" height="14" viewBox="0 0 22 22" fill="none"><path d="M9 4H5a1 1 0 00-1 1v12a1 1 0 001 1h4M14 15l4-4-4-4M18 11H8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
           <span class="fab-quick-label">로그인</span>
         </a>

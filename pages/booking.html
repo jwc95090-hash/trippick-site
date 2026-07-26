@@ -6,15 +6,15 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700;800&family=Noto+Serif+KR:wght@400;500;600;700&family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
-<title>결제하기 | TRIPPICK</title>
+<link rel="stylesheet" href="../css/styles.css">
+<title>예약하기 | TRIPPICK</title>
 </head>
 <body>
 
 <!-- ============ 헤더 ============ -->
 <header class="site-header" id="siteHeader">
   <div class="wrap header-inner">
-    <a href="index.html" class="logo">
+    <a href="../index.html" class="logo">
       <svg class="logo-icon" viewBox="0 0 120 120" fill="none" aria-hidden="true">
         <circle cx="60" cy="60" r="52" fill="none" stroke="#AD8A4C" stroke-width="1.4"/>
         <circle cx="60" cy="26" r="2.1" fill="#9C4A30"/>
@@ -28,19 +28,19 @@
     <nav class="main-nav" aria-label="주 메뉴">
       <ul class="nav-top">
         <li>
-          <a href="index.html#top">홈</a>
+          <a href="../index.html#top">홈</a>
         </li>
         <li>
-          <a href="index.html#pick">유형별예약</a>
-          <ul class="sub"><li><a href="index.html#pick">캠핑</a></li><li><a href="index.html#pick">글램핑</a></li><li><a href="index.html#pick">카라반</a></li><li><a href="index.html#pick">차박</a></li></ul>
+          <a href="../index.html#pick">유형별예약</a>
+          <ul class="sub"><li><a href="../index.html#pick">캠핑</a></li><li><a href="../index.html#pick">글램핑</a></li><li><a href="../index.html#pick">카라반</a></li><li><a href="../index.html#pick">차박</a></li></ul>
         </li>
         <li>
-          <a href="index.html#story">트립픽 pick</a>
-          <ul class="sub"><li><a href="index.html#story">감성샷</a></li><li><a href="index.html#story">이달의 추천</a></li><li><a href="index.html#story">인기급상승</a></li><li><a href="index.html#benefit">지금 할인중</a></li><li><a href="index.html#benefit">마감임박</a></li></ul>
+          <a href="../index.html#story">트립픽 pick</a>
+          <ul class="sub"><li><a href="../index.html#story">감성샷</a></li><li><a href="../index.html#story">이달의 추천</a></li><li><a href="../index.html#story">인기급상승</a></li><li><a href="../index.html#benefit">지금 할인중</a></li><li><a href="../index.html#benefit">마감임박</a></li></ul>
         </li>
         <li>
           <a href="guide.html">가이드</a>
-          <ul class="sub"><li><a href="guide.html">캠핑입문가이드</a></li><li><a href="index.html#guide">준비물체크리스트</a></li><li><a href="index.html#guide">캠핑주의사항</a></li><li><a href="index.html#guide">FAQ</a></li></ul>
+          <ul class="sub"><li><a href="guide.html">캠핑입문가이드</a></li><li><a href="../index.html#guide">준비물체크리스트</a></li><li><a href="../index.html#guide">캠핑주의사항</a></li><li><a href="../index.html#guide">FAQ</a></li></ul>
         </li>
       </ul>
     </nav>
@@ -72,9 +72,9 @@
     </button>
   </div>
   <nav>
-    <a href="index.html#top">홈</a>
-    <a href="index.html#pick">유형별예약</a>
-    <a href="index.html#story">트립픽 pick</a>
+    <a href="../index.html#top">홈</a>
+    <a href="../index.html#pick">유형별예약</a>
+    <a href="../index.html#story">트립픽 pick</a>
     <a href="guide.html">가이드</a>
   </nav>
   <a href="login.html" class="mobile-menu-login">로그인 · 회원가입</a>
@@ -84,16 +84,16 @@
 
   <section class="subhero" style="padding-bottom:0;">
     <div class="wrap">
-      <div class="crumb"><a href="index.html">홈</a><span>/</span><a href="detail.html">태안 선셋 캠프사이트</a><span>/</span><a href="booking.html">예약하기</a><span>/</span><span>결제하기</span></div>
-      <h1>결제하기</h1>
+      <div class="crumb"><a href="../index.html">홈</a><span>/</span><a href="detail.html">태안 선셋 캠프사이트</a><span>/</span><span>예약하기</span></div>
+      <h1>예약하기</h1>
     </div>
   </section>
 
   <div class="wrap">
     <div class="book-steps">
-      <div class="book-step"><span>1</span>예약 정보</div>
+      <div class="book-step active"><span>1</span>예약 정보</div>
       <div class="book-step-line"></div>
-      <div class="book-step active"><span>2</span>결제</div>
+      <div class="book-step"><span>2</span>결제</div>
       <div class="book-step-line"></div>
       <div class="book-step"><span>3</span>완료</div>
     </div>
@@ -110,47 +110,49 @@
             <div>
               <p class="p-region">충남 태안</p>
               <h3>태안 선셋 캠프사이트</h3>
-              <span class="detail-rating">7월 26일(토) · 1박 · 2명</span>
+              <span class="detail-rating">★ 4.8 <em>(review 126)</em></span>
             </div>
           </div>
 
           <div class="detail-block" style="padding-top:0;">
+            <h2>날짜 · 인원</h2>
+            <div class="book-form-row">
+              <label class="book-field"><span>체크인</span><input type="date" value="2026-07-26"></label>
+              <label class="book-field"><span>체크아웃</span><input type="date" value="2026-07-27"></label>
+            </div>
+            <div class="book-form-row" style="margin-top:20px;">
+              <label class="book-field">
+                <span>인원</span>
+                <div class="qb-stepper" style="justify-content:flex-start;">
+                  <button type="button" class="qb-minus" aria-label="인원 줄이기">−</button>
+                  <span id="bCount">2</span>
+                  <button type="button" class="qb-plus" aria-label="인원 늘리기">+</button>
+                </div>
+              </label>
+              <label class="book-field">
+                <span>사이트 타입</span>
+                <select>
+                  <option>오션뷰 데크사이트</option>
+                  <option>스탠다드 잔디사이트</option>
+                  <option>프라이빗 독채사이트 (+15,000원)</option>
+                </select>
+              </label>
+            </div>
+          </div>
+
+          <div class="detail-block">
             <h2>예약자 정보</h2>
-            <div class="pay-summary" style="border:1px solid var(--line); padding:20px;">
-              <div class="qb-row"><span>예약자</span><strong>홍길동</strong></div>
-              <div class="qb-row"><span>연락처</span><strong>010-1234-5678</strong></div>
-              <div class="qb-row"><span>이메일</span><strong>guest@trippick.co.kr</strong></div>
+            <div class="book-form-row">
+              <label class="book-field"><span>이름</span><input type="text" placeholder="예약자 성함"></label>
+              <label class="book-field"><span>연락처</span><input type="tel" placeholder="010-0000-0000"></label>
             </div>
+            <label class="book-field" style="margin-top:20px;"><span>이메일</span><input type="email" placeholder="예약 확인서를 받으실 이메일"></label>
+            <label class="book-field" style="margin-top:20px;"><span>요청사항 (선택)</span><textarea rows="3" placeholder="반려동물 동반, 도착 예정시간 등 전달할 내용을 남겨주세요"></textarea></label>
           </div>
 
           <div class="detail-block">
-            <h2>결제 수단</h2>
-            <div class="pay-methods">
-              <label class="pay-method">
-                <input type="radio" name="payMethod" checked>
-                <span class="pay-icon pay-kakao">K</span><span class="pay-label">카카오페이</span><span class="pay-check"></span>
-              </label>
-              <label class="pay-method">
-                <input type="radio" name="payMethod">
-                <span class="pay-icon pay-naver">N</span><span class="pay-label">네이버페이</span><span class="pay-check"></span>
-              </label>
-              <label class="pay-method">
-                <input type="radio" name="payMethod">
-                <span class="pay-icon pay-toss">T</span><span class="pay-label">토스페이</span><span class="pay-check"></span>
-              </label>
-              <label class="pay-method">
-                <input type="radio" name="payMethod">
-                <span class="pay-icon pay-card"><svg width="15" height="15" viewBox="0 0 20 20" fill="none"><rect x="2" y="5" width="16" height="11" rx="1.6" stroke="currentColor" stroke-width="1.3"/><path d="M2 8.5h16" stroke="currentColor" stroke-width="1.3"/></svg></span><span class="pay-label">신용 · 체크카드</span><span class="pay-check"></span>
-              </label>
-            </div>
-          </div>
-
-          <div class="detail-block">
-            <h2>약관 동의</h2>
-            <label class="pay-agree"><input type="checkbox" checked> <span>전체 동의 (필수 항목 포함)</span></label>
-            <label class="pay-agree pay-agree-sub"><input type="checkbox" checked> <span>[필수] 이용약관 및 예약 취소·환불 규정 동의</span></label>
-            <label class="pay-agree pay-agree-sub"><input type="checkbox" checked> <span>[필수] 개인정보 수집 및 이용 동의</span></label>
-            <label class="pay-agree pay-agree-sub"><input type="checkbox"> <span>[선택] 혜택·이벤트 알림 수신 동의</span></label>
+            <h2>취소 · 환불 규정</h2>
+            <p>체크인 7일 전까지 전액 환불, 3~6일 전 50% 환불, 2일 전부터는 환불이 불가합니다. 캠핑장 사정으로 인한 예약 취소 시에는 전액 환불됩니다.</p>
           </div>
 
         </div>
@@ -160,9 +162,9 @@
             <h3 style="font-family:var(--serif); font-size:17px; font-weight:600; margin-bottom:20px;">결제 금액</h3>
             <div class="detail-book-row"><span>이용 요금 (1박 · 2명)</span><strong>71,200원</strong></div>
             <div class="detail-book-row"><span>사이트 옵션</span><strong>0원</strong></div>
-            <div class="detail-book-row detail-book-total"><span>총 결제 금액</span><strong>71,200원</strong></div>
-            <button class="btn" id="payConfirmPage" style="width:100%; justify-content:center;" type="button">71,200원 결제하기</button>
-            <p class="detail-book-note">결제 진행 시 이용약관 및 환불 규정에 동의한 것으로 간주됩니다.</p>
+            <div class="detail-book-row detail-book-total"><span>총 결제 금액</span><strong id="bTotal">71,200원</strong></div>
+            <a href="payment.html" class="btn" style="width:100%; justify-content:center;">결제하기</a>
+            <p class="detail-book-note">예약 확정 전에는 결제되지 않습니다.</p>
           </div>
         </aside>
 
@@ -172,26 +174,17 @@
 
 </main>
 
-<!-- ============ 팝업: 결제 완료 안내 ============ -->
-<div class="site-popup" id="paySuccessPopup">
-  <div class="popup-inner">
-    <button class="popup-close" type="button" aria-label="닫기">
-      <svg width="16" height="16" viewBox="0 0 22 22" fill="none"><path d="M4 4l14 14M18 4L4 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-    </button>
-    <span class="eyebrow"><i></i>Payment Complete</span>
-    <h2>예약이 확정되었습니다</h2>
-    <p>태안 선셋 캠프사이트 · 7월 26일(토) · 1박 · 2명<br>예약 확인서를 이메일로 보내드렸어요.</p>
-    <a href="index.html" class="btn popup-cta">홈으로 돌아가기</a>
-  </div>
-</div>
-
 <script>
-  document.getElementById('payConfirmPage')?.addEventListener('click', function(){
-    var popup = document.getElementById('paySuccessPopup');
-    popup.style.display = 'flex';
+  var bUnit = 35600, bCount = 2;
+  function bUpdate(){
+    var el = document.getElementById('bTotal');
+    if(el) el.textContent = (bUnit * bCount).toLocaleString() + '원';
+  }
+  document.querySelectorAll('.qb-plus').forEach(function(btn){
+    btn.addEventListener('click', function(){ if(bCount<8){ bCount++; document.getElementById('bCount').textContent=bCount; bUpdate(); } });
   });
-  document.querySelectorAll('#paySuccessPopup .popup-close').forEach(function(btn){
-    btn.addEventListener('click', function(){ document.getElementById('paySuccessPopup').style.display='none'; });
+  document.querySelectorAll('.qb-minus').forEach(function(btn){
+    btn.addEventListener('click', function(){ if(bCount>1){ bCount--; document.getElementById('bCount').textContent=bCount; bUpdate(); } });
   });
 </script>
 <!-- ============ 푸터 ============ -->
@@ -209,9 +202,9 @@
       </div>
     </div>
     <div class="footer-cols">
-      <div class="footer-col"><h4>예약</h4><a href="index.html#pick">캠핑</a><a href="index.html#pick">글램핑</a><a href="index.html#pick">카라반</a><a href="index.html#pick">차박</a></div>
-      <div class="footer-col"><h4>트립픽 pick</h4><a href="index.html#story">감성스팟</a><a href="index.html#story">인기급상승</a><a href="index.html#story">에디터픽</a></div>
-      <div class="footer-col"><h4>가이드</h4><a href="guide.html">캠핑입문가이드</a><a href="index.html#guide">준비물체크리스트</a><a href="index.html#guide">FAQ</a></div>
+      <div class="footer-col"><h4>예약</h4><a href="../index.html#pick">캠핑</a><a href="../index.html#pick">글램핑</a><a href="../index.html#pick">카라반</a><a href="../index.html#pick">차박</a></div>
+      <div class="footer-col"><h4>트립픽 pick</h4><a href="../index.html#story">감성스팟</a><a href="../index.html#story">인기급상승</a><a href="../index.html#story">에디터픽</a></div>
+      <div class="footer-col"><h4>가이드</h4><a href="guide.html">캠핑입문가이드</a><a href="../index.html#guide">준비물체크리스트</a><a href="../index.html#guide">FAQ</a></div>
       <div class="footer-col"><h4>고객지원</h4><a href="#">공지사항</a><a href="#">1:1 문의</a><a href="#">입점 신청</a></div>
     </div>
   </div>
@@ -245,6 +238,6 @@
   </button>
 </nav>
 
-<script src="script.js"></script>
+<script src="../js/script.js"></script>
 </body>
 </html>
