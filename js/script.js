@@ -153,11 +153,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* ---------- 회원가입 첫예약 쿠폰 팝업 (홈 진입 시 1회) ---------- */
   const couponPopup = document.getElementById('couponPopup');
-  if (couponPopup && !sessionStorage.getItem('trippickCouponSeen')) {
+  const couponHideTodayBtn = document.getElementById('couponHideTodayBtn');
+  const COUPON_HIDE_KEY = 'trippickCouponHideUntil';
+  const todayStr = () => new Date().toDateString();
+
+  if (couponPopup && localStorage.getItem(COUPON_HIDE_KEY) !== todayStr()) {
     setTimeout(() => {
       openPopup(couponPopup);
-      sessionStorage.setItem('trippickCouponSeen', '1');
     }, 900);
+  }
+  if (couponHideTodayBtn) {
+    couponHideTodayBtn.addEventListener('click', () => {
+      localStorage.setItem(COUPON_HIDE_KEY, todayStr());
+    });
   }
 
   /* ---------- About Trippick 통계 숫자 카운트업 ---------- */
