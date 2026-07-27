@@ -237,9 +237,9 @@ document.addEventListener('DOMContentLoaded', () => {
           <svg width="14" height="14" viewBox="0 0 22 22" fill="none"><path d="M9 4H5a1 1 0 00-1 1v12a1 1 0 001 1h4M14 15l4-4-4-4M18 11H8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
           <span class="fab-quick-label">로그인</span>
         </a>
-        <button type="button" class="fab-quick-item" id="fabAiBtn">
-          <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M10 2L11.6 8.4L18 10L11.6 11.6L10 18L8.4 11.6L2 10L8.4 8.4Z" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/></svg>
-          <span class="fab-quick-label">AI상담</span>
+        <button type="button" class="fab-quick-item" id="fabConsultBtn">
+          <svg width="14" height="14" viewBox="0 0 22 22" fill="none"><path d="M3 5.5A2.5 2.5 0 015.5 3h11A2.5 2.5 0 0119 5.5v6A2.5 2.5 0 0116.5 14H9l-4.5 4v-4H5.5A2.5 2.5 0 013 11.5v-6z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+          <span class="fab-quick-label">상담문의</span>
         </button>
       </div>
     </div>
@@ -257,25 +257,35 @@ document.addEventListener('DOMContentLoaded', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 
-  document.getElementById('fabAiBtn')?.addEventListener('click', () => {
-    const aiPopup = document.getElementById('aiConsultPopup');
-    if (aiPopup) openPopup(aiPopup);
+  /* 상담 문의 팝업: 호스트의 "상담 관리"함으로 전달되는 일반 문의 접수 폼 */
+  const consultPopup = document.getElementById('consultPopup');
+  const consultForm = document.getElementById('consultForm');
+  const consultDone = document.getElementById('consultDone');
+
+  document.getElementById('fabConsultBtn')?.addEventListener('click', () => {
+    if (!consultPopup) return;
+    if (consultForm) { consultForm.reset(); consultForm.style.display = ''; }
+    if (consultDone) consultDone.style.display = 'none';
+    openPopup(consultPopup);
   });
 
-  /* AI 맞춤 추천: 선택한 스타일에 해당하는 유형별예약 페이지(실시간 공공데이터 연동)로 안내 */
-  const AI_STYLE_TO_PAGE = {
-    camping: `${ROOT_PREFIX}camping.html`, glamping: `${ROOT_PREFIX}glamping.html`, caravan: `${ROOT_PREFIX}caravan.html`,
-    pet: `${ROOT_PREFIX}pet.html`, mountain: `${ROOT_PREFIX}mountain.html`, sea: `${ROOT_PREFIX}sea.html`
-  };
-  document.getElementById('aiConsultSubmit')?.addEventListener('click', () => {
-    const purpose = document.getElementById('aiPurposeInput')?.value;
-    const style = document.getElementById('aiStyleInput')?.value;
-    if (!purpose || !style) {
-      document.getElementById('aiConsultForm')?.classList.add('shake');
-      setTimeout(() => document.getElementById('aiConsultForm')?.classList.remove('shake'), 500);
+  consultForm?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name = document.getElementById('consultNameInput')?.value.trim();
+    const phone = document.getElementById('consultPhoneInput')?.value.trim();
+    const message = document.getElementById('consultMessageInput')?.value.trim();
+    if (!name || !phone || !message) {
+      consultForm.classList.add('shake');
+      setTimeout(() => consultForm.classList.remove('shake'), 500);
       return;
     }
-    location.href = AI_STYLE_TO_PAGE[style] || `${ROOT_PREFIX}types.html`;
+    // 실제 서비스에서는 이 시점에 담당 캠핑장 호스트의 "상담 관리" 문의함으로 접수됩니다.
+    consultForm.style.display = 'none';
+    if (consultDone) {
+      consultDone.style.display = 'block';
+      const nameEl = consultDone.querySelector('[data-consult-name]');
+      if (nameEl) nameEl.textContent = name;
+    }
   });
 
   /* ---------- 8-0. 고캠핑(한국관광공사) 공공데이터 공통 로더 ----------
@@ -453,16 +463,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }[c]));
     }
 
-    function extractLink(item){
-      const raw = item.homepage || '';
-      const hrefMatch = raw.match(/href=["']([^"']+)["']/i);
-      if (hrefMatch) return hrefMatch[1];
-      const urlMatch = raw.match(/https?:\/\/[^\s"'<>]+/i);
-      if (urlMatch) return urlMatch[0];
-      if (item.tel) return 'tel:' + item.tel.replace(/[^0-9]/g, '');
-      return '#';
-    }
-
     function shortAddr(addr1){
       if (!addr1) return '주소 정보 없음';
       return addr1.split(' ').slice(0, 2).join(' ');
@@ -472,19 +472,18 @@ document.addEventListener('DOMContentLoaded', () => {
       return (induty || '').split(',').map(s => s.trim()).filter(Boolean).slice(0, 2).join(' · ') || '캠핑장';
     }
 
-    // 이번 주 인기 카드: 이미지 위에 지역/이름을 얹은 에디토리얼 스타일
-    function popularCardHTML(item, rank){
+    // 이번 주 인기 카드: 이미지 위에 지역/이름을 얹은 에디토리얼 스타일. detail.html로 이동해 그대로 예약까지 이어짐.
+    function popularCardHTML(item, rank, idx){
       const name = escapeHtml(item.facltNm || '이름 미상 캠핑장');
       const img = item.firstImageUrl ? escapeHtml(item.firstImageUrl) : FALLBACK_IMG;
-      const link = escapeHtml(extractLink(item));
-      const external = /^https?:/.test(link);
-      const linkAttrs = external ? ' target="_blank" rel="noopener"' : '';
+      const cid = encodeURIComponent(item.contentId || ('idx' + idx));
+      const href = `${ROOT_PREFIX}detail.html?src=api&contentId=${cid}`;
       return `
         <article class="p-card p-card-feature">
-          <a href="${link}" class="p-thumb"${linkAttrs}>
+          <a href="${href}" class="p-thumb" onclick="window.trippickSaveSite(${idx})">
             <img src="${img}" alt="${name}" loading="lazy" onerror="this.onerror=null;this.src='${FALLBACK_IMG}';">
             <span class="p-tag p-tag-rank"><svg width="10" height="10" viewBox="0 0 20 20" fill="currentColor"><path d="M10 2l1.9 5.8H18l-4.9 3.6 1.9 5.8L10 13.6l-4.9 3.6 1.9-5.8L2 7.8h6.1L10 2z"/></svg>BEST ${rank}</span>
-            <button class="p-like" aria-label="찜하기" onclick="event.preventDefault()"><svg width="15" height="15" viewBox="0 0 22 22" fill="none"><path d="M11 18s-7-4.5-7-9a4 4 0 018 0 4 4 0 018 0c0 4.5-7 9-7 9z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></button>
+            <button class="p-like" aria-label="찜하기" onclick="event.preventDefault(); event.stopPropagation();"><svg width="15" height="15" viewBox="0 0 22 22" fill="none"><path d="M11 18s-7-4.5-7-9a4 4 0 018 0 4 4 0 018 0c0 4.5-7 9-7 9z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></button>
             <span class="p-thumb-caption">
               <span class="p-thumb-region">${escapeHtml(shortAddr(item.addr1))}</span>
               <span class="p-thumb-name">${name}</span>
@@ -502,7 +501,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function renderPopular(list){
       if (!list.length) return;
-      campGrid.innerHTML = list.slice(0, 4).map((item, i) => popularCardHTML(item, i + 1)).join('');
+      const top = list.slice(0, 4);
+      window.__trippickGridItems = top;
+      campGrid.innerHTML = top.map((item, i) => popularCardHTML(item, i + 1, i)).join('');
     }
 
     fetchCampingList().then(list => {

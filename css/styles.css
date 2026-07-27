@@ -658,6 +658,7 @@ button{cursor:pointer; background:none; border:none;}
   .grid.bento-grid .p-card-feature:nth-child(1) .p-thumb-name{font-size:21px;}
 }
 .p-card{position:relative;}
+.p-card:not(.p-card-feature){display:flex; flex-direction:column; height:100%;}
 .p-thumb{position:relative; display:block; aspect-ratio:4/5; overflow:hidden; background:var(--line-soft);}
 .p-thumb img{width:100%; height:100%; object-fit:cover; transition:transform .6s ease;}
 .p-card:hover .p-thumb img{transform:scale(1.06);}
@@ -685,11 +686,12 @@ button{cursor:pointer; background:none; border:none;}
   100%{transform:scale(1);}
 }
 .p-body{padding-top:14px;}
+.p-body:not(.p-body-feature){display:flex; flex-direction:column; flex:1;}
 .p-region{font-size:11.5px; color:var(--text-mute); letter-spacing:.04em; margin-bottom:3px;}
 .p-name{font-family:var(--serif); font-size:16px; font-weight:600; margin-bottom:6px; word-break:keep-all; overflow-wrap:break-word; display:-webkit-box; -webkit-line-clamp:2; line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;}
 .p-name a:hover{color:var(--ember);}
 .p-desc{font-size:12.5px; color:var(--text-mute); margin-bottom:10px; word-break:keep-all; overflow-wrap:break-word; display:-webkit-box; -webkit-line-clamp:2; line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;}
-.p-price{display:flex; align-items:baseline; gap:7px; padding-top:9px; border-top:1px solid var(--line);}
+.p-price{display:flex; align-items:baseline; gap:7px; padding-top:9px; border-top:1px solid var(--line); margin-top:auto;}
 .p-price .old{font-size:12px; color:#B4AB93; text-decoration:line-through;}
 .p-price .pct{font-size:12px; color:var(--ember); font-weight:700;}
 .p-price .now{font-size:15px; font-weight:700; color:var(--ink);}
@@ -874,12 +876,18 @@ button{cursor:pointer; background:none; border:none;}
 .popup-inner p{font-size:13.5px; color:var(--text-mute); line-height:1.8; margin-bottom:22px;}
 .popup-cta{width:100%; justify-content:center;}
 
-/* ---------- 팝업: AI 캠핑장 추천 ---------- */
-.ai-consult-inner{max-width:440px;}
-.ai-consult-desc{margin-bottom:26px;}
-.ai-consult-form{display:flex; flex-direction:column; gap:18px; text-align:left;}
-.ai-consult-form .cf-field select{width:100%;}
-.ai-consult-form .btn{margin-top:4px;}
+/* ---------- 팝업: 상담 문의 ---------- */
+.consult-popup-inner{max-width:440px;}
+.consult-hours{
+  display:flex; flex-direction:column; gap:6px;
+  background:var(--ivory-soft); border:1px solid var(--line); border-radius:10px;
+  padding:14px 16px; margin-bottom:22px; text-align:left;
+}
+.consult-hours-row{display:flex; justify-content:space-between; align-items:baseline; gap:12px; font-size:12.5px;}
+.consult-hours-row span{color:var(--text-mute); flex-shrink:0;}
+.consult-hours-row strong{color:var(--ink); font-weight:600; text-align:right;}
+.consult-popup-inner .consult-form{text-align:left; max-width:none;}
+.consult-done p{margin-bottom:0;}
 
 .qb-inner{text-align:left;}
 .qb-inner h2{text-align:center;}
