@@ -389,6 +389,7 @@ button{cursor:pointer; background:none; border:none;}
   .filter-bar{grid-template-columns:1fr;}
   .filter-field-wide{grid-column:auto;}
 }
+#filterResultsNote{font-size:12.5px; color:var(--text-mute); margin:-24px 0 24px;}
 
 /* ---------- 지도로 보기 배너 ---------- */
 .map-banner-wrap{padding:22px 0 0;}
@@ -1067,6 +1068,7 @@ button{cursor:pointer; background:none; border:none;}
 
 .detail-side{position:sticky; top:100px;}
 .detail-book-card{border:1px solid var(--line); padding:28px; background:var(--paper);}
+.detail-book-card h3{font-family:var(--serif); font-size:17px; font-weight:600; margin-bottom:20px;}
 .detail-book-price{display:flex; align-items:baseline; gap:9px; margin-bottom:22px; padding-bottom:22px; border-bottom:1px solid var(--line);}
 .detail-book-price .old{font-size:13px; color:#B4AB93; text-decoration:line-through;}
 .detail-book-price .pct{font-size:13px; color:var(--ember); font-weight:700;}
@@ -1201,6 +1203,7 @@ button{cursor:pointer; background:none; border:none;}
 }
 .mypage-nav a svg{width:18px; height:18px;}
 .mypage-nav a.active, .mypage-nav a:hover{color:var(--ink); border-left-color:var(--ember);}
+.mypage-content .section-head h2{font-size:20px;}
 
 /* ==================================================================
    가이드 / 안전영상
@@ -1211,6 +1214,7 @@ button{cursor:pointer; background:none; border:none;}
   color:var(--text-mute); border-bottom:2px solid transparent; margin-bottom:-1px;
 }
 .guide-tab.active{color:var(--ink); border-bottom-color:var(--ember);}
+.style-note{font-size:12px; color:var(--text-mute); margin:0 0 20px;}
 .video-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:28px 22px;}
 @media (min-width:760px){ .video-grid{grid-template-columns:repeat(3,1fr);} }
 /* 첫 영상을 벤토 스타일로 크게 강조 */
