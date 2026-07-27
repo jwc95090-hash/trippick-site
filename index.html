@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700;800&family=Noto+Serif+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/styles.css?v=5">
 </head>
 <body>
 
@@ -195,44 +195,47 @@
   </section>
 
   <!-- ============ 인트로 / 브랜드 스토리 ============ -->
-  <section class="intro reveal">
-    <div class="wrap intro-inner">
-      <div class="intro-media">
-        <svg class="intro-scene" viewBox="0 0 480 520" aria-hidden="true">
-          <defs>
-            <radialGradient id="glowGrad" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stop-color="#D8BE87" stop-opacity=".55"/>
-              <stop offset="100%" stop-color="#D8BE87" stop-opacity="0"/>
-            </radialGradient>
-          </defs>
-          <circle class="scene-glow" cx="240" cy="160" r="95" fill="url(#glowGrad)"/>
-          <circle class="scene-star s1" cx="70" cy="80" r="2"/>
-          <circle class="scene-star s2" cx="365" cy="55" r="1.6"/>
-          <circle class="scene-star s3" cx="120" cy="140" r="1.4"/>
-          <circle class="scene-star s4" cx="405" cy="150" r="2"/>
-          <circle class="scene-star s5" cx="305" cy="95" r="1.4"/>
-          <circle class="scene-star s6" cx="180" cy="60" r="1.4"/>
-          <circle class="scene-sun" cx="240" cy="160" r="34"/>
-          <path class="scene-mtn scene-mtn-back" d="M0 350 L110 220 L190 310 L260 210 L340 330 L480 260 L480 400 L0 400 Z"/>
-          <path class="scene-mtn scene-mtn-front" d="M0 400 L70 305 L150 385 L230 285 L300 385 L380 295 L480 385 L480 420 L0 420 Z"/>
-          <rect x="0" y="400" width="480" height="120" class="scene-ground"/>
-          <g class="scene-tent">
-            <path d="M158 400 L212 318 L266 400 Z" class="tent-body"/>
-            <path d="M212 318 L212 400" class="tent-line"/>
-            <path d="M186 400 L212 350 L238 400" class="tent-door"/>
+  <section class="intro intro-banner reveal">
+    <div class="intro-media">
+      <svg class="intro-scene" viewBox="0 0 1600 640" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <defs>
+          <radialGradient id="glowGrad" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#D8BE87" stop-opacity=".55"/>
+            <stop offset="100%" stop-color="#D8BE87" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <circle class="scene-glow" cx="800" cy="190" r="130" fill="url(#glowGrad)"/>
+        <circle class="scene-star s1" cx="150" cy="90" r="2.4"/>
+        <circle class="scene-star s2" cx="1420" cy="70" r="2"/>
+        <circle class="scene-star s3" cx="380" cy="150" r="1.8"/>
+        <circle class="scene-star s4" cx="1300" cy="170" r="2.4"/>
+        <circle class="scene-star s5" cx="980" cy="110" r="1.8"/>
+        <circle class="scene-star s6" cx="620" cy="75" r="1.8"/>
+        <circle class="scene-star s1" cx="70" cy="210" r="1.6"/>
+        <circle class="scene-star s3" cx="1540" cy="230" r="1.6"/>
+        <circle class="scene-sun" cx="800" cy="190" r="46"/>
+        <path class="scene-mtn scene-mtn-back" d="M0 420 L160 260 L280 360 L420 240 L560 380 L720 270 L880 400 L1040 250 L1200 390 L1360 280 L1600 350 L1600 480 L0 480 Z"/>
+        <path class="scene-mtn scene-mtn-front" d="M0 480 L120 340 L260 460 L400 320 L540 470 L680 330 L820 470 L960 310 L1100 470 L1240 340 L1600 460 L1600 520 L0 520 Z"/>
+        <rect x="0" y="480" width="1600" height="160" class="scene-ground"/>
+        <g class="scene-tent">
+          <path d="M680 520 L750 380 L820 520 Z" class="tent-body"/>
+          <path d="M750 380 L750 520" class="tent-line" pathLength="1"/>
+          <path d="M715 520 L750 460 L785 520" class="tent-door" pathLength="1"/>
+        </g>
+        <g class="scene-fire" transform="translate(1000,505)">
+          <path d="M-21 11 L21 11 L10 -4 L-10 -4 Z" class="fire-logs"/>
+          <path class="flame flame-1" d="M0 8 C-10 -4 -7 -18 0 -31 C7 -18 10 -4 0 8Z"/>
+          <path class="flame flame-2" d="M0 8 C-6 0 -4 -13 0 -21 C4 -13 6 0 0 8Z"/>
+          <g class="scene-smoke">
+            <circle cx="0" cy="-36" r="4.2"/>
+            <circle cx="5.6" cy="-53" r="3.4"/>
+            <circle cx="-4.2" cy="-70" r="2.8"/>
           </g>
-          <g class="scene-fire" transform="translate(320,392)">
-            <path d="M-15 8 L15 8 L7 -3 L-7 -3 Z" class="fire-logs"/>
-            <path class="flame flame-1" d="M0 6 C-7 -3 -5 -13 0 -22 C5 -13 7 -3 0 6Z"/>
-            <path class="flame flame-2" d="M0 6 C-4 0 -3 -9 0 -15 C3 -9 4 0 0 6Z"/>
-            <g class="scene-smoke">
-              <circle cx="0" cy="-26" r="3"/>
-              <circle cx="4" cy="-38" r="2.4"/>
-              <circle cx="-3" cy="-50" r="2"/>
-            </g>
-          </g>
-        </svg>
-      </div>
+        </g>
+      </svg>
+      <div class="intro-media-overlay" aria-hidden="true"></div>
+    </div>
+    <div class="wrap intro-copy-wrap">
       <div class="intro-copy">
         <span class="eyebrow"><i></i>About Trippick</span>
         <h2>자연의 여유와 신뢰의 정보가<br>만나는 단 하나의 캠핑 플랫폼</h2>
@@ -574,6 +577,6 @@
   </div>
 </div>
 
-<script src="js/script.js"></script>
+<script src="js/script.js?v=5"></script>
 </body>
 </html>

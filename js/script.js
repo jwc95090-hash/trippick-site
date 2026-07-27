@@ -138,6 +138,21 @@ document.addEventListener('DOMContentLoaded', () => {
     blurTargets.forEach(el => el.classList.add('blur-target', 'blur-in'));
   }
 
+  /* ---------- 2-5. About Trippick 일러스트 마우스 틸트 (포인터 지원 기기 전용) ---------- */
+  const introMediaEl = document.querySelector('.intro-media');
+  const introSceneEl = document.querySelector('.intro-scene');
+  if (introMediaEl && introSceneEl && window.matchMedia('(pointer: fine)').matches) {
+    introMediaEl.addEventListener('mousemove', (e) => {
+      const rect = introMediaEl.getBoundingClientRect();
+      const px = (e.clientX - rect.left) / rect.width - 0.5;
+      const py = (e.clientY - rect.top) / rect.height - 0.5;
+      introSceneEl.style.transform = `rotateY(${(px * 10).toFixed(2)}deg) rotateX(${(-py * 10).toFixed(2)}deg) scale(1.03)`;
+    });
+    introMediaEl.addEventListener('mouseleave', () => {
+      introSceneEl.style.transform = '';
+    });
+  }
+
   /* ---------- 3. 스크롤 리빌 ---------- */
   const revealEls = document.querySelectorAll('.reveal');
   if ('IntersectionObserver' in window && revealEls.length) {

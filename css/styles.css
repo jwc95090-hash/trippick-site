@@ -1486,3 +1486,169 @@ button{cursor:pointer; background:none; border:none;}
   .head-mask-inner{transition:none; transform:none; opacity:1;}
   .blur-target{transition:none; filter:none; opacity:1; transform:none;}
 }
+
+
+/* ==================================================================
+   INTRO(ABOUT TRIPPICK) 일러스트 임팩트 리뉴얼
+   - 산/달/텐트/모닥불이 스크롤 진입 시 순차적으로 "짠" 하고 등장 (성장·팝·드로잉)
+   - 카드 자체는 살짝 떠오르며 스케일 업, 통계 숫자는 탄성있게 팝인
+   - 데스크탑에서는 마우스를 올리면 일러스트가 입체적으로 미세하게 반응(틸트)
+   기존에 무한 반복되던 애니메이션(반짝임·플래임 플리커·연기)은 그대로 살려두고,
+   "처음 진입할 때만 한 번" 재생되는 등장 연출만 별도 레이어로 덧붙였다.
+   ================================================================== */
+
+.intro-media{
+  border-radius:22px; perspective:1200px;
+  box-shadow:0 34px 64px -24px rgba(19,32,24,.38), 0 0 0 1px rgba(173,138,76,.16);
+}
+.intro-scene{transition:transform .4s cubic-bezier(.22,1,.36,1); transform-style:preserve-3d; will-change:transform;}
+
+@keyframes introMediaPop{
+  from{opacity:0; transform:scale(.93) translateY(28px);}
+  to{opacity:1; transform:scale(1) translateY(0);}
+}
+.reveal.in .intro-media{animation:introMediaPop .9s cubic-bezier(.16,1,.3,1) both;}
+
+@keyframes sceneGrowUp{
+  from{opacity:0; transform:scaleY(0);}
+  to{opacity:1; transform:scaleY(1);}
+}
+.reveal.in .scene-mtn-back{
+  transform-box:fill-box; transform-origin:center bottom;
+  animation:sceneGrowUp 1s cubic-bezier(.16,1,.3,1) .2s both;
+}
+.reveal.in .scene-mtn-front{
+  transform-box:fill-box; transform-origin:center bottom;
+  animation:sceneGrowUp 1s cubic-bezier(.16,1,.3,1) .35s both;
+}
+
+@keyframes moonPop{
+  from{opacity:0; transform:scale(0);}
+  to{opacity:1; transform:scale(1);}
+}
+.reveal.in .scene-sun{
+  transform-box:fill-box; transform-origin:center;
+  animation:moonPop .8s cubic-bezier(.34,1.56,.64,1) .1s both;
+}
+
+.reveal.in .tent-body{
+  transform-box:fill-box; transform-origin:center bottom;
+  animation:sceneGrowUp .6s cubic-bezier(.16,1,.3,1) .55s both;
+}
+.reveal.in .tent-line,
+.reveal.in .tent-door{
+  stroke-dasharray:1; stroke-dashoffset:1;
+  animation:tentDraw .5s ease-out .75s forwards;
+}
+@keyframes tentDraw{ to{stroke-dashoffset:0;} }
+
+@keyframes fireFadeIn{ from{opacity:0;} to{opacity:1;} }
+.reveal.in .scene-fire{animation:fireFadeIn .5s ease-out .9s both;}
+
+/* ---------- 통계 숫자 탄성 팝인 ---------- */
+@keyframes statPop{
+  from{opacity:0; transform:translateY(16px) scale(.82);}
+  to{opacity:1; transform:translateY(0) scale(1);}
+}
+.reveal.in .intro-stats > div{animation:statPop .6s cubic-bezier(.34,1.56,.64,1) both;}
+.reveal.in .intro-stats > div:nth-child(1){animation-delay:.55s;}
+.reveal.in .intro-stats > div:nth-child(2){animation-delay:.68s;}
+.reveal.in .intro-stats > div:nth-child(3){animation-delay:.81s;}
+
+@media (prefers-reduced-motion: reduce){
+  .reveal.in .intro-media,
+  .reveal.in .scene-mtn-back, .reveal.in .scene-mtn-front,
+  .reveal.in .scene-sun, .reveal.in .tent-body,
+  .reveal.in .tent-line, .reveal.in .tent-door,
+  .reveal.in .scene-fire,
+  .reveal.in .intro-stats > div{
+    animation:none; opacity:1; transform:none; stroke-dashoffset:0;
+  }
+  .intro-scene{transition:none;}
+}
+
+
+/* ==================================================================
+   INTRO(ABOUT TRIPPICK) — 가로 풀블리드 임팩트 배너로 재구성
+   기존 좌(작은 카드)-우(텍스트) 2단 배치를 버리고, 일러스트가 섹션 전체
+   가로폭을 꽉 채우는 배경이 되고 텍스트는 그 위에 얹히는 구조로 변경.
+   가독성을 위해 좌측에서 우측으로 옅어지는 다크 그라데이션 오버레이를 깐다.
+   ================================================================== */
+.intro.intro-banner{
+  background:var(--forest-deep);
+  padding:0; min-height:clamp(520px, 62vw, 680px);
+  position:relative; overflow:hidden;
+  display:flex; align-items:flex-end;
+}
+.intro.intro-banner::before,
+.intro.intro-banner::after{content:none;}
+
+.intro.intro-banner .intro-media{
+  position:absolute; inset:0; z-index:0;
+  border-radius:0; box-shadow:none; perspective:1200px; overflow:hidden;
+}
+.intro.intro-banner .intro-scene{width:100%; height:100%; display:block;}
+
+.intro-media-overlay{
+  position:absolute; inset:0; z-index:1; pointer-events:none;
+  background:
+    linear-gradient(90deg, rgba(6,12,8,.92) 0%, rgba(6,12,8,.68) 34%, rgba(6,12,8,.18) 62%, rgba(6,12,8,0) 82%),
+    linear-gradient(0deg, rgba(6,12,8,.55) 0%, rgba(6,12,8,0) 45%);
+}
+
+.intro-copy-wrap{position:relative; z-index:2; width:100%; padding:64px 0 56px;}
+.intro.intro-banner .intro-copy{max-width:560px; color:var(--ivory);}
+.intro.intro-banner .intro-copy .eyebrow{color:var(--brass-light);}
+.intro.intro-banner .intro-copy .eyebrow i{background:var(--brass-light);}
+.intro.intro-banner .intro-copy h2{
+  color:var(--ivory); text-shadow:0 4px 22px rgba(0,0,0,.45);
+}
+.intro.intro-banner .intro-copy p{
+  color:var(--ivory-soft); text-shadow:0 2px 12px rgba(0,0,0,.4);
+}
+.intro.intro-banner .intro-stats{border-top-color:rgba(246,241,230,.22);}
+.intro.intro-banner .intro-stats strong{color:var(--brass-light); text-shadow:0 2px 12px rgba(0,0,0,.45);}
+.intro.intro-banner .intro-stats span{color:var(--ivory-soft);}
+
+@media (min-width:860px){
+  .intro-copy-wrap{padding:0;}
+  .intro.intro-banner{align-items:center; min-height:clamp(560px, 46vw, 680px);}
+}
+@media (max-width:640px){
+  .intro.intro-banner{min-height:560px;}
+  .intro-media-overlay{
+    background:
+      linear-gradient(0deg, rgba(6,12,8,.92) 0%, rgba(6,12,8,.5) 46%, rgba(6,12,8,.12) 68%),
+      linear-gradient(90deg, rgba(6,12,8,.5) 0%, rgba(6,12,8,0) 60%);
+  }
+  .intro.intro-banner .intro-copy{max-width:100%;}
+}
+
+/* 풀블리드 배너에 맞춰 등장 애니메이션도 살짝 조정 (스케일 축소 없이 페이드+업만) */
+.reveal.in .intro.intro-banner .intro-media{
+  animation:introMediaPop 1.1s cubic-bezier(.16,1,.3,1) both;
+}
+
+
+/* ==================================================================
+   INTRO 배너 — 파노라마 씬(1600x640) 좌표에 맞춘 보정
+   1) 새 glow 중심 좌표로 pulse 애니메이션 기준점 갱신
+   2) 오버레이를 얇게 낮춰 일러스트(산·달·텐트)가 또렷하게 보이도록 조정
+   3) 넓어진 씬에 맞춰 텐트 라인 두께를 살짝 키움
+   ================================================================== */
+.intro.intro-banner .scene-glow{transform-origin:800px 190px;}
+.intro.intro-banner .tent-line,
+.intro.intro-banner .tent-door{stroke-width:3;}
+
+.intro.intro-banner .intro-media-overlay{
+  background:
+    linear-gradient(90deg, rgba(12,23,16,.72) 0%, rgba(12,23,16,.4) 36%, rgba(12,23,16,.1) 60%, rgba(12,23,16,0) 78%),
+    linear-gradient(0deg, rgba(12,23,16,.3) 0%, rgba(12,23,16,0) 38%);
+}
+@media (max-width:640px){
+  .intro.intro-banner .intro-media-overlay{
+    background:
+      linear-gradient(0deg, rgba(12,23,16,.82) 0%, rgba(12,23,16,.4) 48%, rgba(12,23,16,.08) 70%),
+      linear-gradient(90deg, rgba(12,23,16,.4) 0%, rgba(12,23,16,0) 65%);
+  }
+}
