@@ -54,6 +54,7 @@ a{color:inherit; text-decoration:none;}
 button, input, select, textarea, optgroup, option{font-family:inherit;}
 button{cursor:pointer; background:none; border:none;}
 .wrap{max-width:1560px; margin:0 auto; padding:0 40px;}
+@media (max-width:640px){ .wrap{padding:0 20px;} }
 
 @media (prefers-reduced-motion: reduce){
   *{animation-duration:.001ms !important; transition-duration:.001ms !important;}
@@ -330,9 +331,9 @@ button{cursor:pointer; background:none; border:none;}
 .filter-bar{
   background:var(--paper); box-shadow:var(--shadow);
   display:flex; align-items:stretch; flex-wrap:wrap;
-  padding:8px 8px 8px 28px;
+  padding:18px 18px 18px 36px;
 }
-.filter-field{flex:1; min-width:132px; padding:12px 16px 12px 0;}
+.filter-field{flex:1; min-width:150px; padding:18px 22px 18px 0;}
 .filter-field label{
   display:block; font-family:var(--caps); font-size:10.5px; letter-spacing:.14em;
   text-transform:uppercase; color:var(--text-mute); margin-bottom:5px;
@@ -342,12 +343,13 @@ button{cursor:pointer; background:none; border:none;}
 }
 .filter-field input::placeholder{color:#B9B097;}
 .filter-field select{
-  -webkit-appearance:none; appearance:none; padding-right:16px;
+  -webkit-appearance:none; -moz-appearance:none; appearance:none;
+  padding-right:22px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%236E6656' stroke-width='1.4'/%3E%3C/svg%3E");
   background-repeat:no-repeat; background-position:right center;
 }
 .filter-field select:invalid{color:#B9B097;}
-.filter-bar.shake{animation:filterShake .4s ease;}
+.filter-bar.shake, .shake{animation:filterShake .4s ease;}
 @keyframes filterShake{
   0%,100%{transform:translateX(0);}
   20%{transform:translateX(-6px);}
@@ -355,16 +357,16 @@ button{cursor:pointer; background:none; border:none;}
   60%{transform:translateX(-4px);}
   80%{transform:translateX(4px);}
 }
-.filter-div{width:1px; background:var(--line); margin:6px 14px;}
+.filter-div{width:1px; background:var(--line); margin:6px 20px;}
 .filter-submit{
   display:flex; align-items:center; gap:8px; white-space:nowrap;
   font-family:var(--caps); font-size:12.5px; letter-spacing:.1em; text-transform:uppercase;
-  background:var(--ember); color:var(--ivory); padding:0 30px; margin:6px;
+  background:var(--ember); color:var(--ivory); padding:0 36px; margin:8px;
   transition:background .2s, transform .15s ease;
 }
 .filter-submit:hover{background:var(--forest);}
 .filter-submit:active{transform:scale(.97);}
-@media (max-width:760px){
+@media (max-width:1024px){
   .filter-wrap{position:static; margin-top:22px; padding:0 18px;}
   .filter-wrap .wrap{padding:0;}
   .filter-bar{
@@ -374,7 +376,7 @@ button{cursor:pointer; background:none; border:none;}
     box-shadow:0 22px 46px -18px rgba(35,26,14,.34), 0 2px 8px rgba(35,26,14,.06);
   }
   .filter-div{display:none;}
-  .filter-field{padding:13px 0; border-bottom:1px solid var(--line-soft);}
+  .filter-field{padding:13px 0; border-bottom:1px solid var(--line-soft); min-width:0;}
   .filter-field-wide{grid-column:1 / -1;}
   .filter-field-last{border-bottom:none;}
   .filter-submit{
@@ -382,6 +384,52 @@ button{cursor:pointer; background:none; border:none;}
     border-radius:12px; justify-content:center; letter-spacing:.14em;
   }
 }
+
+@media (max-width:480px){
+  .filter-bar{grid-template-columns:1fr;}
+  .filter-field-wide{grid-column:auto;}
+}
+
+/* ---------- 지도로 보기 배너 ---------- */
+.map-banner-wrap{padding:22px 0 0;}
+.map-banner{
+  width:100%; display:flex; align-items:center; gap:20px; text-align:left;
+  background:var(--forest); color:var(--ivory); padding:22px 28px;
+  border:none; transition:background .2s, transform .15s ease;
+}
+.map-banner:hover{background:var(--forest-deep); transform:translateY(-2px);}
+.map-banner:active{transform:translateY(0) scale(.99);}
+.map-banner-icon{
+  width:44px; height:44px; flex-shrink:0; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  background:rgba(246,241,230,.12); color:var(--brass-light);
+}
+.map-banner-text{flex:1; display:flex; flex-direction:column; gap:4px; min-width:0;}
+.map-banner-text strong{font-family:var(--serif); font-size:16px; font-weight:600;}
+.map-banner-text em{font-style:normal; font-size:12px; color:var(--ivory-soft);}
+.map-banner-cta{
+  flex-shrink:0; display:flex; align-items:center; gap:6px;
+  font-family:var(--caps); font-size:11.5px; letter-spacing:.08em; text-transform:uppercase;
+  color:var(--brass-light); border:1px solid var(--brass-light); padding:10px 18px; border-radius:999px;
+  transition:background .2s, color .2s;
+}
+.map-banner:hover .map-banner-cta{background:var(--brass-light); color:var(--forest-deep);}
+@media (max-width:640px){
+  .map-banner{flex-wrap:wrap; padding:20px;}
+  .map-banner-cta{width:100%; justify-content:center;}
+}
+
+/* ---------- 팝업: 전체 캠핑장 지도 ---------- */
+.map-popup-inner{max-width:920px; text-align:left;}
+.map-popup-inner .eyebrow{justify-content:flex-start;}
+.map-popup-inner h2{text-align:left;}
+.site-map-el{
+  width:100%; height:420px; background:var(--ivory-soft);
+  display:flex; align-items:center; justify-content:center;
+}
+.site-map-loading{color:var(--text-mute); font-size:13px;}
+.site-map-note{font-size:12px; color:var(--text-mute); margin:14px 0 0; text-align:left;}
+@media (max-width:640px){ .site-map-el{height:320px;} }
 
 /* ---------- 인트로 / 브랜드 스토리 ---------- */
 .intro{padding:96px 0 80px;}
@@ -464,6 +512,38 @@ button{cursor:pointer; background:none; border:none;}
 .cqb-text{display:flex; flex-direction:column; gap:3px; min-width:0;}
 .cqb-text strong{font-size:14.5px; font-weight:600; color:var(--ink);}
 .cqb-text em{font-style:normal; font-size:11.5px; color:var(--text-mute); letter-spacing:.02em;}
+
+/* ---------- 신뢰요소 ---------- */
+.trust-row{display:grid; grid-template-columns:1fr; gap:18px; margin-top:36px;}
+@media (min-width:640px){ .trust-row{grid-template-columns:repeat(3,1fr);} }
+.trust-item{padding:28px 24px; background:var(--paper); border:1px solid var(--line);}
+.trust-icon{
+  width:40px; height:40px; border-radius:50%; margin-bottom:16px;
+  display:flex; align-items:center; justify-content:center;
+  background:var(--ivory-soft); color:var(--secondary-deep);
+}
+.trust-item h3{font-family:var(--serif); font-size:16px; font-weight:600; margin-bottom:8px; color:var(--ink);}
+.trust-item p{font-size:13px; color:var(--text-mute); line-height:1.7;}
+
+/* ---------- FAQ 아코디언 ---------- */
+.faq-head{margin:56px 0 4px;}
+.faq-head h3{font-family:var(--serif); font-size:19px; font-weight:600; color:var(--ink);}
+.faq-list{border-top:1px solid var(--line); margin-top:16px;}
+.faq-item{border-bottom:1px solid var(--line);}
+.faq-item summary{
+  list-style:none; cursor:pointer; padding:20px 4px;
+  display:flex; align-items:center; justify-content:space-between; gap:16px;
+  font-family:var(--serif); font-size:15px; font-weight:600; color:var(--ink);
+  transition:color .2s;
+}
+.faq-item summary::-webkit-details-marker{display:none;}
+.faq-item summary::after{
+  content:'+'; flex-shrink:0; font-size:20px; font-weight:400; line-height:1;
+  color:var(--text-mute); transition:transform .25s ease;
+}
+.faq-item[open] summary{color:var(--secondary-deep);}
+.faq-item[open] summary::after{transform:rotate(45deg);}
+.faq-item p{padding:0 26px 20px 4px; font-size:13.5px; color:var(--text-mute); line-height:1.75;}
 
 .consult-inner{display:grid; grid-template-columns:1fr; gap:56px;}
 @media (min-width:920px){ .consult-inner{grid-template-columns:1.05fr .95fr;} }
@@ -753,17 +833,17 @@ button{cursor:pointer; background:none; border:none;}
 .fab-quick-item:active{transform:scale(.96);}
 .fab-quick-item svg{flex-shrink:0;}
 
-@media (max-width:959px){
-  /* 모바일: 우측 하단 퀵메뉴는 텍스트 없이 아이콘만 원형 버튼으로 표시 */
+@media (max-width:639px){
+  /* 모바일(폰): 우측 하단 퀵메뉴는 텍스트 없이 아이콘만 원형 버튼으로 표시 */
   .fab-quick-item{
     width:40px; height:40px; padding:0; border-radius:50%;
     justify-content:center; gap:0;
   }
   .fab-quick-item .fab-quick-label{display:none;}
 }
-@media (min-width:960px){
-  /* PC: 퀵메뉴 각 항목 폭을 텍스트 길이와 상관없이 동일하게 고정 */
-  .fab-quick-item{width:115px; justify-content:flex-start;}
+@media (min-width:640px){
+  /* 태블릿 · PC: 퀵메뉴 각 항목 폭을 텍스트 길이와 상관없이 동일하게 고정 */
+  .fab-quick-item{width:132px; justify-content:flex-start;}
 }
 
 .site-popup{
@@ -780,6 +860,13 @@ button{cursor:pointer; background:none; border:none;}
 .popup-inner img{width:100%; aspect-ratio:16/10; object-fit:cover; margin-bottom:18px;}
 .popup-inner p{font-size:13.5px; color:var(--text-mute); line-height:1.8; margin-bottom:22px;}
 .popup-cta{width:100%; justify-content:center;}
+
+/* ---------- 팝업: AI 캠핑장 추천 ---------- */
+.ai-consult-inner{max-width:440px;}
+.ai-consult-desc{margin-bottom:26px;}
+.ai-consult-form{display:flex; flex-direction:column; gap:18px; text-align:left;}
+.ai-consult-form .cf-field select{width:100%;}
+.ai-consult-form .btn{margin-top:4px;}
 
 .qb-inner{text-align:left;}
 .qb-inner h2{text-align:center;}
