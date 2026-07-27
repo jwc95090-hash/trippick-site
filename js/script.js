@@ -257,36 +257,120 @@ document.addEventListener('DOMContentLoaded', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 
-  /* 상담 문의 팝업: 호스트의 "상담 관리"함으로 전달되는 일반 문의 접수 폼 */
-  const consultPopup = document.getElementById('consultPopup');
-  const consultForm = document.getElementById('consultForm');
-  const consultDone = document.getElementById('consultDone');
+  /* 상담 문의 팝업: 말풍선 채팅형. 이름을 먼저 확인한 뒤 문의를 남기면 순서대로 검토 후
+     답변이 채팅으로 도착하는 흐름을 시뮬레이션하고, localStorage에 대화가 남아 다음에 다시 열어도 이어짐. */
+  (function initConsultChat(){
+    const consultPopup = document.getElementById('consultPopup');
+    const thread = document.getElementById('consultChatThread');
+    const statusEl = document.getElementById('consultChatStatus');
+    const form = document.getElementById('consultChatForm');
+    const input = document.getElementById('consultChatInput');
+    if (!consultPopup || !thread || !form || !input) return;
 
-  document.getElementById('fabConsultBtn')?.addEventListener('click', () => {
-    if (!consultPopup) return;
-    if (consultForm) { consultForm.reset(); consultForm.style.display = ''; }
-    if (consultDone) consultDone.style.display = 'none';
-    openPopup(consultPopup);
-  });
+    const STORE_KEY = 'trippick_consult_chat_v1';
+    const GREETING = '안녕하세요, 트립픽 상담입니다 🙂 먼저 성함을 알려주시겠어요?';
+    const AUTO_REPLIES = [
+      '문의 남겨주셔서 감사합니다! 확인 후 순서대로 답변드릴게요.',
+      '네, 잘 확인했습니다. 상담 가능시간 내에 자세히 안내드릴게요.',
+      '말씀 주신 내용 접수했어요. 곧 담당 호스트가 답변드릴 예정이에요.'
+    ];
 
-  consultForm?.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const name = document.getElementById('consultNameInput')?.value.trim();
-    const phone = document.getElementById('consultPhoneInput')?.value.trim();
-    const message = document.getElementById('consultMessageInput')?.value.trim();
-    if (!name || !phone || !message) {
-      consultForm.classList.add('shake');
-      setTimeout(() => consultForm.classList.remove('shake'), 500);
-      return;
+    function loadState(){
+      try {
+        const raw = localStorage.getItem(STORE_KEY);
+        if (raw) return JSON.parse(raw);
+      } catch (e) { /* 저장소 파손 시 새로 시작 */ }
+      return { name: null, messages: [] };
     }
-    // 실제 서비스에서는 이 시점에 담당 캠핑장 호스트의 "상담 관리" 문의함으로 접수됩니다.
-    consultForm.style.display = 'none';
-    if (consultDone) {
-      consultDone.style.display = 'block';
-      const nameEl = consultDone.querySelector('[data-consult-name]');
-      if (nameEl) nameEl.textContent = name;
+    function saveState(){
+      try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch (e) { /* 저장 실패는 무시 */ }
     }
-  });
+
+    let state = loadState();
+    let replyTimer = null;
+
+    function nowLabel(){
+      const d = new Date();
+      return String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
+    }
+
+    function bubbleHTML(msg){
+      const role = msg.role === 'user' ? 'user' : 'host';
+      return `
+        <div class="chat-bubble chat-bubble-${role}">
+          <p>${gcEscapeHtml(msg.text)}</p>
+          <span class="chat-bubble-time">${gcEscapeHtml(msg.time)}</span>
+        </div>`;
+    }
+
+    function renderThread(){
+      thread.innerHTML = state.messages.map(bubbleHTML).join('');
+      thread.scrollTop = thread.scrollHeight;
+    }
+
+    function setStatus(text, mode){
+      if (!text) { statusEl.style.display = 'none'; return; }
+      statusEl.style.display = 'flex';
+      statusEl.className = 'consult-chat-status' + (mode ? ' ' + mode : '');
+      statusEl.innerHTML = `<span class="consult-status-dot"></span>${gcEscapeHtml(text)}`;
+    }
+
+    function updatePlaceholder(){
+      input.placeholder = state.name ? '문의하실 내용을 입력하세요' : '이름을 입력해주세요';
+    }
+
+    function pushMessage(role, text){
+      const msg = { role, text, time: nowLabel() };
+      state.messages.push(msg);
+      saveState();
+      thread.insertAdjacentHTML('beforeend', bubbleHTML(msg));
+      thread.scrollTop = thread.scrollHeight;
+    }
+
+    function ensureGreeting(){
+      if (!state.messages.length) {
+        state.messages.push({ role: 'host', text: GREETING, time: nowLabel() });
+        saveState();
+      }
+      renderThread();
+      updatePlaceholder();
+    }
+
+    document.getElementById('fabConsultBtn')?.addEventListener('click', () => {
+      ensureGreeting();
+      openPopup(consultPopup);
+      setTimeout(() => input.focus(), 250);
+    });
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const text = input.value.trim();
+      if (!text) return;
+      input.value = '';
+      clearTimeout(replyTimer);
+
+      if (!state.name) {
+        state.name = text;
+        saveState();
+        pushMessage('user', text);
+        updatePlaceholder();
+        setStatus('', null);
+        replyTimer = setTimeout(() => {
+          pushMessage('host', `반가워요, ${state.name}님! 궁금하신 내용을 편하게 남겨주세요.`);
+        }, 700);
+        return;
+      }
+
+      pushMessage('user', text);
+      setStatus('답변 대기중', 'pending');
+      const askedCount = state.messages.filter(m => m.role === 'user').length;
+      const reply = AUTO_REPLIES[(askedCount - 1) % AUTO_REPLIES.length];
+      replyTimer = setTimeout(() => {
+        pushMessage('host', reply);
+        setStatus('답변 완료', 'done');
+      }, 1500 + Math.random() * 1200);
+    });
+  })();
 
   /* ---------- 8-0. 고캠핑(한국관광공사) 공공데이터 공통 로더 ----------
      필터 검색과 "이번 주 가장 많이 찾은 캠핑장" 섹션이 같은 데이터를 함께 사용하도록
