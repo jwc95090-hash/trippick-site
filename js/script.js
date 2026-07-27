@@ -822,9 +822,35 @@ document.addEventListener('DOMContentLoaded', () => {
     const mapPopup = document.getElementById('siteMapPopup');
     if (!openBtn || !mapPopup) return;
 
+    const regionSelect = document.getElementById('siteMapRegionSelect');
+
     const GOOGLE_MAPS_API_KEY = 'AIzaSyAZ_TYSxw9CGvi4dWtzlRHOVM-e_MQoVhU';
     let mapInstance = null;
     let googleMapsPromise = null;
+    let markerClustererPromise = null;
+    let siteMapMarkerCluster = null;
+    let siteMapBounds = null;
+
+    // 지역 검색으로 확대할 시·도별 중심 좌표 (대략적인 시청/도청 기준)
+    const REGION_COORDS = {
+      '서울': { lat: 37.5665, lng: 126.9780, zoom: 11 },
+      '부산': { lat: 35.1796, lng: 129.0756, zoom: 11 },
+      '대구': { lat: 35.8714, lng: 128.6014, zoom: 11 },
+      '인천': { lat: 37.4563, lng: 126.7052, zoom: 10 },
+      '광주': { lat: 35.1595, lng: 126.8526, zoom: 11 },
+      '대전': { lat: 36.3504, lng: 127.3845, zoom: 11 },
+      '울산': { lat: 35.5384, lng: 129.3114, zoom: 11 },
+      '세종': { lat: 36.4801, lng: 127.2890, zoom: 11 },
+      '경기': { lat: 37.4138, lng: 127.5183, zoom: 9 },
+      '강원': { lat: 37.8228, lng: 128.1555, zoom: 8 },
+      '충북': { lat: 36.6357, lng: 127.4917, zoom: 9 },
+      '충남': { lat: 36.5184, lng: 126.8000, zoom: 9 },
+      '전북': { lat: 35.7175, lng: 127.1530, zoom: 9 },
+      '전남': { lat: 34.8161, lng: 126.4630, zoom: 8 },
+      '경북': { lat: 36.4919, lng: 128.8889, zoom: 8 },
+      '경남': { lat: 35.4606, lng: 128.2132, zoom: 9 },
+      '제주': { lat: 33.4996, lng: 126.5312, zoom: 10 }
+    };
 
     function loadGoogleMaps(){
       if (!googleMapsPromise) {
@@ -842,6 +868,22 @@ document.addEventListener('DOMContentLoaded', () => {
       return googleMapsPromise;
     }
 
+    // 마커 겹침(다닥다닥 붙어 보이는 문제) 완화를 위한 클러스터링 라이브러리. 실패해도 지도 자체는 표시되도록 조용히 무시.
+    function loadMarkerClusterer(){
+      if (!markerClustererPromise) {
+        markerClustererPromise = new Promise((resolve) => {
+          if (window.markerClusterer) { resolve(); return; }
+          const script = document.createElement('script');
+          script.src = 'https://unpkg.com/@googlemaps/markerclusterer/dist/index.min.js';
+          script.async = true;
+          script.onload = () => resolve();
+          script.onerror = () => resolve();
+          document.head.appendChild(script);
+        });
+      }
+      return markerClustererPromise;
+    }
+
     function renderMap(list){
       const mapEl = document.getElementById('siteMapEl');
       if (!mapEl || !(window.google && window.google.maps)) return;
@@ -855,9 +897,9 @@ document.addEventListener('DOMContentLoaded', () => {
         fullscreenControl: true
       });
 
-      const bounds = new google.maps.LatLngBounds();
+      siteMapBounds = new google.maps.LatLngBounds();
       const infoWindow = new google.maps.InfoWindow();
-      let count = 0;
+      const markers = [];
 
       list.forEach(item => {
         const lat = parseFloat(item.mapY);
@@ -868,25 +910,46 @@ document.addEventListener('DOMContentLoaded', () => {
         const tel = item.tel ? gcEscapeHtml(item.tel) : '';
         const position = { lat, lng };
 
-        const marker = new google.maps.Marker({ position, map: mapInstance, title: name });
+        const marker = new google.maps.Marker({ position, title: name });
         marker.addListener('click', () => {
           infoWindow.setContent(`<div style="font-family:${getComputedStyle(document.body).fontFamily}; font-size:13px; line-height:1.6;"><strong>${name}</strong><br>${addr}${tel ? '<br>' + tel : ''}</div>`);
           infoWindow.open(mapInstance, marker);
         });
 
-        bounds.extend(position);
-        count++;
+        siteMapBounds.extend(position);
+        markers.push(marker);
       });
 
-      if (count) mapInstance.fitBounds(bounds);
+      if (siteMapMarkerCluster) { siteMapMarkerCluster.clearMarkers(); siteMapMarkerCluster = null; }
+      if (window.markerClusterer && markers.length) {
+        siteMapMarkerCluster = new markerClusterer.MarkerClusterer({ map: mapInstance, markers });
+      } else {
+        markers.forEach(m => m.setMap(mapInstance));
+      }
+
+      if (markers.length) mapInstance.fitBounds(siteMapBounds);
     }
+
+    regionSelect?.addEventListener('change', () => {
+      if (!mapInstance) return;
+      const value = regionSelect.value;
+      if (!value) {
+        if (siteMapBounds && !siteMapBounds.isEmpty()) mapInstance.fitBounds(siteMapBounds);
+        return;
+      }
+      const region = REGION_COORDS[value];
+      if (!region) return;
+      mapInstance.setCenter({ lat: region.lat, lng: region.lng });
+      mapInstance.setZoom(region.zoom);
+    });
 
     openBtn.addEventListener('click', () => {
       openPopup(mapPopup);
       const mapEl = document.getElementById('siteMapEl');
       if (mapEl && !mapInstance) mapEl.innerHTML = '<p class="site-map-loading">지도를 불러오는 중입니다…</p>';
+      if (regionSelect) regionSelect.value = '';
 
-      loadGoogleMaps()
+      Promise.all([loadGoogleMaps(), loadMarkerClusterer()])
         .then(() => loadGoCampingList())
         .then(list => {
           requestAnimationFrame(() => renderMap(list.filter(it => it.facltNm)));
