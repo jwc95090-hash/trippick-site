@@ -116,6 +116,28 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('scroll', updateHeroParallax, { passive: true });
   window.addEventListener('resize', updateHeroParallax);
 
+  /* ---------- 2-3. 섹션 제목 마스크 리빌 (스크롤 진입 시 아래→위로 슬라이드) ---------- */
+  document.querySelectorAll('.section-head h2, .intro-copy h2').forEach(h => {
+    h.classList.add('head-mask');
+    h.innerHTML = `<span class="head-mask-inner">${h.innerHTML}</span>`;
+  });
+
+  /* ---------- 2-4. 이미지 블러 인 리빌 (스토리 카드 · 인트로 비주얼) ---------- */
+  const blurTargets = document.querySelectorAll('.story-thumb img, .intro-media, .video-thumb img');
+  if ('IntersectionObserver' in window && blurTargets.length) {
+    const blurIo = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('blur-in');
+          blurIo.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.2, rootMargin: '0px 0px -40px 0px' });
+    blurTargets.forEach(el => { el.classList.add('blur-target'); blurIo.observe(el); });
+  } else {
+    blurTargets.forEach(el => el.classList.add('blur-target', 'blur-in'));
+  }
+
   /* ---------- 3. 스크롤 리빌 ---------- */
   const revealEls = document.querySelectorAll('.reveal');
   if ('IntersectionObserver' in window && revealEls.length) {

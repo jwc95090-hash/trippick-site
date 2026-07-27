@@ -1260,3 +1260,229 @@ button{cursor:pointer; background:none; border:none;}
 .notfound-card h1{font-family:var(--serif); font-size:24px; font-weight:600; margin:14px 0 10px;}
 .notfound-desc{font-size:13.5px; color:var(--text-mute); line-height:1.8; margin-bottom:28px;}
 .notfound-actions{display:flex; gap:12px; justify-content:center; flex-wrap:wrap;}
+
+/* ==================================================================
+   DESIGN ENHANCEMENT LAYER
+   목적: 기존 에디토리얼 톤(포레스트그린 · 아이보리 · 브라스골드)은 유지하면서
+   1) 카드/타일에 입체감(라운드·그림자·hover lift)을 더하고
+   2) 태블릿 구간(약 700~1099px)에 전용 그리드 리듬을 추가하고
+   3) 섹션 배경에 미세한 톤 변화·장식 블롭을 넣어 화면이 밋밋하게 이어지지 않도록 하고
+   4) 스크롤 리빌 시 카드가 순차적으로(stagger) 떠오르도록 마무리했다.
+   레이아웃 구조(HTML)는 건드리지 않고 시각적 레이어만 덧입힌다.
+   ================================================================== */
+
+@keyframes fadeUpStagger{
+  from{ opacity:0; transform:translateY(18px); }
+  to{ opacity:1; transform:translateY(0); }
+}
+
+/* ---------- 1. 카드·타일 입체감 ---------- */
+
+/* 기본 상품 카드(비-피처)에도 라운드 + 은은한 그림자 + hover lift 부여 */
+.p-card:not(.p-card-feature){
+  background:var(--paper); border-radius:16px; overflow:hidden;
+  box-shadow:0 1px 2px rgba(35,26,14,.05), 0 1px 1px rgba(35,26,14,.03);
+  transition:transform .4s cubic-bezier(.22,1,.36,1), box-shadow .4s cubic-bezier(.22,1,.36,1);
+}
+.p-card:not(.p-card-feature):hover{
+  transform:translateY(-7px);
+  box-shadow:0 26px 38px -20px rgba(35,26,14,.32), 0 4px 10px -4px rgba(35,26,14,.1);
+}
+.p-card:not(.p-card-feature) .p-thumb{border-radius:16px 16px 0 0;}
+.p-card:not(.p-card-feature) .p-body{padding:14px 16px 18px;}
+.p-card:not(.p-card-feature) .p-price{margin-left:0; margin-right:0;}
+
+/* 카테고리 타일: 원형 아이콘에 배경/그림자를 얹어 입체감을 살리고 hover 시 브라스톤 글로우 */
+.cat-circle{
+  background:var(--paper);
+  box-shadow:0 2px 6px rgba(35,26,14,.06), inset 0 0 0 1px rgba(220,211,188,.5);
+  transition:border-color .25s, color .25s, transform .3s cubic-bezier(.22,1,.36,1), box-shadow .3s ease;
+}
+.cat-tile:hover .cat-circle{
+  transform:translateY(-5px) scale(1.05);
+  box-shadow:0 16px 26px -12px rgba(156,74,48,.32), inset 0 0 0 1px rgba(156,74,48,.25);
+}
+.cat-tile span{transition:color .2s;}
+.cat-tile:hover span{color:var(--secondary-deep);}
+
+/* 스토리 카드: 플랫 텍스트 카드 → 라운드 패널형으로 */
+.story-card{
+  background:var(--paper); border-radius:16px; overflow:hidden; padding-bottom:20px;
+  box-shadow:0 1px 2px rgba(35,26,14,.05);
+  transition:transform .4s cubic-bezier(.22,1,.36,1), box-shadow .4s cubic-bezier(.22,1,.36,1);
+}
+.story-card:hover{
+  transform:translateY(-7px);
+  box-shadow:0 24px 36px -20px rgba(35,26,14,.28);
+}
+.story-card .story-thumb{margin-bottom:16px; border-radius:16px 16px 0 0; position:relative;}
+.story-card .story-thumb::after{
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(180deg, rgba(19,32,24,0) 60%, rgba(19,20,14,.35) 100%);
+  opacity:0; transition:opacity .3s;
+}
+.story-card:hover .story-thumb::after{opacity:1;}
+.story-card .story-num,
+.story-card h3{padding-left:18px; padding-right:18px;}
+
+/* 신뢰요소 카드: hover 시 살짝 떠오르며 브라스 라인 강조 */
+.trust-item{
+  border-radius:16px;
+  background:linear-gradient(180deg, var(--paper), var(--ivory-soft) 130%);
+  transition:transform .3s cubic-bezier(.22,1,.36,1), box-shadow .3s ease, border-color .3s ease;
+}
+.trust-item:hover{
+  transform:translateY(-5px);
+  box-shadow:0 20px 32px -18px rgba(35,26,14,.2);
+  border-color:var(--brass);
+}
+.trust-icon{
+  background:linear-gradient(135deg, var(--ivory-soft), var(--line-soft));
+  box-shadow:inset 0 0 0 1px rgba(173,138,76,.25);
+}
+
+/* 리뷰 카드: 은은한 브라스 글로우로 어두운 배경에 포인트 */
+.review-item{position:relative; overflow:hidden; transition:background .3s ease;}
+.review-item::before{
+  content:''; position:absolute; top:-46px; right:-46px; width:150px; height:150px; border-radius:50%;
+  background:radial-gradient(circle, rgba(216,190,135,.16), transparent 72%);
+  pointer-events:none;
+}
+.review-item:hover{background:#16261c;}
+.quote-mark{transition:transform .3s ease, color .3s ease;}
+.review-item:hover .quote-mark{transform:translateY(-2px); color:var(--brass-light);}
+
+/* FAQ 아이템: hover 시 은은한 배경 + 좌측 포인트 라인 */
+.faq-item{position:relative; transition:background .2s ease;}
+.faq-item::before{
+  content:''; position:absolute; left:-4px; top:0; bottom:0; width:2px; background:var(--ember);
+  transform:scaleY(0); transform-origin:top; transition:transform .25s ease;
+}
+.faq-item[open]::before{transform:scaleY(1);}
+.faq-item:hover{background:rgba(193,102,62,.04);}
+
+/* 상담 퀵버튼 아이콘에 은은한 회전 hover */
+.consult-quick-btn:hover .cqb-icon{transform:rotate(-6deg) scale(1.06);}
+.cqb-icon{transition:transform .3s cubic-bezier(.22,1,.36,1);}
+
+/* 지도 배너: 플랫 컬러 → 대각 그라데이션 + 아이콘 살짝 회전 */
+.map-banner{
+  background:linear-gradient(120deg, var(--forest) 0%, var(--forest-deep) 100%);
+  box-shadow:0 14px 30px -18px rgba(12,23,16,.45);
+}
+.map-banner-icon{transition:transform .35s cubic-bezier(.22,1,.36,1);}
+.map-banner:hover .map-banner-icon{transform:rotate(-8deg) scale(1.08);}
+
+/* ---------- 2. 태블릿 전용 그리드 리듬 (약 700–1099px) ----------
+   기존에는 640px(모바일) 다음이 바로 760/860/920/960px(데스크탑급)이라
+   아이패드 등 실제 태블릿 폭(768~1024px)에서 카드가 4열로 너무 촘촘하거나
+   레이아웃이 뚝 끊기는 느낌이 있었음 → 3열 중간 리듬을 추가. */
+@media (min-width:700px) and (max-width:1099px){
+  .grid{grid-template-columns:repeat(3,1fr); gap:26px 20px;}
+  .grid.bento-grid{
+    grid-template-columns:1.15fr 1fr 1fr; gap:20px;
+  }
+  .wrap{padding:0 32px;}
+  .intro-inner{gap:48px;}
+  .cat-row{grid-template-columns:repeat(auto-fit, minmax(84px, 104px)); gap:20px 12px;}
+}
+@media (min-width:1100px){
+  .grid{grid-template-columns:repeat(4,1fr);}
+}
+
+/* 필터 바: 데스크탑에서도 완전 직각 대신 라운드 + 은은한 보더로 무게감을 덜어줌 */
+@media (min-width:1025px){
+  .filter-bar{border-radius:18px;}
+  .filter-submit{border-radius:0 18px 18px 0;}
+}
+.filter-field{transition:background .2s ease;}
+.filter-field:focus-within{background:rgba(173,138,76,.05);}
+
+/* ---------- 3. 섹션 배경 리듬 (미세한 톤 변화로 단조로움 완화) ---------- */
+#pick{background:linear-gradient(180deg, var(--paper) 0%, var(--ivory-soft) 100%);}
+.intro{background:var(--ivory-soft); position:relative; overflow:hidden;}
+.intro::before{
+  content:''; position:absolute; top:-12%; left:-8%; width:380px; height:380px; border-radius:50%;
+  background:radial-gradient(circle, rgba(173,138,76,.10), transparent 70%);
+  pointer-events:none; z-index:0;
+}
+.intro::after{
+  content:''; position:absolute; bottom:-15%; right:-6%; width:300px; height:300px; border-radius:50%;
+  background:radial-gradient(circle, rgba(46,74,58,.08), transparent 70%);
+  pointer-events:none; z-index:0;
+}
+.intro-inner{position:relative; z-index:1;}
+#benefit{background:var(--paper);}
+#story{background:linear-gradient(180deg, var(--paper) 0%, var(--ivory-soft) 100%);}
+.dark-section{position:relative; overflow:hidden;}
+.dark-section::before{
+  content:''; position:absolute; top:-20%; right:-10%; width:420px; height:420px; border-radius:50%;
+  background:radial-gradient(circle, rgba(216,190,135,.08), transparent 72%);
+  pointer-events:none;
+}
+.dark-section .wrap{position:relative; z-index:1;}
+
+/* 인트로 통계에 은은한 hover 포인트 */
+.intro-stats > div{transition:transform .25s ease;}
+.intro-stats > div:hover{transform:translateY(-3px);}
+.intro-stats > div:hover strong{color:var(--secondary-deep);}
+
+/* ---------- 4. 스크롤 리빌 stagger: 그리드/행 내부 요소가 순차적으로 떠오름 ---------- */
+.reveal.in .cat-row > .cat-tile,
+.reveal.in .grid > .p-card,
+.reveal.in .trust-row > .trust-item,
+.reveal.in .story-scroll > .story-card,
+.reveal.in .review-grid > .review-item{
+  animation:fadeUpStagger .6s cubic-bezier(.22,1,.36,1) both;
+}
+.reveal.in .cat-row > .cat-tile:nth-child(1),.reveal.in .grid > .p-card:nth-child(1),.reveal.in .trust-row > .trust-item:nth-child(1),.reveal.in .story-scroll > .story-card:nth-child(1),.reveal.in .review-grid > .review-item:nth-child(1){animation-delay:.02s;}
+.reveal.in .cat-row > .cat-tile:nth-child(2),.reveal.in .grid > .p-card:nth-child(2),.reveal.in .trust-row > .trust-item:nth-child(2),.reveal.in .story-scroll > .story-card:nth-child(2),.reveal.in .review-grid > .review-item:nth-child(2){animation-delay:.08s;}
+.reveal.in .cat-row > .cat-tile:nth-child(3),.reveal.in .grid > .p-card:nth-child(3),.reveal.in .trust-row > .trust-item:nth-child(3),.reveal.in .story-scroll > .story-card:nth-child(3),.reveal.in .review-grid > .review-item:nth-child(3){animation-delay:.14s;}
+.reveal.in .cat-row > .cat-tile:nth-child(4),.reveal.in .grid > .p-card:nth-child(4){animation-delay:.2s;}
+.reveal.in .cat-row > .cat-tile:nth-child(5),.reveal.in .grid > .p-card:nth-child(5){animation-delay:.26s;}
+.reveal.in .cat-row > .cat-tile:nth-child(6),.reveal.in .grid > .p-card:nth-child(6){animation-delay:.32s;}
+.reveal.in .cat-row > .cat-tile:nth-child(7){animation-delay:.38s;}
+
+@media (prefers-reduced-motion: reduce){
+  .reveal.in .cat-row > .cat-tile,
+  .reveal.in .grid > .p-card,
+  .reveal.in .trust-row > .trust-item,
+  .reveal.in .story-scroll > .story-card,
+  .reveal.in .review-grid > .review-item{ animation:none; }
+}
+
+
+/* ==================================================================
+   SCROLL MOTION LAYER — 히어로 진입 애니메이션, 섹션 제목 마스크 리빌,
+   이미지 블러인. (초대형 아웃라인 워드는 실제 화면에서 배경과 겉돌아 보여 제거함)
+   ================================================================== */
+
+/* 히어로 진입 애니메이션 (페이지 로드시 순차 등장) */
+@keyframes heroTextIn{ from{opacity:0; transform:translateY(26px);} to{opacity:1; transform:translateY(0);} }
+.hero-content h1{animation:heroTextIn 1s cubic-bezier(.16,1,.3,1) both;}
+.hero-content p{animation:heroTextIn 1s cubic-bezier(.16,1,.3,1) .16s both;}
+.hero-content .btn{animation:heroTextIn 1s cubic-bezier(.16,1,.3,1) .32s both;}
+
+/* ---------- 섹션 제목 마스크 리빌 ----------
+   JS가 h2 텍스트를 <span class="head-mask-inner">로 감싸고, 부모에 .head-mask를 부여.
+   .reveal이 뷰포트에 들어와 .in 클래스가 붙는 순간, 아래에 숨어있던 텍스트가 위로 슬라이드하며 드러남. */
+.head-mask{overflow:hidden;}
+.head-mask-inner{
+  display:inline-block; transform:translateY(112%); opacity:0;
+  transition:transform .85s cubic-bezier(.16,1,.3,1), opacity .5s ease;
+}
+.reveal.in .head-mask-inner{transform:translateY(0); opacity:1;}
+
+/* ---------- 이미지 블러인 리빌 ---------- */
+.blur-target{
+  filter:blur(18px); opacity:0; transform:scale(1.08);
+  transition:filter 1.1s cubic-bezier(.16,1,.3,1), opacity .8s ease, transform 1.1s cubic-bezier(.16,1,.3,1);
+}
+.blur-target.blur-in{filter:blur(0); opacity:1; transform:scale(1);}
+.intro-media.blur-target{transition-duration:1.3s;}
+
+@media (prefers-reduced-motion: reduce){
+  .hero-content h1, .hero-content p, .hero-content .btn{animation:none; opacity:1; transform:none;}
+  .head-mask-inner{transition:none; transform:none; opacity:1;}
+  .blur-target{transition:none; filter:none; opacity:1; transform:none;}
+}
