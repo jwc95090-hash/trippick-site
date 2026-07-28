@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700;800&family=Noto+Serif+KR:wght@400;500;600;700&family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/styles.css">
-<title>예약하기 | TRIPPICK</title>
+<title>상담게시판 · 커뮤니티 | TRIPPICK</title>
 </head>
 <body>
 
@@ -43,7 +43,7 @@
           <ul class="sub"><li><a href="guide.html">캠핑입문가이드</a></li><li><a href="../index.html#guide">준비물체크리스트</a></li><li><a href="../index.html#guide">캠핑주의사항</a></li><li><a href="../index.html#guide">FAQ</a></li></ul>
         </li>
         <li>
-          <a href="community-notice.html">커뮤니티</a>
+          <a href="community-notice.html" class="active">커뮤니티</a>
           <ul class="sub"><li><a href="community-notice.html">공지사항</a></li><li><a href="community-qna.html">상담게시판</a></li><li><a href="community-reviews.html">리뷰게시판</a></li></ul>
         </li>
       </ul>
@@ -87,111 +87,42 @@
 
 <main id="top">
 
-  <section class="subhero" style="padding-bottom:0;">
+  <section class="subhero">
     <div class="wrap">
-      <div class="crumb"><a href="../index.html">홈</a><span>/</span><a href="detail.html">태안 선셋 캠프사이트</a><span>/</span><span>예약하기</span></div>
-      <h1>예약하기</h1>
+      <div class="crumb"><a href="../index.html">홈</a><span>/</span><span>커뮤니티</span><span>/</span><span>상담게시판</span></div>
+      <h1>상담게시판</h1>
+      <p>캠핑장·예약·이용 관련 궁금한 점을 자유롭게 남겨주시면 트립픽이 답변드립니다.</p>
     </div>
   </section>
 
-  <div class="wrap">
-    <div class="book-steps">
-      <div class="book-step active"><span>1</span>예약 정보</div>
-      <div class="book-step-line"></div>
-      <div class="book-step"><span>2</span>결제</div>
-      <div class="book-step-line"></div>
-      <div class="book-step"><span>3</span>완료</div>
-    </div>
-  </div>
-
-  <section class="section" style="padding-top:24px;">
+  <section class="section" style="padding-top:40px;">
     <div class="wrap">
-      <div class="detail-layout">
-
-        <div class="detail-main">
-
-          <div class="book-site-card">
-            <img src="https://images.unsplash.com/photo-1749047899565-6f026c3bb809?auto=format&fit=crop&w=300&q=70" alt="태안 선셋 캠프사이트">
-            <div>
-              <p class="p-region">충남 태안</p>
-              <h3>태안 선셋 캠프사이트</h3>
-              <span class="detail-rating">★ 4.8 <em>(review 126)</em></span>
-            </div>
-          </div>
-
-          <div class="detail-block" style="padding-top:0;">
-            <h2>날짜 · 인원</h2>
-            <div class="book-form-row">
-              <label class="book-field"><span>체크인</span><input type="date" value="2026-07-26"></label>
-              <label class="book-field"><span>체크아웃</span><input type="date" value="2026-07-27"></label>
-            </div>
-            <div class="book-form-row" style="margin-top:20px;">
-              <label class="book-field">
-                <span>인원</span>
-                <div class="qb-stepper" style="justify-content:flex-start;">
-                  <button type="button" class="qb-minus" aria-label="인원 줄이기">−</button>
-                  <span id="bCount">2</span>
-                  <button type="button" class="qb-plus" aria-label="인원 늘리기">+</button>
-                </div>
-              </label>
-              <label class="book-field">
-                <span>사이트 타입</span>
-                <select>
-                  <option>오션뷰 데크사이트</option>
-                  <option>스탠다드 잔디사이트</option>
-                  <option>프라이빗 독채사이트 (+15,000원)</option>
-                </select>
-              </label>
-            </div>
-          </div>
-
-          <div class="detail-block">
-            <h2>예약자 정보</h2>
-            <div class="book-form-row">
-              <label class="book-field"><span>이름</span><input type="text" placeholder="예약자 성함"></label>
-              <label class="book-field"><span>연락처</span><input type="tel" placeholder="010-0000-0000"></label>
-            </div>
-            <label class="book-field" style="margin-top:20px;"><span>이메일</span><input type="email" placeholder="예약 확인서를 받으실 이메일"></label>
-            <label class="book-field" style="margin-top:20px;"><span>요청사항 (선택)</span><textarea rows="3" placeholder="반려동물 동반, 도착 예정시간 등 전달할 내용을 남겨주세요"></textarea></label>
-          </div>
-
-          <div class="detail-block">
-            <h2>취소 · 환불 규정</h2>
-            <p>체크인 7일 전까지 전액 환불, 3~6일 전 50% 환불, 2일 전부터는 환불이 불가합니다. 캠핑장 사정으로 인한 예약 취소 시에는 전액 환불됩니다.</p>
-          </div>
-
-        </div>
-
-        <aside class="detail-side">
-          <div class="detail-book-card">
-            <h3>결제 금액</h3>
-            <div class="detail-book-row"><span>이용 요금 (1박 · 2명)</span><strong>71,200원</strong></div>
-            <div class="detail-book-row"><span>사이트 옵션</span><strong>0원</strong></div>
-            <div class="detail-book-row detail-book-total"><span>총 결제 금액</span><strong id="bTotal">71,200원</strong></div>
-            <a href="payment.html" class="btn" style="width:100%; justify-content:center;">결제하기</a>
-            <p class="detail-book-note">예약 확정 전에는 결제되지 않습니다.</p>
-          </div>
-        </aside>
-
+      <div class="section-head" style="margin-bottom:24px;">
+        <div><span class="eyebrow"><i></i>Q&amp;A</span><h2>문의 게시글</h2></div>
+        <button type="button" class="btn" id="qnaWriteToggle">글쓰기</button>
       </div>
+
+      <form class="review-form" id="qnaForm" style="display:none;">
+        <div class="cf-field">
+          <span>제목</span>
+          <input type="text" id="qnaTitle" placeholder="제목을 입력해주세요" required>
+        </div>
+        <div class="cf-field">
+          <span>내용</span>
+          <textarea id="qnaBody" rows="5" placeholder="궁금하신 내용을 자세히 남겨주세요" required></textarea>
+        </div>
+        <div style="display:flex; gap:10px;">
+          <button type="submit" class="btn">등록</button>
+          <button type="button" class="btn-ghost" id="qnaCancelBtn">취소</button>
+        </div>
+      </form>
+
+      <div id="qnaList"></div>
     </div>
   </section>
 
 </main>
 
-<script>
-  var bUnit = 35600, bCount = 2;
-  function bUpdate(){
-    var el = document.getElementById('bTotal');
-    if(el) el.textContent = (bUnit * bCount).toLocaleString() + '원';
-  }
-  document.querySelectorAll('.qb-plus').forEach(function(btn){
-    btn.addEventListener('click', function(){ if(bCount<8){ bCount++; document.getElementById('bCount').textContent=bCount; bUpdate(); } });
-  });
-  document.querySelectorAll('.qb-minus').forEach(function(btn){
-    btn.addEventListener('click', function(){ if(bCount>1){ bCount--; document.getElementById('bCount').textContent=bCount; bUpdate(); } });
-  });
-</script>
 <!-- ============ 푸터 ============ -->
 <footer class="site-footer">
   <div class="wrap footer-top">
@@ -210,7 +141,7 @@
       <div class="footer-col"><h4>예약</h4><a href="camping.html">캠핑</a><a href="glamping.html">글램핑</a><a href="caravan.html">카라반</a></div>
       <div class="footer-col"><h4>트립픽 pick</h4><a href="../index.html#story">감성스팟</a><a href="../index.html#story">인기급상승</a><a href="../index.html#story">에디터픽</a></div>
       <div class="footer-col"><h4>가이드</h4><a href="guide.html">캠핑입문가이드</a><a href="../index.html#guide">준비물체크리스트</a><a href="../index.html#guide">FAQ</a></div>
-      <div class="footer-col"><h4>고객지원</h4><a href="#">공지사항</a><a href="#">1:1 문의</a><a href="#">입점 신청</a></div>
+      <div class="footer-col"><h4>고객지원</h4><a href="community-notice.html">공지사항</a><a href="community-qna.html">1:1 문의</a><a href="#">입점 신청</a></div>
     </div>
   </div>
   <div class="wrap footer-legal">
@@ -220,5 +151,59 @@
 </footer>
 
 <script src="../js/script.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const QNA_KEY = 'trippick_qna_v1';
+  const listEl = document.getElementById('qnaList');
+  const form = document.getElementById('qnaForm');
+  const writeToggle = document.getElementById('qnaWriteToggle');
+  const cancelBtn = document.getElementById('qnaCancelBtn');
+
+  function esc(s){
+    return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+  function getPosts(){
+    try { return JSON.parse(localStorage.getItem(QNA_KEY)) || []; } catch (e) { return []; }
+  }
+  function savePosts(list){
+    try { localStorage.setItem(QNA_KEY, JSON.stringify(list)); } catch (e) { /* 저장 실패는 무시 */ }
+  }
+  function render(){
+    const posts = getPosts();
+    listEl.innerHTML = posts.length ? posts.map(p => `
+      <div class="my-review-item">
+        <p style="font-size:12px; color:var(--brass); margin-bottom:4px;">${esc(p.author)} · ${esc(new Date(p.createdAt).toLocaleDateString('ko-KR'))}${p.answered ? ' · <span style="color:var(--forest);">답변완료</span>' : ' · 답변대기'}</p>
+        <p style="font-family:var(--serif); font-size:15px; font-weight:600; margin-bottom:4px;">${esc(p.title)}</p>
+        <p style="font-size:13px; color:var(--text-mute); line-height:1.7; white-space:pre-wrap;">${esc(p.body)}</p>
+      </div>`).join('') : '<p style="color:var(--text-mute); font-size:13px;">아직 등록된 문의가 없습니다. 첫 문의를 남겨보세요.</p>';
+  }
+
+  writeToggle.addEventListener('click', () => {
+    form.style.display = form.style.display === 'none' ? 'flex' : 'none';
+  });
+  cancelBtn.addEventListener('click', () => {
+    form.reset();
+    form.style.display = 'none';
+  });
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const posts = getPosts();
+    posts.unshift({
+      id: 'qna' + Date.now(),
+      author: '김트립',
+      title: document.getElementById('qnaTitle').value.trim(),
+      body: document.getElementById('qnaBody').value.trim(),
+      answered: false,
+      createdAt: Date.now()
+    });
+    savePosts(posts);
+    form.reset();
+    form.style.display = 'none';
+    render();
+  });
+
+  render();
+});
+</script>
 </body>
 </html>

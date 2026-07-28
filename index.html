@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700;800&family=Noto+Serif+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/styles.css?v=5">
+<link rel="stylesheet" href="css/styles.css?v=6">
 </head>
 <body>
 
@@ -41,6 +41,10 @@
         <li>
           <a href="pages/guide.html">가이드</a>
           <ul class="sub"><li><a href="pages/guide.html">캠핑입문가이드</a></li><li><a href="#guide">준비물체크리스트</a></li><li><a href="#guide">캠핑주의사항</a></li><li><a href="#faq">FAQ</a></li></ul>
+        </li>
+        <li>
+          <a href="pages/community-notice.html">커뮤니티</a>
+          <ul class="sub"><li><a href="pages/community-notice.html">공지사항</a></li><li><a href="pages/community-qna.html">상담게시판</a></li><li><a href="pages/community-reviews.html">리뷰게시판</a></li></ul>
         </li>
       </ul>
     </nav>
@@ -76,6 +80,7 @@
     <a href="pages/types.html">유형별예약</a>
     <a href="#story">트립픽 pick</a>
     <a href="pages/guide.html">가이드</a>
+    <a href="pages/community-notice.html">커뮤니티</a>
   </nav>
   <a href="pages/login.html" class="mobile-menu-login">로그인 · 회원가입</a>
 </div>
@@ -102,7 +107,7 @@
     <div class="wrap">
       <div class="filter-bar" id="homeFilterBar">
         <div class="filter-field filter-field-wide">
-          <label for="regionInput">지역</label>
+          <label for="regionInput"><svg viewBox="0 0 22 22" fill="none"><path d="M11 20s6.5-6.2 6.5-11A6.5 6.5 0 004.5 9c0 4.8 6.5 11 6.5 11z" stroke="currentColor" stroke-width="1.4"/><circle cx="11" cy="9" r="2.3" stroke="currentColor" stroke-width="1.4"/></svg>지역</label>
           <select id="regionInput" required>
             <option value="" disabled selected>어디로 떠날까요</option>
             <option value="all">전체 지역</option>
@@ -116,17 +121,17 @@
         </div>
         <div class="filter-div"></div>
         <div class="filter-field">
-          <label for="checkinInput">체크인</label>
+          <label for="checkinInput"><svg viewBox="0 0 22 22" fill="none"><rect x="3.5" y="5" width="17" height="15" rx="1.6" stroke="currentColor" stroke-width="1.4"/><path d="M3.5 9.5h17" stroke="currentColor" stroke-width="1.4"/><path d="M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>체크인</label>
           <input id="checkinInput" type="date">
         </div>
         <div class="filter-div"></div>
         <div class="filter-field">
-          <label for="checkoutInput">체크아웃</label>
+          <label for="checkoutInput"><svg viewBox="0 0 22 22" fill="none"><rect x="3.5" y="5" width="17" height="15" rx="1.6" stroke="currentColor" stroke-width="1.4"/><path d="M3.5 9.5h17" stroke="currentColor" stroke-width="1.4"/><path d="M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>체크아웃</label>
           <input id="checkoutInput" type="date">
         </div>
         <div class="filter-div"></div>
         <div class="filter-field filter-field-wide filter-field-last">
-          <label for="styleInput">스타일</label>
+          <label for="styleInput"><svg viewBox="0 0 20 20" fill="none"><path d="M2 17L10 4l8 13H2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>스타일</label>
           <select id="styleInput" required>
             <option value="" disabled selected>감성 · 차박 · 글램핑</option>
             <option value="all">전체 스타일</option>
@@ -180,7 +185,7 @@
     <div class="wrap">
       <div class="section-head">
         <div><span class="eyebrow"><i></i>Category</span><h2>스타일로 둘러보기</h2></div>
-        <a href="#" class="link-underline">전체 카테고리</a>
+        <a href="pages/types.html" class="link-underline">전체 카테고리</a>
       </div>
       <div class="cat-row">
         <a class="cat-tile" href="pages/camping.html"><div class="cat-circle"><svg viewBox="0 0 20 20" fill="none"><path d="M2 17L10 4l8 13H2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg></div><span>캠핑</span></a>
@@ -195,47 +200,11 @@
   </section>
 
   <!-- ============ 인트로 / 브랜드 스토리 ============ -->
-  <section class="intro intro-banner reveal">
-    <div class="intro-media">
-      <svg class="intro-scene" viewBox="0 0 1600 640" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-        <defs>
-          <radialGradient id="glowGrad" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stop-color="#D8BE87" stop-opacity=".55"/>
-            <stop offset="100%" stop-color="#D8BE87" stop-opacity="0"/>
-          </radialGradient>
-        </defs>
-        <circle class="scene-glow" cx="800" cy="190" r="130" fill="url(#glowGrad)"/>
-        <circle class="scene-star s1" cx="150" cy="90" r="2.4"/>
-        <circle class="scene-star s2" cx="1420" cy="70" r="2"/>
-        <circle class="scene-star s3" cx="380" cy="150" r="1.8"/>
-        <circle class="scene-star s4" cx="1300" cy="170" r="2.4"/>
-        <circle class="scene-star s5" cx="980" cy="110" r="1.8"/>
-        <circle class="scene-star s6" cx="620" cy="75" r="1.8"/>
-        <circle class="scene-star s1" cx="70" cy="210" r="1.6"/>
-        <circle class="scene-star s3" cx="1540" cy="230" r="1.6"/>
-        <circle class="scene-sun" cx="800" cy="190" r="46"/>
-        <path class="scene-mtn scene-mtn-back" d="M0 420 L160 260 L280 360 L420 240 L560 380 L720 270 L880 400 L1040 250 L1200 390 L1360 280 L1600 350 L1600 480 L0 480 Z"/>
-        <path class="scene-mtn scene-mtn-front" d="M0 480 L120 340 L260 460 L400 320 L540 470 L680 330 L820 470 L960 310 L1100 470 L1240 340 L1600 460 L1600 520 L0 520 Z"/>
-        <rect x="0" y="480" width="1600" height="160" class="scene-ground"/>
-        <g class="scene-tent">
-          <path d="M680 520 L750 380 L820 520 Z" class="tent-body"/>
-          <path d="M750 380 L750 520" class="tent-line" pathLength="1"/>
-          <path d="M715 520 L750 460 L785 520" class="tent-door" pathLength="1"/>
-        </g>
-        <g class="scene-fire" transform="translate(1000,505)">
-          <path d="M-21 11 L21 11 L10 -4 L-10 -4 Z" class="fire-logs"/>
-          <path class="flame flame-1" d="M0 8 C-10 -4 -7 -18 0 -31 C7 -18 10 -4 0 8Z"/>
-          <path class="flame flame-2" d="M0 8 C-6 0 -4 -13 0 -21 C4 -13 6 0 0 8Z"/>
-          <g class="scene-smoke">
-            <circle cx="0" cy="-36" r="4.2"/>
-            <circle cx="5.6" cy="-53" r="3.4"/>
-            <circle cx="-4.2" cy="-70" r="2.8"/>
-          </g>
-        </g>
-      </svg>
-      <div class="intro-media-overlay" aria-hidden="true"></div>
-    </div>
-    <div class="wrap intro-copy-wrap">
+  <section class="intro reveal">
+    <div class="wrap intro-inner">
+      <div class="intro-media">
+        <img class="intro-photo" src="images/denys-nevozhai-63Znf38gnXk-unsplash.jpg" alt="울창한 숲 사이 별이 쏟아지는 밤하늘 아래 환하게 불이 켜진 텐트" loading="lazy">
+      </div>
       <div class="intro-copy">
         <span class="eyebrow"><i></i>About Trippick</span>
         <h2>자연의 여유와 신뢰의 정보가<br>만나는 단 하나의 캠핑 플랫폼</h2>
@@ -349,6 +318,7 @@
     <div class="wrap">
       <div class="section-head">
         <div><span class="eyebrow eyebrow-light"><i></i>Why Trippick</span><h2>예약 다음, 준비까지 함께합니다</h2></div>
+        <a href="pages/community-reviews.html" class="link-underline">리뷰 전체보기</a>
       </div>
       <div class="review-grid">
         <div class="review-item">
@@ -428,10 +398,10 @@
           <span class="cqb-icon"><svg width="20" height="20" viewBox="0 0 22 22" fill="none"><path d="M4 4h4l2 5-2.5 1.5a11 11 0 006 6L15 14l5 2v4a2 2 0 01-2 2C9.5 22 2 14.5 2 6a2 2 0 012-2z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg></span>
           <span class="cqb-text"><strong>전화로 바로 문의</strong><em>02-9876-5432 · 평일 10:00–17:00</em></span>
         </a>
-        <a href="#" class="consult-quick-btn cqb-kakao">
-          <span class="cqb-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 3C5.58 3 2 5.76 2 9.17c0 2.2 1.5 4.13 3.75 5.24-.16.6-.6 2.23-.69 2.58-.11.43.16.42.34.31.14-.09 2.24-1.52 3.15-2.14.47.07.95.1 1.45.1 4.42 0 8-2.76 8-6.17S14.42 3 10 3z" fill="#191600"/></svg></span>
-          <span class="cqb-text"><strong>카카오톡 문의</strong><em>실시간 채팅 상담 연결</em></span>
-        </a>
+        <button type="button" id="faqConsultBtn" class="consult-quick-btn cqb-kakao">
+          <span class="cqb-icon"><svg width="20" height="20" viewBox="0 0 22 22" fill="none"><path d="M3 5.5A2.5 2.5 0 015.5 3h11A2.5 2.5 0 0119 5.5v6A2.5 2.5 0 0116.5 14H9l-4.5 4v-4H5.5A2.5 2.5 0 013 11.5v-6z" stroke="#191600" stroke-width="1.3" stroke-linejoin="round"/></svg></span>
+          <span class="cqb-text"><strong>상담문의</strong><em>퀵메뉴와 동일한 실시간 채팅 상담</em></span>
+        </button>
       </div>
 
     </div>
@@ -466,81 +436,8 @@
   </div>
 </footer>
 
-<!-- ============ 모바일 하단 탭 ============ -->
-<nav class="bottom-tab" aria-label="하단 탭">
-  <button class="tab-item active" type="button">
-    <svg class="icon" width="19" height="19" viewBox="0 0 22 22" fill="none"><path d="M3 10.5L11 3l8 7.5" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M5 9v9a1 1 0 001 1h3.5v-4h3v4H17a1 1 0 001-1V9" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
-    <span>홈</span>
-  </button>
-  <button class="tab-item" type="button">
-    <svg class="icon" width="19" height="19" viewBox="0 0 22 22" fill="none"><circle cx="10" cy="10" r="6" stroke="currentColor" stroke-width="1.5"/><path d="M14.5 14.5L19 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-    <span>검색</span>
-  </button>
-  <button class="tab-item" type="button">
-    <svg class="icon" width="19" height="19" viewBox="0 0 22 22" fill="none"><rect x="3" y="4" width="16" height="15" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M3 9h16" stroke="currentColor" stroke-width="1.3"/></svg>
-    <span>예약</span>
-  </button>
-  <button class="tab-item" type="button">
-    <svg class="icon" width="19" height="19" viewBox="0 0 22 22" fill="none"><path d="M11 18s-7-4.5-7-9a4 4 0 018 0 4 4 0 018 0c0 4.5-7 9-7 9z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
-    <span>찜</span>
-  </button>
-  <button class="tab-item" type="button" onclick="location.href='mypage.html'">
-    <svg class="icon" width="19" height="19" viewBox="0 0 22 22" fill="none"><path d="M4 19.5c0-3.5 3.134-6.5 7-6.5s7 3 7 6.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><circle cx="11" cy="7.5" r="3.5" stroke="currentColor" stroke-width="1.4"/></svg>
-    <span>마이페이지</span>
-  </button>
-</nav>
-
-<!-- ============ 팝업: 회원가입 첫예약 쿠폰 ============ -->
-<div class="site-popup" id="couponPopup">
-  <div class="popup-inner coupon-popup-inner">
-    <button class="popup-close" type="button" aria-label="닫기">
-      <svg width="16" height="16" viewBox="0 0 22 22" fill="none"><path d="M4 4l14 14M18 4L4 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-    </button>
-    <div class="coupon-banner">
-      <div class="coupon-banner-text">
-        <span class="coupon-eyebrow">쿠폰받고 첫 예약 준비해요</span>
-        <h2>첫 예약 누구나<br>즉시할인!</h2>
-      </div>
-      <div class="coupon-ticket">
-        <span class="coupon-ticket-dl">
-          <svg width="12" height="12" viewBox="0 0 20 20" fill="none"><path d="M10 3v10M6 9l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 16h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-        </span>
-        <span class="coupon-ticket-label">첫예약할인쿠폰</span>
-        <strong class="coupon-ticket-value">10%<em>쿠폰</em></strong>
-      </div>
-    </div>
-    <p class="coupon-desc">지금 회원가입하면 첫 예약에 바로 쓸 수 있는 10% 할인 쿠폰을 즉시 드립니다.</p>
-    <div class="coupon-actions">
-      <a href="pages/signup.html" class="btn popup-cta">회원가입하고 쿠폰받기</a>
-      <button type="button" class="coupon-skip" id="couponHideTodayBtn" data-popup-close>오늘 하루 안보기</button>
-    </div>
-  </div>
-</div>
-
-<!-- ============ 팝업: 상담 문의 ============ -->
-<div class="site-popup" id="consultPopup">
-  <div class="popup-inner consult-popup-inner">
-    <button class="popup-close" type="button" aria-label="닫기">
-      <svg width="16" height="16" viewBox="0 0 22 22" fill="none"><path d="M4 4l14 14M18 4L4 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-    </button>
-    <span class="eyebrow"><i></i>Consulting</span>
-    <h2>궁금한 점을 남겨주시면<br>순서대로 답변드려요</h2>
-    <div class="consult-hours">
-      <div class="consult-hours-row"><span>상담 가능시간</span><strong>평일 10:00–17:00 (점심 12:00–13:00 제외)</strong></div>
-      <div class="consult-hours-row"><span>운영시간</span><strong>연중무휴 24시간 예약 · 상담 답변은 영업일 기준</strong></div>
-    </div>
-    <div class="consult-chat">
-      <div class="consult-chat-thread" id="consultChatThread"></div>
-      <div class="consult-chat-status" id="consultChatStatus" style="display:none;"></div>
-      <form class="consult-chat-bar" id="consultChatForm">
-        <input type="text" id="consultChatInput" placeholder="이름을 입력해주세요" autocomplete="off" required>
-        <button type="submit" class="btn">전송</button>
-      </form>
-    </div>
-  </div>
-</div>
-
-<!-- ============ 팝업: 전체 캠핑장 지도 ============ -->
+<!-- ============ 모바일 하단 탭 · 상담/쿠폰 팝업 ============
+     js/script.js가 전 페이지 공통으로 주입합니다 (bottomTabHTML/couponPopupHTML/consultPopupHTML). --><!-- ============ 팝업: 전체 캠핑장 지도 ============ -->
 <div class="site-popup" id="siteMapPopup">
   <div class="popup-inner map-popup-inner">
     <button class="popup-close" type="button" aria-label="닫기">
@@ -577,6 +474,6 @@
   </div>
 </div>
 
-<script src="js/script.js?v=5"></script>
+<script src="js/script.js?v=6"></script>
 </body>
 </html>

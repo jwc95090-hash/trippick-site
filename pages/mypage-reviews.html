@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700;800&family=Noto+Serif+KR:wght@400;500;600;700&family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/styles.css">
-<title>예약하기 | TRIPPICK</title>
+<title>리뷰관리 · 마이페이지 | TRIPPICK</title>
 </head>
 <body>
 
@@ -87,91 +87,88 @@
 
 <main id="top">
 
-  <section class="subhero" style="padding-bottom:0;">
+  <section class="subhero">
     <div class="wrap">
-      <div class="crumb"><a href="../index.html">홈</a><span>/</span><a href="detail.html">태안 선셋 캠프사이트</a><span>/</span><span>예약하기</span></div>
-      <h1>예약하기</h1>
+      <div class="crumb"><a href="../index.html">홈</a><span>/</span><a href="mypage.html">마이페이지</a><span>/</span><span>리뷰관리</span></div>
+      <h1>리뷰관리</h1>
     </div>
   </section>
 
-  <div class="wrap">
-    <div class="book-steps">
-      <div class="book-step active"><span>1</span>예약 정보</div>
-      <div class="book-step-line"></div>
-      <div class="book-step"><span>2</span>결제</div>
-      <div class="book-step-line"></div>
-      <div class="book-step"><span>3</span>완료</div>
-    </div>
-  </div>
-
-  <section class="section" style="padding-top:24px;">
+  <section class="section" style="padding-top:40px;">
     <div class="wrap">
-      <div class="detail-layout">
+      <div class="mypage-layout">
 
-        <div class="detail-main">
-
-          <div class="book-site-card">
-            <img src="https://images.unsplash.com/photo-1749047899565-6f026c3bb809?auto=format&fit=crop&w=300&q=70" alt="태안 선셋 캠프사이트">
+        <aside class="mypage-side">
+          <div class="mypage-profile">
+            <div class="mypage-avatar">김</div>
             <div>
-              <p class="p-region">충남 태안</p>
-              <h3>태안 선셋 캠프사이트</h3>
-              <span class="detail-rating">★ 4.8 <em>(review 126)</em></span>
+              <p class="mypage-name">김트립 님</p>
+              <p class="mypage-email">trip_kim@trippick.co.kr</p>
             </div>
           </div>
-
-          <div class="detail-block" style="padding-top:0;">
-            <h2>날짜 · 인원</h2>
-            <div class="book-form-row">
-              <label class="book-field"><span>체크인</span><input type="date" value="2026-07-26"></label>
-              <label class="book-field"><span>체크아웃</span><input type="date" value="2026-07-27"></label>
-            </div>
-            <div class="book-form-row" style="margin-top:20px;">
-              <label class="book-field">
-                <span>인원</span>
-                <div class="qb-stepper" style="justify-content:flex-start;">
-                  <button type="button" class="qb-minus" aria-label="인원 줄이기">−</button>
-                  <span id="bCount">2</span>
-                  <button type="button" class="qb-plus" aria-label="인원 늘리기">+</button>
-                </div>
-              </label>
-              <label class="book-field">
-                <span>사이트 타입</span>
-                <select>
-                  <option>오션뷰 데크사이트</option>
-                  <option>스탠다드 잔디사이트</option>
-                  <option>프라이빗 독채사이트 (+15,000원)</option>
-                </select>
-              </label>
-            </div>
-          </div>
-
-          <div class="detail-block">
-            <h2>예약자 정보</h2>
-            <div class="book-form-row">
-              <label class="book-field"><span>이름</span><input type="text" placeholder="예약자 성함"></label>
-              <label class="book-field"><span>연락처</span><input type="tel" placeholder="010-0000-0000"></label>
-            </div>
-            <label class="book-field" style="margin-top:20px;"><span>이메일</span><input type="email" placeholder="예약 확인서를 받으실 이메일"></label>
-            <label class="book-field" style="margin-top:20px;"><span>요청사항 (선택)</span><textarea rows="3" placeholder="반려동물 동반, 도착 예정시간 등 전달할 내용을 남겨주세요"></textarea></label>
-          </div>
-
-          <div class="detail-block">
-            <h2>취소 · 환불 규정</h2>
-            <p>체크인 7일 전까지 전액 환불, 3~6일 전 50% 환불, 2일 전부터는 환불이 불가합니다. 캠핑장 사정으로 인한 예약 취소 시에는 전액 환불됩니다.</p>
-          </div>
-
-        </div>
-
-        <aside class="detail-side">
-          <div class="detail-book-card">
-            <h3>결제 금액</h3>
-            <div class="detail-book-row"><span>이용 요금 (1박 · 2명)</span><strong>71,200원</strong></div>
-            <div class="detail-book-row"><span>사이트 옵션</span><strong>0원</strong></div>
-            <div class="detail-book-row detail-book-total"><span>총 결제 금액</span><strong id="bTotal">71,200원</strong></div>
-            <a href="payment.html" class="btn" style="width:100%; justify-content:center;">결제하기</a>
-            <p class="detail-book-note">예약 확정 전에는 결제되지 않습니다.</p>
-          </div>
+          <nav class="mypage-nav">
+            <a href="mypage-bookings.html">
+              <svg viewBox="0 0 24 24" fill="none"><rect x="3.5" y="5" width="17" height="15" rx="1.6" stroke="currentColor" stroke-width="1.4"/><path d="M3.5 9.5h17" stroke="currentColor" stroke-width="1.4"/><path d="M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+              예약내역
+            </a>
+            <a href="mypage-wishlist.html">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M12 20s-8-5-8-11a5 5 0 019-2 5 5 0 019 2c0 6-9 11-9 11z" fill="currentColor"/></svg>
+              위시리스트
+            </a>
+            <a href="mypage-reviews.html" class="active">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M12 3l2.3 5.6 6 .5-4.6 4 1.4 5.8L12 15.8 6.9 18.9l1.4-5.8-4.6-4 6-.5L12 3z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+              리뷰관리
+            </a>
+            <a href="mypage-settings.html">
+              <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.4"/><path d="M19 12a7 7 0 00-.1-1.2l2-1.5-2-3.4-2.3.9a7 7 0 00-2-1.2L14 3h-4l-.4 2.6a7 7 0 00-2 1.2l-2.3-.9-2 3.4 2 1.5A7 7 0 005 12c0 .4 0 .8.1 1.2l-2 1.5 2 3.4 2.3-.9c.6.5 1.3.9 2 1.2L10 21h4l.4-2.6c.7-.3 1.4-.7 2-1.2l2.3.9 2-3.4-2-1.5c.1-.4.1-.8.1-1.2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+              설정
+            </a>
+          </nav>
         </aside>
+
+        <div class="mypage-content">
+          <div class="section-head" style="margin-bottom:24px;">
+            <div><span class="eyebrow"><i></i>Reviews</span><h2>리뷰관리</h2></div>
+          </div>
+          <p style="font-size:12.5px; color:var(--text-mute); margin:-12px 0 20px;">이용 완료한 캠핑장에 대해서만 리뷰를 작성할 수 있습니다.</p>
+
+          <form class="review-form" id="reviewForm">
+            <div class="cf-field">
+              <span>캠핑장 선택</span>
+              <select id="reviewSite" required>
+                <option value="" disabled selected>이용 완료한 캠핑장을 선택하세요</option>
+              </select>
+            </div>
+            <div class="cf-field">
+              <span>별점</span>
+              <div class="review-star-input" id="reviewStars">
+                <button type="button" data-star="1">★</button>
+                <button type="button" data-star="2">★</button>
+                <button type="button" data-star="3">★</button>
+                <button type="button" data-star="4">★</button>
+                <button type="button" data-star="5">★</button>
+              </div>
+            </div>
+            <div class="cf-field">
+              <span>제목</span>
+              <input type="text" id="reviewTitle" placeholder="리뷰 제목을 입력해주세요" required>
+            </div>
+            <div class="cf-field">
+              <span>후기 내용</span>
+              <textarea id="reviewBody" rows="4" placeholder="다녀오신 캠핑장에 대한 솔직한 후기를 남겨주세요" required></textarea>
+            </div>
+            <div class="cf-field">
+              <span>사진 첨부 (선택)</span>
+              <input type="file" id="reviewPhotos" accept="image/*" multiple>
+            </div>
+            <button type="submit" class="btn" style="align-self:flex-start;">등록</button>
+          </form>
+
+          <div class="section-head" style="margin-bottom:20px;">
+            <div><h2 style="font-size:17px;">내가 쓴 리뷰</h2></div>
+          </div>
+          <div id="myReviewList"></div>
+        </div>
 
       </div>
     </div>
@@ -179,19 +176,6 @@
 
 </main>
 
-<script>
-  var bUnit = 35600, bCount = 2;
-  function bUpdate(){
-    var el = document.getElementById('bTotal');
-    if(el) el.textContent = (bUnit * bCount).toLocaleString() + '원';
-  }
-  document.querySelectorAll('.qb-plus').forEach(function(btn){
-    btn.addEventListener('click', function(){ if(bCount<8){ bCount++; document.getElementById('bCount').textContent=bCount; bUpdate(); } });
-  });
-  document.querySelectorAll('.qb-minus').forEach(function(btn){
-    btn.addEventListener('click', function(){ if(bCount>1){ bCount--; document.getElementById('bCount').textContent=bCount; bUpdate(); } });
-  });
-</script>
 <!-- ============ 푸터 ============ -->
 <footer class="site-footer">
   <div class="wrap footer-top">
@@ -220,5 +204,73 @@
 </footer>
 
 <script src="../js/script.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const T = window.trippick;
+  if (!T) return;
+  const stays = T.TRIPPICK_COMPLETED_STAYS || [];
+  const siteSelect = document.getElementById('reviewSite');
+  const starWrap = document.getElementById('reviewStars');
+  const form = document.getElementById('reviewForm');
+  const listEl = document.getElementById('myReviewList');
+  let rating = 0;
+
+  siteSelect.innerHTML += stays.map(s => `<option value="${s.siteId}">${s.siteName}</option>`).join('');
+
+  starWrap.addEventListener('click', (e) => {
+    const btn = e.target.closest('button[data-star]');
+    if (!btn) return;
+    rating = Number(btn.dataset.star);
+    Array.from(starWrap.children).forEach(b => b.classList.toggle('on', Number(b.dataset.star) <= rating));
+  });
+
+  function esc(s){
+    return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+  function renderMyReviews(){
+    const all = T.getAllReviews();
+    listEl.innerHTML = all.length ? all.map(r => `
+      <div class="my-review-item">
+        <p style="font-size:12px; color:var(--brass); margin-bottom:4px;">${esc(r.siteName)} · ${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</p>
+        <p style="font-family:var(--serif); font-size:15px; font-weight:600; margin-bottom:4px;">${esc(r.title)}</p>
+        <p style="font-size:13px; color:var(--text-mute); line-height:1.7;">${esc(r.body)}</p>
+      </div>`).join('') : '<p style="color:var(--text-mute); font-size:13px;">아직 작성한 리뷰가 없습니다.</p>';
+  }
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const siteId = siteSelect.value;
+    const site = stays.find(s => s.siteId === siteId);
+    if (!site || !rating) { alert('캠핑장과 별점을 선택해주세요.'); return; }
+    const fileInput = document.getElementById('reviewPhotos');
+    const files = Array.from(fileInput.files || []).slice(0, 4);
+
+    function finish(photos){
+      T.addReview({
+        siteId,
+        siteName: site.siteName,
+        rating,
+        title: document.getElementById('reviewTitle').value.trim(),
+        body: document.getElementById('reviewBody').value.trim(),
+        photos
+      });
+      form.reset();
+      rating = 0;
+      Array.from(starWrap.children).forEach(b => b.classList.remove('on'));
+      renderMyReviews();
+    }
+
+    if (!files.length) { finish([]); return; }
+    Promise.all(files.map(f => new Promise(resolve => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = () => resolve(null);
+      reader.readAsDataURL(f);
+    }))).then(results => finish(results.filter(Boolean)));
+  });
+
+  renderMyReviews();
+});
+</script>
 </body>
 </html>

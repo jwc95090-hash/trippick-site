@@ -13,6 +13,218 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* pages/ 하위 페이지인지에 따라 루트 상대 경로를 보정 (전 페이지 공통 삽입 스크립트이므로 필요) */
   const ROOT_PREFIX = location.pathname.includes('/pages/') ? '' : 'pages/';
+  /* 회원가입 쿠폰 팝업은 메인(홈) 화면에서만 노출 */
+  const isHomePage = !location.pathname.includes('/pages/');
+
+  /* ---------- 0-1. 위시리스트 · 리뷰 데이터 레이어 (전 페이지 공통, localStorage 기반) ----------
+     이 사이트는 별도 서버가 없는 정적 사이트이므로, 찜/리뷰 모두 브라우저 localStorage에 저장해
+     페이지를 이동해도(같은 브라우저 안에서는) 유지되도록 한다. */
+  const WISHLIST_KEY = 'trippick_wishlist_v1';
+  const REVIEWS_KEY = 'trippick_reviews_v1';
+  /* 실제 예약·이용완료 이력을 조회할 백엔드가 없어, 리뷰관리에서 "이용 완료한 캠핑장만 작성 가능"
+     조건을 흉내내기 위한 샘플 이용완료 목록. siteId는 아래 wishSlug 규칙과 동일하게 맞춘다. */
+  const TRIPPICK_COMPLETED_STAYS = [
+    { siteId: 'static-여주-블루마린-캠핑장', siteName: '여주 블루마린 캠핑장', stayDate: '2026-06-14' },
+    { siteId: 'static-태안-선셋-캠프사이트', siteName: '태안 선셋 캠프사이트', stayDate: '2026-05-02' },
+    { siteId: 'static-가평-포레스트-글램핑', siteName: '가평 포레스트 글램핑', stayDate: '2026-04-18' }
+  ];
+
+  function wishSlug(name){ return String(name || '').trim().replace(/\s+/g, '-'); }
+  function getWishlist(){
+    try { return JSON.parse(localStorage.getItem(WISHLIST_KEY)) || []; } catch (e) { return []; }
+  }
+  function saveWishlist(list){
+    try { localStorage.setItem(WISHLIST_KEY, JSON.stringify(list)); } catch (e) { /* 저장 실패는 무시 */ }
+  }
+  function toggleWishlist(id, snapshot){
+    const list = getWishlist();
+    const idx = list.findIndex(w => w.id === id);
+    if (idx >= 0) { list.splice(idx, 1); saveWishlist(list); return false; }
+    list.push(Object.assign({ id, addedAt: Date.now() }, snapshot));
+    saveWishlist(list);
+    return true;
+  }
+  function cardWishId(card){
+    return card.dataset.wishId || ('static-' + wishSlug(card.querySelector('.p-name')?.textContent));
+  }
+  function cardSnapshot(card){
+    /* link.href(프로퍼티)는 항상 완전한 절대 URL로 해석되므로, 나중에 마이페이지 위시리스트처럼
+       다른 폴더 깊이의 페이지에서 렌더링해도 상대경로가 어긋나지 않는다 */
+    const link = card.querySelector('.p-thumb') || card.querySelector('.p-name a');
+    return {
+      name: card.querySelector('.p-name')?.textContent.trim() || '이름 미상 캠핑장',
+      region: card.querySelector('.p-region')?.textContent.trim() || '',
+      desc: card.querySelector('.p-desc')?.textContent.trim() || '',
+      img: card.querySelector('img')?.src || '',
+      price: card.querySelector('.p-price .now')?.textContent.trim() || '',
+      href: link ? link.href : ''
+    };
+  }
+  function renderWishlistState(){
+    const wished = getWishlist().map(w => w.id);
+    document.querySelectorAll('.p-card').forEach(card => {
+      const likeBtn = card.querySelector('.p-like');
+      if (likeBtn) likeBtn.classList.toggle('on', wished.includes(cardWishId(card)));
+    });
+    const detailHead = document.querySelector('.detail-head');
+    const detailLike = detailHead?.querySelector('.p-like');
+    if (detailLike) {
+      const id = document.body.dataset.siteId || ('static-' + wishSlug(detailHead.querySelector('h1')?.textContent));
+      detailLike.classList.toggle('on', wished.includes(id));
+    }
+  }
+  renderWishlistState();
+
+  document.addEventListener('click', (e) => {
+    const likeBtn = e.target.closest('.p-like');
+    if (!likeBtn) return;
+    e.preventDefault();
+    const card = likeBtn.closest('.p-card');
+    const detailHead = !card ? likeBtn.closest('.detail-head') : null;
+    if (card) {
+      const nowOn = toggleWishlist(cardWishId(card), cardSnapshot(card));
+      likeBtn.classList.toggle('on', nowOn);
+    } else if (detailHead) {
+      const id = document.body.dataset.siteId || ('static-' + wishSlug(detailHead.querySelector('h1')?.textContent));
+      const snapshot = {
+        name: detailHead.querySelector('h1')?.textContent.trim() || '',
+        region: detailHead.querySelector('.p-region')?.textContent.trim() || '',
+        desc: '',
+        img: document.querySelector('.dg-main img')?.src || '',
+        price: document.querySelector('.detail-book-price .now')?.textContent.trim() || '',
+        href: location.href
+      };
+      const nowOn = toggleWishlist(id, snapshot);
+      likeBtn.classList.toggle('on', nowOn);
+    }
+  });
+
+  function getAllReviews(){
+    try { return JSON.parse(localStorage.getItem(REVIEWS_KEY)) || []; } catch (e) { return []; }
+  }
+  function saveReviews(list){
+    try { localStorage.setItem(REVIEWS_KEY, JSON.stringify(list)); } catch (e) { /* 저장 실패는 무시 */ }
+  }
+  function getReviewsForSite(siteId){
+    return getAllReviews().filter(r => r.siteId === siteId);
+  }
+  function addReview(entry){
+    const list = getAllReviews();
+    list.unshift(Object.assign({ id: 'rv' + Date.now(), author: '김트립', createdAt: Date.now() }, entry));
+    saveReviews(list);
+    return list;
+  }
+  window.trippick = {
+    getWishlist, toggleWishlist, cardWishId, renderWishlistState,
+    getAllReviews, getReviewsForSite, addReview, TRIPPICK_COMPLETED_STAYS
+  };
+
+  /* ---------- 0-2. 하단 탭 · 상담 팝업 · 쿠폰 팝업 (전 페이지 공통 삽입) ----------
+     기존에는 각 HTML 파일마다 마크업이 복사되어 있어 상담/쿠폰 팝업이 index.html에만 존재하는
+     등 페이지별로 빠지거나 어긋나는 문제가 있었다. 우측 하단 퀵메뉴(.fab-stack)와 동일한 방식으로
+     JS에서 전 페이지에 동일하게 삽입해 하나의 소스만 유지하도록 한다. */
+  function bottomTabHTML(){
+    const homeHref = ROOT_PREFIX ? '#top' : '../index.html';
+    return `
+    <nav class="bottom-tab" aria-label="하단 탭">
+      <button class="tab-item" type="button" data-href="${homeHref}">
+        <svg class="icon" width="19" height="19" viewBox="0 0 22 22" fill="none"><path d="M3 10.5L11 3l8 7.5" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M5 9v9a1 1 0 001 1h3.5v-4h3v4H17a1 1 0 001-1V9" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+        <span>홈</span>
+      </button>
+      <button class="tab-item" type="button" data-href="${ROOT_PREFIX}types.html">
+        <svg class="icon" width="19" height="19" viewBox="0 0 22 22" fill="none"><circle cx="10" cy="10" r="6" stroke="currentColor" stroke-width="1.5"/><path d="M14.5 14.5L19 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <span>둘러보기</span>
+      </button>
+      <button class="tab-item" type="button" data-href="${ROOT_PREFIX}mypage-bookings.html">
+        <svg class="icon" width="19" height="19" viewBox="0 0 22 22" fill="none"><rect x="3" y="4" width="16" height="15" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M3 9h16" stroke="currentColor" stroke-width="1.3"/></svg>
+        <span>예약</span>
+      </button>
+      <button class="tab-item" type="button" data-href="${ROOT_PREFIX}mypage-wishlist.html">
+        <svg class="icon" width="19" height="19" viewBox="0 0 22 22" fill="none"><path d="M11 18s-7-4.5-7-9a4 4 0 018 0 4 4 0 018 0c0 4.5-7 9-7 9z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+        <span>찜</span>
+      </button>
+      <button class="tab-item" type="button" data-href="${ROOT_PREFIX}mypage.html">
+        <svg class="icon" width="19" height="19" viewBox="0 0 22 22" fill="none"><path d="M4 19.5c0-3.5 3.134-6.5 7-6.5s7 3 7 6.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><circle cx="11" cy="7.5" r="3.5" stroke="currentColor" stroke-width="1.4"/></svg>
+        <span>마이페이지</span>
+      </button>
+    </nav>`;
+  }
+
+  function couponPopupHTML(){
+    return `
+    <div class="site-popup" id="couponPopup">
+      <div class="popup-inner coupon-popup-inner">
+        <button class="popup-close" type="button" aria-label="닫기">
+          <svg width="16" height="16" viewBox="0 0 22 22" fill="none"><path d="M4 4l14 14M18 4L4 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
+        <div class="coupon-banner">
+          <div class="coupon-banner-text">
+            <span class="coupon-eyebrow">쿠폰받고 첫 예약 준비해요</span>
+            <h2>첫 예약 누구나<br>즉시할인!</h2>
+          </div>
+          <div class="coupon-ticket">
+            <span class="coupon-ticket-dl">
+              <svg width="12" height="12" viewBox="0 0 20 20" fill="none"><path d="M10 3v10M6 9l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 16h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            </span>
+            <span class="coupon-ticket-label">첫예약할인쿠폰</span>
+            <strong class="coupon-ticket-value">10%<em>쿠폰</em></strong>
+          </div>
+        </div>
+        <p class="coupon-desc">지금 회원가입하면 첫 예약에 바로 쓸 수 있는 10% 할인 쿠폰을 즉시 드립니다.</p>
+        <div class="coupon-actions">
+          <a href="${ROOT_PREFIX}signup.html" class="btn popup-cta">회원가입하고 쿠폰받기</a>
+          <button type="button" class="coupon-skip" id="couponHideTodayBtn" data-popup-close>오늘 하루 안보기</button>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  function consultPopupHTML(){
+    return `
+    <div class="site-popup" id="consultPopup">
+      <div class="popup-inner consult-popup-inner">
+        <button class="popup-close" type="button" aria-label="닫기">
+          <svg width="16" height="16" viewBox="0 0 22 22" fill="none"><path d="M4 4l14 14M18 4L4 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
+        <span class="eyebrow"><i></i>Consulting</span>
+        <h2>궁금한 점을 남겨주시면<br>순서대로 답변드려요</h2>
+        <div class="consult-hours">
+          <div class="consult-hours-row"><span>상담 가능시간</span><strong>평일 10:00–17:00 (점심 12:00–13:00 제외)</strong></div>
+          <div class="consult-hours-row"><span>운영시간</span><strong>연중무휴 24시간 예약 · 상담 답변은 영업일 기준</strong></div>
+        </div>
+        <div class="consult-chat">
+          <div class="consult-chat-thread" id="consultChatThread"></div>
+          <div class="consult-chat-status" id="consultChatStatus" style="display:none;"></div>
+          <form class="consult-chat-bar" id="consultChatForm">
+            <input type="text" id="consultChatInput" placeholder="이름을 입력해주세요" autocomplete="off" required>
+            <button type="submit" class="btn">전송</button>
+          </form>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  document.body.insertAdjacentHTML('beforeend', bottomTabHTML());
+  if (isHomePage) document.body.insertAdjacentHTML('beforeend', couponPopupHTML());
+  document.body.insertAdjacentHTML('beforeend', consultPopupHTML());
+
+  function markActiveTab(){
+    const path = location.pathname;
+    const tabs = document.querySelectorAll('.bottom-tab .tab-item');
+    if (!tabs.length) return;
+    let idx = 0;
+    if (/mypage-bookings\.html/.test(path)) idx = 2;
+    else if (/mypage-wishlist\.html/.test(path)) idx = 3;
+    else if (/mypage/.test(path)) idx = 4;
+    else if (/types\.html|camping\.html|glamping\.html|caravan\.html|pet\.html|mountain\.html|sea\.html|new\.html|carbak\.html/.test(path)) idx = 1;
+    tabs.forEach(t => t.classList.remove('active'));
+    tabs[idx]?.classList.add('active');
+  }
+  markActiveTab();
+  document.addEventListener('click', (e) => {
+    const tabBtn = e.target.closest('.bottom-tab .tab-item[data-href]');
+    if (tabBtn) location.href = tabBtn.dataset.href;
+  });
 
   /* ---------- 1. 모바일 메뉴 ---------- */
   const menuOpen = document.getElementById('menuOpen');
@@ -179,13 +391,12 @@ document.addEventListener('DOMContentLoaded', () => {
     popup.classList.remove('open');
   }
 
-  document.querySelectorAll('.popup-close, [data-popup-close]').forEach(btn => {
-    btn.addEventListener('click', () => closePopup(btn.closest('.site-popup')));
-  });
-  document.querySelectorAll('.site-popup').forEach(popup => {
-    popup.addEventListener('click', (e) => {
-      if (e.target === popup) closePopup(popup);
-    });
+  /* 위임(delegated) 방식으로 바인딩 — 라이트박스처럼 나중에 JS로 추가되는 .site-popup/.popup-close도
+     별도 재바인딩 없이 항상 닫기 버튼·바깥영역 클릭이 정상 동작하도록 함 */
+  document.addEventListener('click', (e) => {
+    const closeBtn = e.target.closest('.popup-close, [data-popup-close]');
+    if (closeBtn) { closePopup(closeBtn.closest('.site-popup')); return; }
+    if (e.target.classList && e.target.classList.contains('site-popup')) closePopup(e.target);
   });
 
   /* ---------- 회원가입 첫예약 쿠폰 팝업 (홈 진입 시 1회) ---------- */
@@ -239,21 +450,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ---------- FAQ 아코디언 열림 상태 아이콘 전환은 CSS만으로 처리 (별도 JS 불필요) ---------- */
-
-  /* ---------- 6. 찜 버튼 / 하단 탭 ---------- */
-  document.addEventListener('click', (e) => {
-    const likeBtn = e.target.closest('.p-like');
-    if (!likeBtn) return;
-    e.preventDefault();
-    likeBtn.classList.toggle('on');
-  });
-
-  document.querySelectorAll('.bottom-tab .tab-item').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.bottom-tab .tab-item').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-    });
-  });
 
   /* ---------- 7. 우측 하단 퀵메뉴 · 맨 위로 (전 페이지 공통) ---------- */
   document.body.insertAdjacentHTML('beforeend', `
@@ -373,10 +569,12 @@ document.addEventListener('DOMContentLoaded', () => {
       updatePlaceholder();
     }
 
-    document.getElementById('fabConsultBtn')?.addEventListener('click', () => {
-      ensureGreeting();
-      openPopup(consultPopup);
-      setTimeout(() => input.focus(), 250);
+    document.querySelectorAll('#fabConsultBtn, #faqConsultBtn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        ensureGreeting();
+        openPopup(consultPopup);
+        setTimeout(() => input.focus(), 250);
+      });
     });
 
     form.addEventListener('submit', (e) => {
@@ -600,11 +798,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const cid = encodeURIComponent(item.contentId || ('idx' + idx));
       const href = `${ROOT_PREFIX}detail.html?src=api&contentId=${cid}`;
       return `
-        <article class="p-card p-card-feature">
+        <article class="p-card p-card-feature" data-wish-id="api-${cid}">
           <a href="${href}" class="p-thumb" onclick="window.trippickSaveSite(${idx})">
             <img src="${img}" alt="${name}" loading="lazy" onerror="this.onerror=null;this.src='${FALLBACK_IMG}';">
             <span class="p-tag p-tag-rank"><svg width="10" height="10" viewBox="0 0 20 20" fill="currentColor"><path d="M10 2l1.9 5.8H18l-4.9 3.6 1.9 5.8L10 13.6l-4.9 3.6 1.9-5.8L2 7.8h6.1L10 2z"/></svg>BEST ${rank}</span>
-            <button class="p-like" aria-label="찜하기" onclick="event.preventDefault(); event.stopPropagation();"><svg width="15" height="15" viewBox="0 0 22 22" fill="none"><path d="M11 18s-7-4.5-7-9a4 4 0 018 0 4 4 0 018 0c0 4.5-7 9-7 9z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></button>
+            <button class="p-like" aria-label="찜하기" onclick="event.preventDefault();"><svg width="15" height="15" viewBox="0 0 22 22" fill="none"><path d="M11 18s-7-4.5-7-9a4 4 0 018 0 4 4 0 018 0c0 4.5-7 9-7 9z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></button>
             <span class="p-thumb-caption">
               <span class="p-thumb-region">${escapeHtml(shortAddr(item.addr1))}</span>
               <span class="p-thumb-name">${name}</span>
@@ -625,6 +823,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const top = list.slice(0, 4);
       window.__trippickGridItems = top;
       campGrid.innerHTML = top.map((item, i) => popularCardHTML(item, i + 1, i)).join('');
+      renderWishlistState();
     }
 
     fetchCampingList().then(list => {
@@ -709,11 +908,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const cid = encodeURIComponent(item.contentId || ('idx' + idx));
       const href = `detail.html?src=api&contentId=${cid}`;
       return `
-        <article class="p-card">
+        <article class="p-card" data-wish-id="api-${cid}">
           <a href="${href}" class="p-thumb" onclick="window.trippickSaveSite(${idx})">
             <img src="${img}" alt="${name}" loading="lazy" onerror="this.onerror=null;this.src='${FALLBACK_IMG}';">
             <span class="p-tag p-tag-alt">공공데이터</span>
-            <button class="p-like" aria-label="찜하기" onclick="event.preventDefault(); event.stopPropagation();"><svg width="14" height="14" viewBox="0 0 22 22" fill="none"><path d="M11 18s-7-4.5-7-9a4 4 0 018 0 4 4 0 018 0c0 4.5-7 9-7 9z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></button>
+            <button class="p-like" aria-label="찜하기" onclick="event.preventDefault();"><svg width="14" height="14" viewBox="0 0 22 22" fill="none"><path d="M11 18s-7-4.5-7-9a4 4 0 018 0 4 4 0 018 0c0 4.5-7 9-7 9z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></button>
           </a>
           <div class="p-body">
             <p class="p-region">${region}</p>
@@ -739,6 +938,7 @@ document.addEventListener('DOMContentLoaded', () => {
       statusNote.textContent = '한국관광공사 고캠핑 공공데이터로 실시간 제공되는 목록입니다. 캠핑장을 선택하면 상세정보와 예약 화면으로 이동합니다.';
       gridEl.innerHTML = filtered.map((item, idx) => cardHTML(item, idx)).join('');
       gridEl.prepend(statusNote);
+      renderWishlistState();
     }).catch(err => {
       console.warn('[GoCamping 유형별 연동:' + type + ']', err && err.message ? err.message : err);
       // 실패 시 기존 큐레이션 카드가 그대로 남아있으므로 별도 처리 없음
@@ -858,13 +1058,18 @@ document.addEventListener('DOMContentLoaded', () => {
       if (mapEl) mapEl.innerHTML = `<svg width="18" height="18" viewBox="0 0 22 22" fill="none"><path d="M11 20s6.5-6.2 6.5-11A6.5 6.5 0 004.5 9c0 4.8 6.5 11 6.5 11z" stroke="currentColor" stroke-width="1.4"/><circle cx="11" cy="9" r="2.3" stroke="currentColor" stroke-width="1.4"/></svg>${escapeHtml(addr || '주소 정보 없음')}`;
 
       // 이용후기: 실데이터에는 후기가 없으므로 실제 후기처럼 보이는 가짜 텍스트를 넣지 않고 빈 상태로 안내
-      const reviewBlocks = document.querySelectorAll('.detail-block');
-      const reviewBlock = reviewBlocks[reviewBlocks.length - 1];
+      // (위치가 아니라 data-block 마커로 찾음 — 아래에 "트립픽 이용후기" 블록이 추가로 붙어도 오작동하지 않도록)
+      const reviewBlock = document.querySelector('[data-block="official-reviews"]');
       if (reviewBlock && /이용 후기/.test(reviewBlock.querySelector('h2')?.textContent || '')) {
         reviewBlock.querySelector('h2').innerHTML = '이용 후기 <span class="detail-review-count">0</span>';
         const rg = reviewBlock.querySelector('.review-grid');
         if (rg) rg.innerHTML = '<p style="color:var(--text-mute); font-size:13px; padding:12px 0;">공공데이터 연동 캠핑장이라 아직 등록된 후기가 없습니다. 다녀오신 후 트립픽에 첫 리뷰를 남겨보세요.</p>';
       }
+
+      // 트립픽 이용후기(자체 리뷰)·위시리스트 하트 상태도 API 연동 캠핑장 기준(contentId)으로 갱신
+      document.body.dataset.siteId = 'api-' + encodeURIComponent(item.contentId || contentId);
+      renderWishlistState();
+      if (window.__trippickRenderReviews) window.__trippickRenderReviews();
 
       // 예약 사이드바: 공공데이터에는 요금 정보가 없어 전화문의 안내로 대체하고,
       // 예약하기 버튼은 동일 캠핑장 정보를 booking.html로 이어서 전달합니다.
@@ -890,6 +1095,105 @@ document.addEventListener('DOMContentLoaded', () => {
         else console.warn('[GoCamping 상세] contentId=' + contentId + ' 항목을 찾지 못해 기본 예시 콘텐츠를 표시합니다.');
       }).catch(err => console.warn('[GoCamping 상세]', err && err.message ? err.message : err));
     }
+  })();
+
+  /* ---------- 11-1. detail.html: 트립픽 이용후기(자체 리뷰) 표시 ----------
+     마이페이지 > 리뷰관리에서 작성한 리뷰를, 같은 캠핑장(siteId)의 상세페이지에 그대로 보여준다.
+     API 연동 페이지는 initApiDetailPage의 render()가 body.dataset.siteId를 늦게 채우므로
+     window.__trippickRenderReviews 훅으로 다시 그릴 수 있게 노출해둔다. */
+  (function initTrippickReviews(){
+    const container = document.getElementById('trippickReviewList');
+    if (!container) return;
+
+    function starStr(n){
+      const r = Math.max(0, Math.min(5, Number(n) || 0));
+      return '★'.repeat(r) + '☆'.repeat(5 - r);
+    }
+    function reviewItemHTML(r){
+      const photos = Array.isArray(r.photos) ? r.photos.filter(Boolean) : [];
+      return `
+        <div class="review-item" style="background:var(--ivory-soft);">
+          <div class="review-foot" style="border-top:none; margin:0 0 8px;">
+            <span class="review-stars" style="color:var(--brass);">${starStr(r.rating)}</span>
+            <span class="who" style="color:var(--text-mute);">${gcEscapeHtml(r.author)} · ${gcEscapeHtml(new Date(r.createdAt).toLocaleDateString('ko-KR'))}</span>
+          </div>
+          <p class="quote" style="color:var(--text-mute); min-height:auto;"><strong style="color:var(--ink);">${gcEscapeHtml(r.title)}</strong><br>${gcEscapeHtml(r.body)}</p>
+          ${photos.length ? `<div style="display:flex; gap:8px; margin-top:12px; flex-wrap:wrap;">${photos.slice(0, 4).map(p => `<img src="${p}" alt="리뷰 사진" style="width:64px; height:64px; object-fit:cover; border-radius:8px;">`).join('')}</div>` : ''}
+        </div>`;
+    }
+    function render(){
+      const siteId = document.body.dataset.siteId || '';
+      const reviews = getReviewsForSite(siteId);
+      container.innerHTML = reviews.length
+        ? reviews.map(reviewItemHTML).join('')
+        : '<p style="color:var(--text-mute); font-size:13px; padding:12px 0;">아직 등록된 트립픽 이용후기가 없습니다. 다녀오신 후 마이페이지 &gt; 리뷰관리에서 첫 리뷰를 남겨보세요.</p>';
+    }
+    window.__trippickRenderReviews = render;
+    render();
+  })();
+
+  /* ---------- 11-2. detail.html: 사진 라이트박스 (모든 사진 클릭 시 확대, 이전/다음 넘기기) ---------- */
+  (function initDetailLightbox(){
+    const gallery = document.querySelector('.detail-gallery');
+    if (!gallery) return;
+
+    const clickable = Array.from(gallery.querySelectorAll('.dg-main img, .dg-sub img'));
+    if (!clickable.length) return;
+
+    function collectPhotos(){
+      const base = clickable.map(img => img.currentSrc || img.src);
+      let extra = [];
+      try { extra = JSON.parse(gallery.dataset.fullGallery || '[]'); } catch (e) { /* 무시 */ }
+      return base.concat(extra);
+    }
+
+    document.body.insertAdjacentHTML('beforeend', `
+      <div class="site-popup lightbox-popup" id="detailLightbox">
+        <div class="popup-inner lightbox-inner">
+          <button class="popup-close" type="button" aria-label="닫기">
+            <svg width="18" height="18" viewBox="0 0 22 22" fill="none"><path d="M4 4l14 14M18 4L4 18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </button>
+          <button type="button" class="lightbox-nav lightbox-prev" aria-label="이전 사진">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M12.5 4l-6 6 6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <img id="lightboxImg" src="" alt="캠핑장 사진 확대보기">
+          <button type="button" class="lightbox-nav lightbox-next" aria-label="다음 사진">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M7.5 4l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <span class="lightbox-counter" id="lightboxCounter"></span>
+        </div>
+      </div>`);
+
+    const popup = document.getElementById('detailLightbox');
+    const imgEl = document.getElementById('lightboxImg');
+    const counterEl = document.getElementById('lightboxCounter');
+    let photos = [];
+    let current = 0;
+
+    function show(idx){
+      if (!photos.length) return;
+      current = (idx + photos.length) % photos.length;
+      imgEl.src = photos[current];
+      counterEl.textContent = `${current + 1} / ${photos.length}`;
+    }
+    function openAt(idx){
+      photos = collectPhotos();
+      if (!photos.length) return;
+      show(idx);
+      openPopup(popup);
+    }
+
+    clickable.forEach((img, idx) => {
+      img.style.cursor = 'zoom-in';
+      img.addEventListener('click', () => openAt(idx));
+    });
+    popup.querySelector('.lightbox-prev').addEventListener('click', () => show(current - 1));
+    popup.querySelector('.lightbox-next').addEventListener('click', () => show(current + 1));
+    document.addEventListener('keydown', (e) => {
+      if (!popup.classList.contains('open')) return;
+      if (e.key === 'ArrowLeft') show(current - 1);
+      if (e.key === 'ArrowRight') show(current + 1);
+    });
   })();
 
   /* ---------- 12. booking.html / payment.html: 이전 단계에서 선택한 실제 캠핑장 정보 반영 ---------- */

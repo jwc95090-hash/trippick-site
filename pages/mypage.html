@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700;800&family=Noto+Serif+KR:wght@400;500;600;700&family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/styles.css">
-<title>마이페이지 · 위시리스트 | TRIPPICK</title>
+<title>마이페이지 | TRIPPICK</title>
 </head>
 <body>
 
@@ -41,6 +41,10 @@
         <li>
           <a href="guide.html">가이드</a>
           <ul class="sub"><li><a href="guide.html">캠핑입문가이드</a></li><li><a href="../index.html#guide">준비물체크리스트</a></li><li><a href="../index.html#guide">캠핑주의사항</a></li><li><a href="../index.html#guide">FAQ</a></li></ul>
+        </li>
+        <li>
+          <a href="community-notice.html">커뮤니티</a>
+          <ul class="sub"><li><a href="community-notice.html">공지사항</a></li><li><a href="community-qna.html">상담게시판</a></li><li><a href="community-reviews.html">리뷰게시판</a></li></ul>
         </li>
       </ul>
     </nav>
@@ -76,6 +80,7 @@
     <a href="types.html">유형별예약</a>
     <a href="../index.html#story">트립픽 pick</a>
     <a href="guide.html">가이드</a>
+    <a href="community-notice.html">커뮤니티</a>
   </nav>
   <a href="login.html" class="mobile-menu-login">로그인 · 회원가입</a>
 </div>
@@ -102,19 +107,19 @@
             </div>
           </div>
           <nav class="mypage-nav">
-            <a href="#">
+            <a href="mypage-bookings.html">
               <svg viewBox="0 0 24 24" fill="none"><rect x="3.5" y="5" width="17" height="15" rx="1.6" stroke="currentColor" stroke-width="1.4"/><path d="M3.5 9.5h17" stroke="currentColor" stroke-width="1.4"/><path d="M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
               예약내역
             </a>
-            <a href="#" class="active">
+            <a href="mypage-wishlist.html">
               <svg viewBox="0 0 24 24" fill="none"><path d="M12 20s-8-5-8-11a5 5 0 019-2 5 5 0 019 2c0 6-9 11-9 11z" fill="currentColor"/></svg>
               위시리스트
             </a>
-            <a href="#">
+            <a href="mypage-reviews.html">
               <svg viewBox="0 0 24 24" fill="none"><path d="M12 3l2.3 5.6 6 .5-4.6 4 1.4 5.8L12 15.8 6.9 18.9l1.4-5.8-4.6-4 6-.5L12 3z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
               리뷰관리
             </a>
-            <a href="#">
+            <a href="mypage-settings.html">
               <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.4"/><path d="M19 12a7 7 0 00-.1-1.2l2-1.5-2-3.4-2.3.9a7 7 0 00-2-1.2L14 3h-4l-.4 2.6a7 7 0 00-2 1.2l-2.3-.9-2 3.4 2 1.5A7 7 0 005 12c0 .4 0 .8.1 1.2l-2 1.5 2 3.4 2.3-.9c.6.5 1.3.9 2 1.2L10 21h4l.4-2.6c.7-.3 1.4-.7 2-1.2l2.3.9 2-3.4-2-1.5c.1-.4.1-.8.1-1.2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
               설정
             </a>
@@ -123,65 +128,25 @@
 
         <div class="mypage-content">
           <div class="section-head" style="margin-bottom:24px;">
-            <div><span class="eyebrow"><i></i>Wishlist</span><h2>위시리스트</h2></div>
-            <span class="video-meta">4개 저장됨</span>
+            <div><span class="eyebrow"><i></i>Mypage</span><h2>무엇을 도와드릴까요?</h2></div>
           </div>
-
-          <div class="grid">
-            <article class="p-card">
-              <div class="p-thumb">
-                <img src="https://images.unsplash.com/photo-1508873696983-2dfd5898f08b?auto=format&fit=crop&w=500&q=70" alt="반려견과 함께 호숫가 텐트에서 쉬는 모습" loading="lazy">
-                <span class="p-tag">신규오픈</span>
-                <button class="p-like on" aria-label="찜 해제"><svg width="14" height="14" viewBox="0 0 22 22" fill="none"><path d="M11 18s-7-4.5-7-9a4 4 0 018 0 4 4 0 018 0c0 4.5-7 9-7 9z" fill="currentColor"/></svg></button>
-              </div>
-              <div class="p-body">
-                <p class="p-region">경기 여주</p>
-                <h3 class="p-name">여주 블루마린 캠핑장</h3>
-                <p class="p-desc">강변 뷰 · 전기 · 반려동물 동반</p>
-                <div class="p-price"><span class="old">80,000원</span><span class="pct">20%</span><span class="now">64,000원~</span></div>
-              </div>
-            </article>
-
-            <article class="p-card">
-              <div class="p-thumb">
-                <img src="https://images.unsplash.com/photo-1749047899565-6f026c3bb809?auto=format&fit=crop&w=500&q=70" alt="해변에서 노을을 맞이하는 캠핑 텐트" loading="lazy">
-                <span class="p-tag p-tag-alt">바다근처</span>
-                <button class="p-like on" aria-label="찜 해제"><svg width="14" height="14" viewBox="0 0 22 22" fill="none"><path d="M11 18s-7-4.5-7-9a4 4 0 018 0 4 4 0 018 0c0 4.5-7 9-7 9z" fill="currentColor"/></svg></button>
-              </div>
-              <div class="p-body">
-                <p class="p-region">충남 태안</p>
-                <h3 class="p-name"><a href="detail.html">태안 선셋 캠프사이트</a></h3>
-                <p class="p-desc">오션뷰 · 노을 명소</p>
-                <div class="p-price"><span class="old">89,000원</span><span class="pct">20%</span><span class="now">71,200원~</span></div>
-              </div>
-            </article>
-
-            <article class="p-card">
-              <div class="p-thumb">
-                <img src="https://images.unsplash.com/photo-1641569618527-68e26db76db0?auto=format&fit=crop&w=500&q=70" alt="초록 언덕 위에 자리한 하얀 돔형 글램핑 텐트" loading="lazy">
-                <span class="p-tag sale">SALE</span>
-                <button class="p-like on" aria-label="찜 해제"><svg width="14" height="14" viewBox="0 0 22 22" fill="none"><path d="M11 18s-7-4.5-7-9a4 4 0 018 0 4 4 0 018 0c0 4.5-7 9-7 9z" fill="currentColor"/></svg></button>
-              </div>
-              <div class="p-body">
-                <p class="p-region">경기 가평</p>
-                <h3 class="p-name">가평 포레스트 글램핑</h3>
-                <p class="p-desc">키즈 놀이존 · 온수 완비</p>
-                <div class="p-price"><span class="old">120,000원</span><span class="pct">10%</span><span class="now">108,000원~</span></div>
-              </div>
-            </article>
-
-            <article class="p-card">
-              <div class="p-thumb">
-                <img src="https://images.unsplash.com/photo-1632367294096-4e77d53c4ae9?auto=format&fit=crop&w=500&q=70" alt="산 능선이 보이는 들판의 캠핑 텐트" loading="lazy">
-                <button class="p-like on" aria-label="찜 해제"><svg width="14" height="14" viewBox="0 0 22 22" fill="none"><path d="M11 18s-7-4.5-7-9a4 4 0 018 0 4 4 0 018 0c0 4.5-7 9-7 9z" fill="currentColor"/></svg></button>
-              </div>
-              <div class="p-body">
-                <p class="p-region">강원 홍천</p>
-                <h3 class="p-name">홍천 리버사이드 오토캠핑</h3>
-                <p class="p-desc">마운틴뷰 · 차박 가능</p>
-                <div class="p-price"><span class="now">80,750원~</span></div>
-              </div>
-            </article>
+          <div class="mypage-menu-grid">
+            <a class="mypage-menu-card" href="mypage-bookings.html">
+              <svg viewBox="0 0 24 24" fill="none"><rect x="3.5" y="5" width="17" height="15" rx="1.6" stroke="currentColor" stroke-width="1.4"/><path d="M3.5 9.5h17" stroke="currentColor" stroke-width="1.4"/><path d="M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+              <div><strong>예약내역</strong><span>지난 예약과 이용완료 캠핑장을 확인하세요</span></div>
+            </a>
+            <a class="mypage-menu-card" href="mypage-wishlist.html">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M12 20s-8-5-8-11a5 5 0 019-2 5 5 0 019 2c0 6-9 11-9 11z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+              <div><strong>위시리스트</strong><span>찜한 캠핑장을 모아 볼 수 있어요</span></div>
+            </a>
+            <a class="mypage-menu-card" href="mypage-reviews.html">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M12 3l2.3 5.6 6 .5-4.6 4 1.4 5.8L12 15.8 6.9 18.9l1.4-5.8-4.6-4 6-.5L12 3z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+              <div><strong>리뷰관리</strong><span>이용 완료한 캠핑장에 리뷰를 남겨보세요</span></div>
+            </a>
+            <a class="mypage-menu-card" href="mypage-settings.html">
+              <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.4"/><path d="M19 12a7 7 0 00-.1-1.2l2-1.5-2-3.4-2.3.9a7 7 0 00-2-1.2L14 3h-4l-.4 2.6a7 7 0 00-2 1.2l-2.3-.9-2 3.4 2 1.5A7 7 0 005 12c0 .4 0 .8.1 1.2l-2 1.5 2 3.4 2.3-.9c.6.5 1.3.9 2 1.2L10 21h4l.4-2.6c.7-.3 1.4-.7 2-1.2l2.3.9 2-3.4-2-1.5c.1-.4.1-.8.1-1.2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+              <div><strong>설정</strong><span>회원정보와 알림 설정을 관리하세요</span></div>
+            </a>
           </div>
         </div>
 
@@ -191,14 +156,6 @@
 
 </main>
 
-<script>
-  document.querySelectorAll('.mypage-content .p-like').forEach(function(btn){
-    btn.addEventListener('click', function(){
-      btn.classList.toggle('on');
-      btn.closest('.p-card').style.opacity = btn.classList.contains('on') ? '1' : '.4';
-    });
-  });
-</script>
 <!-- ============ 푸터 ============ -->
 <footer class="site-footer">
   <div class="wrap footer-top">
@@ -225,30 +182,6 @@
     트립픽코리아는 통신판매중개자로서 거래의 당사자가 아니며, 상품 예약·이용·환불에 대한 책임은 각 판매자에게 있습니다.
   </div>
 </footer>
-
-<!-- ============ 모바일 하단 탭 ============ -->
-<nav class="bottom-tab" aria-label="하단 탭">
-  <button class="tab-item" type="button" onclick="location.href='../index.html'">
-    <svg class="icon" width="19" height="19" viewBox="0 0 22 22" fill="none"><path d="M3 10.5L11 3l8 7.5" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M5 9v9a1 1 0 001 1h3.5v-4h3v4H17a1 1 0 001-1V9" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
-    <span>홈</span>
-  </button>
-  <button class="tab-item" type="button" onclick="location.href='../index.html#search'">
-    <svg class="icon" width="19" height="19" viewBox="0 0 22 22" fill="none"><circle cx="10" cy="10" r="6" stroke="currentColor" stroke-width="1.5"/><path d="M14.5 14.5L19 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-    <span>검색</span>
-  </button>
-  <button class="tab-item" type="button" onclick="location.href='mypage.html'">
-    <svg class="icon" width="19" height="19" viewBox="0 0 22 22" fill="none"><rect x="3" y="4" width="16" height="15" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M3 9h16" stroke="currentColor" stroke-width="1.3"/></svg>
-    <span>예약</span>
-  </button>
-  <button class="tab-item" type="button" onclick="location.href='mypage.html'">
-    <svg class="icon" width="19" height="19" viewBox="0 0 22 22" fill="none"><path d="M11 18s-7-4.5-7-9a4 4 0 018 0 4 4 0 018 0c0 4.5-7 9-7 9z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
-    <span>찜</span>
-  </button>
-  <button class="tab-item active" type="button" onclick="location.href='mypage.html'">
-    <svg class="icon" width="19" height="19" viewBox="0 0 22 22" fill="none"><path d="M4 19.5c0-3.5 3.134-6.5 7-6.5s7 3 7 6.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><circle cx="11" cy="7.5" r="3.5" stroke="currentColor" stroke-width="1.4"/></svg>
-    <span>마이페이지</span>
-  </button>
-</nav>
 
 <script src="../js/script.js"></script>
 </body>
