@@ -137,6 +137,7 @@
       </form>
 
       <div class="faq-list" id="qnaList" style="margin-top:8px;"></div>
+      <nav class="board-pagination" id="qnaPagination" aria-label="상담게시판 페이지 이동"></nav>
     </div>
   </section>
 
@@ -174,6 +175,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   const QNA_KEY = 'trippick_qna_v1';
   const listEl = document.getElementById('qnaList');
+  const pageEl = document.getElementById('qnaPagination');
   const form = document.getElementById('qnaForm');
   const writeToggle = document.getElementById('qnaWriteToggle');
   const cancelBtn = document.getElementById('qnaCancelBtn');
@@ -181,6 +183,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const secretPwField = document.getElementById('qnaSecretPwField');
   const secretPwInput = document.getElementById('qnaSecretPw');
   const DAY = 24 * 60 * 60 * 1000;
+  const PAGE_SIZE = 5;
+  let currentPage = 1;
   /* 비밀번호를 맞춰서 연 글의 id를 세션(페이지가 살아있는 동안) 동안만 기억해둔다.
      새로고침하면 다시 잠긴 상태로 돌아간다. */
   const unlockedSecrets = new Set();
@@ -266,7 +270,11 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>`;
   }
   function render(){
-    const posts = getPosts().concat(SEED_QNA).sort((a, b) => b.createdAt - a.createdAt);
+    const allPosts = getPosts().concat(SEED_QNA).sort((a, b) => b.createdAt - a.createdAt);
+    const totalPages = Math.max(1, Math.ceil(allPosts.length / PAGE_SIZE));
+    if (currentPage > totalPages) currentPage = totalPages;
+    if (currentPage < 1) currentPage = 1;
+    const posts = allPosts.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
     listEl.innerHTML = posts.length ? posts.map(p => {
       const isSecret = !!p.secret;
       const unlocked = unlockedSecrets.has(p.id);
@@ -298,7 +306,26 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="qna-secret-body" style="display:${unlocked ? 'block' : 'none'};">${bodyAnswerHTML}</div>` : bodyAnswerHTML}
       </details>`;
     }).join('') : '<p style="color:var(--text-mute); font-size:13px; padding:20px 4px;">아직 등록된 문의가 없습니다. 첫 문의를 남겨보세요.</p>';
+    renderPagination(allPosts.length, totalPages);
   }
+
+  function renderPagination(totalItems, totalPages){
+    if (!pageEl) return;
+    if (totalItems <= PAGE_SIZE) { pageEl.innerHTML = ''; return; }
+    let html = `<button type="button" data-page="${currentPage - 1}" ${currentPage === 1 ? 'disabled' : ''} aria-label="이전 페이지">‹</button>`;
+    for (let i = 1; i <= totalPages; i++) {
+      html += `<button type="button" data-page="${i}" class="${i === currentPage ? 'active' : ''}">${i}</button>`;
+    }
+    html += `<button type="button" data-page="${currentPage + 1}" ${currentPage === totalPages ? 'disabled' : ''} aria-label="다음 페이지">›</button>`;
+    pageEl.innerHTML = html;
+  }
+  pageEl?.addEventListener('click', (e) => {
+    const btn = e.target.closest('button[data-page]');
+    if (!btn || btn.disabled) return;
+    currentPage = Number(btn.dataset.page);
+    render();
+    listEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
 
   function unlockSecret(details){
     if (!details) return;
@@ -379,6 +406,7 @@ document.addEventListener('DOMContentLoaded', () => {
     form.reset();
     form.style.display = 'none';
     secretPwField.style.display = 'none';
+    currentPage = 1;
     render();
   });
 

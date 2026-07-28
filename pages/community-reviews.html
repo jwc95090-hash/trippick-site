@@ -102,6 +102,7 @@
         <a href="mypage-reviews.html" class="btn">글쓰기</a>
       </div>
       <div id="communityReviewList" style="display:flex; flex-direction:column; gap:1px; background:var(--line-soft);"></div>
+      <nav class="board-pagination" id="reviewPagination" aria-label="리뷰게시판 페이지 이동"></nav>
     </div>
   </section>
 
@@ -186,16 +187,47 @@ document.addEventListener('DOMContentLoaded', () => {
   function esc(s){
     return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   }
-  const reviews = SEED_REVIEWS.concat(T.getAllReviews()).sort((a, b) => b.createdAt - a.createdAt);
-  listEl.innerHTML = reviews.length ? reviews.map(r => `
-    <div class="review-item" style="background:var(--paper);">
-      <div class="review-foot" style="border-top:none; margin:0 0 10px; justify-content:flex-start; gap:14px;">
-        <span class="review-stars" style="color:var(--brass);">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</span>
-        <span class="who" style="color:var(--text-mute);">${esc(r.siteName)} · ${esc(r.author)} · ${esc(new Date(r.createdAt).toLocaleDateString('ko-KR'))}</span>
-      </div>
-      <p class="quote" style="color:var(--text-mute); min-height:auto;"><strong style="color:var(--ink);">${esc(r.title)}</strong><br>${esc(r.body)}</p>
-      ${Array.isArray(r.photos) && r.photos.length ? `<div style="display:flex; gap:8px; margin-top:12px; flex-wrap:wrap;">${r.photos.slice(0, 4).map(p => `<img src="${p}" alt="리뷰 사진" style="width:76px; height:76px; object-fit:cover; border-radius:8px;">`).join('')}</div>` : ''}
-    </div>`).join('') : '<div class="review-item" style="background:var(--paper);"><p class="quote" style="color:var(--text-mute); min-height:auto;">아직 등록된 리뷰가 없습니다. 마이페이지 &gt; 리뷰관리에서 첫 리뷰를 남겨보세요.</p></div>';
+  const pageEl = document.getElementById('reviewPagination');
+  const PAGE_SIZE = 4;
+  let currentPage = 1;
+
+  function render(){
+    const allReviews = SEED_REVIEWS.concat(T.getAllReviews()).sort((a, b) => b.createdAt - a.createdAt);
+    const totalPages = Math.max(1, Math.ceil(allReviews.length / PAGE_SIZE));
+    if (currentPage > totalPages) currentPage = totalPages;
+    if (currentPage < 1) currentPage = 1;
+    const reviews = allReviews.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+    listEl.innerHTML = reviews.length ? reviews.map(r => `
+      <div class="review-item" style="background:var(--paper);">
+        <div class="review-foot" style="border-top:none; margin:0 0 10px; justify-content:flex-start; gap:14px;">
+          <span class="review-stars" style="color:var(--brass);">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</span>
+          <span class="who" style="color:var(--text-mute);">${esc(r.siteName)} · ${esc(r.author)} · ${esc(new Date(r.createdAt).toLocaleDateString('ko-KR'))}</span>
+        </div>
+        <p class="quote" style="color:var(--text-mute); min-height:auto;"><strong style="color:var(--ink);">${esc(r.title)}</strong><br>${esc(r.body)}</p>
+        ${Array.isArray(r.photos) && r.photos.length ? `<div style="display:flex; gap:8px; margin-top:12px; flex-wrap:wrap;">${r.photos.slice(0, 4).map(p => `<img src="${p}" alt="리뷰 사진" style="width:76px; height:76px; object-fit:cover; border-radius:8px;">`).join('')}</div>` : ''}
+      </div>`).join('') : '<div class="review-item" style="background:var(--paper);"><p class="quote" style="color:var(--text-mute); min-height:auto;">아직 등록된 리뷰가 없습니다. 마이페이지 &gt; 리뷰관리에서 첫 리뷰를 남겨보세요.</p></div>';
+    renderPagination(allReviews.length, totalPages);
+  }
+
+  function renderPagination(totalItems, totalPages){
+    if (!pageEl) return;
+    if (totalItems <= PAGE_SIZE) { pageEl.innerHTML = ''; return; }
+    let html = `<button type="button" data-page="${currentPage - 1}" ${currentPage === 1 ? 'disabled' : ''} aria-label="이전 페이지">‹</button>`;
+    for (let i = 1; i <= totalPages; i++) {
+      html += `<button type="button" data-page="${i}" class="${i === currentPage ? 'active' : ''}">${i}</button>`;
+    }
+    html += `<button type="button" data-page="${currentPage + 1}" ${currentPage === totalPages ? 'disabled' : ''} aria-label="다음 페이지">›</button>`;
+    pageEl.innerHTML = html;
+  }
+  pageEl?.addEventListener('click', (e) => {
+    const btn = e.target.closest('button[data-page]');
+    if (!btn || btn.disabled) return;
+    currentPage = Number(btn.dataset.page);
+    render();
+    listEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  render();
 });
 </script>
 </body>
