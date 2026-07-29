@@ -243,6 +243,15 @@ document.addEventListener('DOMContentLoaded', () => {
   menuClose?.addEventListener('click', closeMenu);
   mobileMenu?.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
 
+  /* ---------- 1-0. 모바일 메뉴 내 "커뮤니티" 하위 탭 아코디언 ---------- */
+  mobileMenu?.querySelectorAll('.mobile-nav-toggle').forEach(toggle => {
+    toggle.addEventListener('click', () => {
+      const group = toggle.closest('.mobile-nav-group');
+      const isOpen = group.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+  });
+
   /* ---------- 1-1. 계정 메뉴 드롭다운 (Login / Join / My Page 통합) ---------- */
   const accountBtn = document.getElementById('accountBtn');
   const accountMenu = document.getElementById('accountMenu');
