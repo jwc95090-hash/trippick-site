@@ -165,7 +165,7 @@ button{cursor:pointer; background:none; border:none;}
   }
   .nav-top > li{position:relative;}
   .nav-top > li > a{
-    font-family:var(--serif); font-size:14px; letter-spacing:.03em; color:var(--ivory-soft);
+    font-family:var(--serif); font-size:15px; letter-spacing:.03em; color:var(--ivory-soft);
     padding:8px 0; display:inline-block; position:relative; transition:color .2s;
   }
   .nav-top > li > a.active, .nav-top > li > a:hover{color:var(--ivory);}
@@ -187,7 +187,7 @@ button{cursor:pointer; background:none; border:none;}
   .nav-top > li.sub-open .sub,
   .sub:hover{display:block;}
   .sub a{
-    display:block; padding:7px 0; font-size:12.5px; color:var(--brass-light);
+    display:block; padding:7px 0; font-size:14px; color:var(--brass-light);
     border-bottom:1px solid var(--line-dark); white-space:nowrap; text-align:center;
     transition:color .2s;
   }
@@ -267,9 +267,9 @@ button{cursor:pointer; background:none; border:none;}
   max-height:0; overflow:hidden; display:flex; flex-direction:column;
   transition:max-height .3s ease;
 }
-.mobile-nav-group.open .mobile-nav-sub{max-height:220px;}
+.mobile-nav-group.open .mobile-nav-sub{max-height:280px;}
 .mobile-nav-sub a{
-  font-family:var(--sans); font-size:15px; padding:12px 0 12px 6px; color:var(--ivory);
+  font-family:var(--sans); font-size:12px; padding:8px 0 8px 6px; color:var(--ivory);
   opacity:.8; border-bottom:1px dashed var(--line-dark);
 }
 .mobile-nav-sub a:last-child{border-bottom:none;}
@@ -323,7 +323,11 @@ button{cursor:pointer; background:none; border:none;}
 @media (min-width:641px){ .hero-content{max-width:560px;} }
 .hero-content .btn{margin-top:4px; align-self:flex-start;}
 .scroll-cue{
-  position:absolute; left:32px; bottom:32px; z-index:3;
+  /* .wrap의 실제 좌측 여백(중앙 정렬 마진 + 40px 패딩)에 맞춰, 화면 폭이 바뀌어도
+     히어로 텍스트 왼쪽 끝과 항상 같은 세로선에 놓이도록 계산.
+     bottom은 필터 바(.filter-wrap margin-top:-46px)가 히어로 하단을 덮는 높이보다
+     크게 잡아, 필터 바에 가려지지 않도록 함 */
+  position:absolute; left:calc(max(0px, (100vw - 1560px) / 2) + 44px); bottom:64px; z-index:3;
   display:flex; align-items:center; gap:10px;
   font-family:var(--caps); font-size:11px; letter-spacing:.18em; text-transform:uppercase;
   color:var(--ivory-soft);
@@ -882,11 +886,11 @@ button{cursor:pointer; background:none; border:none;}
 @media (max-width:639px){
   /* 모바일(폰): 아이콘만으로는 의미가 헷갈리므로, 아이콘 옆에 작은 한글 라벨을 함께 표시 */
   .fab-quick-item{
-    height:36px; padding:0 12px 0 10px; border-radius:999px;
+    width:114px; height:38px; padding:0 12px; border-radius:999px;
     justify-content:flex-start; gap:6px;
   }
   .fab-quick-item .fab-quick-label{
-    display:inline-block; font-size:10.5px; letter-spacing:.02em; text-transform:none;
+    display:inline-block; font-size:12px; letter-spacing:.01em; text-transform:none;
   }
 }
 @media (min-width:640px){

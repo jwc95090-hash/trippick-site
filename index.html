@@ -73,8 +73,29 @@
   </div>
   <nav>
     <a href="#top">홈</a>
-    <a href="pages/types.html">유형별예약</a>
-    <a href="pages/guide.html">가이드</a>
+    <div class="mobile-nav-group">
+      <button type="button" class="mobile-nav-toggle" aria-expanded="false">
+        <span>유형별예약</span>
+        <svg class="mobile-nav-caret" width="14" height="14" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M5 7.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="mobile-nav-sub">
+        <a href="pages/camping.html">캠핑</a>
+        <a href="pages/glamping.html">글램핑</a>
+        <a href="pages/caravan.html">카라반</a>
+      </div>
+    </div>
+    <div class="mobile-nav-group">
+      <button type="button" class="mobile-nav-toggle" aria-expanded="false">
+        <span>가이드</span>
+        <svg class="mobile-nav-caret" width="14" height="14" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M5 7.5l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="mobile-nav-sub">
+        <a href="pages/guide.html">캠핑입문가이드</a>
+        <a href="#guide">준비물체크리스트</a>
+        <a href="#guide">캠핑주의사항</a>
+        <a href="#faq">FAQ</a>
+      </div>
+    </div>
     <div class="mobile-nav-group">
       <button type="button" class="mobile-nav-toggle" aria-expanded="false">
         <span>커뮤니티</span>
