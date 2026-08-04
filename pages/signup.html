@@ -8,6 +8,23 @@
 <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700;800&family=Noto+Serif+KR:wght@400;500;600;700&family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/styles.css">
 <title>회원정보입력 | TRIPPICK</title>
+<meta name="description" content="TRIPPICK 회원가입. 간단한 정보 입력만으로 가입하고 첫 예약 10% 할인 쿠폰을 받아보세요.">
+<link rel="canonical" href="https://jwc95090-hash.github.io/trippick-site/pages/signup.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TRIPPICK">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:url" content="https://jwc95090-hash.github.io/trippick-site/pages/signup.html">
+<meta property="og:title" content="회원정보입력 | TRIPPICK">
+<meta property="og:description" content="TRIPPICK 회원가입. 간단한 정보 입력만으로 가입하고 첫 예약 10% 할인 쿠폰을 받아보세요.">
+<meta property="og:image" content="https://jwc95090-hash.github.io/trippick-site/images/og-desktop.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="회원정보입력 | TRIPPICK">
+<meta property="og:description" content="TRIPPICK 회원가입. 간단한 정보 입력만으로 가입하고 첫 예약 10% 할인 쿠폰을 받아보세요.">
+<meta property="og:image" content="https://jwc95090-hash.github.io/trippick-site/images/og-mobile.jpg">
+<meta property="og:image:width" content="1080">
+<meta property="og:image:height" content="1080">
+<meta property="og:image:alt" content="회원정보입력 | TRIPPICK">
 </head>
 <body>
 
@@ -134,10 +151,10 @@
     </div>
 
     <form class="auth-form" onsubmit="return false;">
-      <label class="book-field"><span>이름</span><input type="text" placeholder="실명을 입력하세요"></label>
+      <label class="book-field"><span>이름</span><input type="text" placeholder="실명을 입력하세요" required minlength="2"></label>
 
       <div class="book-form-row" style="margin-top:18px;">
-        <label class="book-field"><span>생년월일</span><input type="date"></label>
+        <label class="book-field"><span>생년월일</span><input type="date" required></label>
         <label class="book-field">
           <span>성별</span>
           <select><option>선택 안 함</option><option>여성</option><option>남성</option></select>
@@ -147,14 +164,14 @@
       <label class="book-field" style="margin-top:18px;">
         <span>휴대폰 번호</span>
         <div class="auth-inline-field">
-          <input type="tel" placeholder="010-0000-0000">
+          <input type="tel" placeholder="010-0000-0000" required pattern="01[0-9]-?[0-9]{3,4}-?[0-9]{4}" title="010-0000-0000 형식으로 입력해주세요">
           <button type="button" class="btn-outline auth-mini-btn">인증요청</button>
         </div>
       </label>
 
-      <label class="book-field" style="margin-top:18px;"><span>이메일</span><input type="email" placeholder="이메일 주소를 입력하세요"></label>
-      <label class="book-field" style="margin-top:18px;"><span>비밀번호</span><input type="password" placeholder="영문·숫자·특수문자 포함 8자 이상"></label>
-      <label class="book-field" style="margin-top:18px;"><span>비밀번호 확인</span><input type="password" placeholder="비밀번호를 한 번 더 입력하세요"></label>
+      <label class="book-field" style="margin-top:18px;"><span>이메일</span><input type="email" placeholder="이메일 주소를 입력하세요" required></label>
+      <label class="book-field" style="margin-top:18px;"><span>비밀번호</span><input type="password" placeholder="영문·숫자·특수문자 포함 8자 이상" required minlength="8" pattern="(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}" title="영문, 숫자, 특수문자를 포함해 8자 이상 입력해주세요"></label>
+      <label class="book-field" style="margin-top:18px;"><span>비밀번호 확인</span><input type="password" placeholder="비밀번호를 한 번 더 입력하세요" required></label>
 
       <div style="margin-top:26px;">
         <label class="pay-agree"><input type="checkbox" checked> <span>전체 동의 (필수 항목 포함)</span></label>

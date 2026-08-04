@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://jwc95090-hash.github.io/trippick-site/sitemap.xml
