@@ -140,7 +140,7 @@
 
   <section class="section" style="padding-top:40px;">
     <div class="wrap">
-      <div class="section-head" style="margin-bottom:24px;">
+      <div class="section-head mb-24">
         <div><span class="eyebrow"><i></i>Q&amp;A</span><h2>문의 게시글</h2></div>
         <button type="button" class="btn" id="qnaWriteToggle">글쓰기</button>
       </div>
@@ -322,7 +322,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const isSecret = !!p.secret;
       const unlocked = unlockedSecrets.has(p.id);
       const titleHTML = isSecret && !unlocked
-        ? `<span style="color:var(--text-mute);">비밀글입니다</span>`
+        ? `<span class="text-mute">비밀글입니다</span>`
         : esc(p.title);
       const bodyAnswerHTML = `<p>${esc(p.body)}</p>${p.answered && p.answer ? answerBlock(p) : ''}`;
       return `
