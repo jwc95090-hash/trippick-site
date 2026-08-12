@@ -62,7 +62,10 @@
         popup.style.display = 'flex';
         requestAnimationFrame(() => popup.classList.add('open'));
         document.body.style.overflow = 'hidden';
-        setTimeout(render, 0);
+        setTimeout(() => {
+          input.placeholder = '지역, 캠핑 유형, 준비물 등을 물어보세요';
+          render();
+        }, 0);
       }
     });
 
