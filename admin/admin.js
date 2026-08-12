@@ -200,3 +200,21 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
 });
+
+(function loadSupabaseAdmin() {
+  const current = document.currentScript;
+  if (!current || !current.src) return;
+  const sdk = document.createElement('script');
+  sdk.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.3/dist/umd/supabase.min.js';
+  sdk.onload = function () {
+    const config = document.createElement('script');
+    config.src = '../js/supabase-config.js';
+    config.onload = function () {
+      const admin = document.createElement('script');
+      admin.src = 'admin-data.js';
+      document.head.appendChild(admin);
+    };
+    document.head.appendChild(config);
+  };
+  document.head.appendChild(sdk);
+})();

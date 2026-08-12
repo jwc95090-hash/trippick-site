@@ -475,11 +475,6 @@ document.addEventListener('DOMContentLoaded', () => {
           <svg width="14" height="14" viewBox="0 0 22 22" fill="none"><rect x="3" y="4" width="16" height="15" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M3 9h16" stroke="currentColor" stroke-width="1.3"/></svg>
           <span class="fab-quick-label">예약확인</span>
         </a>
-        <a href="tel:029876543" class="fab-quick-item">
-          <svg width="14" height="14" viewBox="0 0 22 22" fill="none"><path d="M4 4h4l2 5-2.5 1.5a11 11 0 006 6L15 14l5 2v4a2 2 0 01-2 2C9.5 22 2 14.5 2 6a2 2 0 012-2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
-          <span class="fab-quick-label">고객센터</span>
-        </a>
-
         <button type="button" class="fab-quick-item" id="fabConsultBtn">
           <svg width="14" height="14" viewBox="0 0 22 22" fill="none"><path d="M3 5.5A2.5 2.5 0 015.5 3h11A2.5 2.5 0 0119 5.5v6A2.5 2.5 0 0116.5 14H9l-4.5 4v-4H5.5A2.5 2.5 0 013 11.5v-6z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
           <span class="fab-quick-label">실시간 상담</span>
@@ -1412,4 +1407,23 @@ document.addEventListener('DOMContentLoaded', () => {
     document.head.appendChild(chat);
   };
   document.head.appendChild(config);
+})();
+
+// Supabase Auth와 실제 리뷰/게시판 데이터를 전 페이지에서 공유합니다.
+(function loadSupabaseApp() {
+  const current = document.currentScript;
+  if (!current || !current.src) return;
+  const sdk = document.createElement('script');
+  sdk.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.3/dist/umd/supabase.min.js';
+  sdk.onload = function () {
+    const config = document.createElement('script');
+    config.src = new URL('supabase-config.js', current.src).href;
+    config.onload = function () {
+      const app = document.createElement('script');
+      app.src = new URL('supabase-app.js', current.src).href;
+      document.head.appendChild(app);
+    };
+    document.head.appendChild(config);
+  };
+  document.head.appendChild(sdk);
 })();

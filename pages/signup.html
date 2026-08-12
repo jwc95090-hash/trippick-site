@@ -139,49 +139,19 @@
   <div class="auth-form-side">
   <div class="auth-card" style="max-width:480px;">
     <div class="login-logo">TRIPPICK</div>
-    <h1 class="auth-title">회원정보입력</h1>
-    <p class="login-sub">간단한 정보만 입력하면 바로 예약을 시작할 수 있어요</p>
-
-    <div class="book-steps" style="padding:0 0 24px; justify-content:center;">
-      <div class="book-step active"><span>1</span>약관 동의</div>
-      <div class="book-step-line"></div>
-      <div class="book-step active"><span>2</span>정보 입력</div>
-      <div class="book-step-line"></div>
-      <div class="book-step"><span>3</span>가입 완료</div>
-    </div>
+    <h1 class="auth-title">간편 회원가입</h1>
+    <p class="login-sub">이메일과 비밀번호만 입력하고 인증 메일을 확인해주세요</p>
 
     <form class="auth-form" onsubmit="return false;">
-      <label class="book-field"><span>이름</span><input type="text" placeholder="실명을 입력하세요" required minlength="2"></label>
-
-      <div class="book-form-row mt-18">
-        <label class="book-field"><span>생년월일</span><input type="date" required></label>
-        <label class="book-field">
-          <span>성별</span>
-          <select><option>선택 안 함</option><option>여성</option><option>남성</option></select>
-        </label>
-      </div>
-
-      <label class="book-field mt-18">
-        <span>휴대폰 번호</span>
-        <div class="auth-inline-field">
-          <input type="tel" placeholder="010-0000-0000" required pattern="01[0-9]-?[0-9]{3,4}-?[0-9]{4}" title="010-0000-0000 형식으로 입력해주세요">
-          <button type="button" class="btn-outline auth-mini-btn">인증요청</button>
-        </div>
-      </label>
-
-      <label class="book-field mt-18"><span>이메일</span><input type="email" placeholder="이메일 주소를 입력하세요" required></label>
+      <label class="book-field"><span>이메일</span><input type="email" placeholder="이메일 주소를 입력하세요" autocomplete="email" required></label>
       <label class="book-field mt-18"><span>비밀번호</span><input type="password" placeholder="영문·숫자·특수문자 포함 8자 이상" required minlength="8" pattern="(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}" title="영문, 숫자, 특수문자를 포함해 8자 이상 입력해주세요"></label>
       <label class="book-field mt-18"><span>비밀번호 확인</span><input type="password" placeholder="비밀번호를 한 번 더 입력하세요" required></label>
 
       <div style="margin-top:26px;">
-        <label class="pay-agree"><input type="checkbox" checked> <span>전체 동의 (필수 항목 포함)</span></label>
-        <label class="pay-agree pay-agree-sub"><input type="checkbox" checked> <span>[필수] 만 14세 이상입니다</span></label>
-        <label class="pay-agree pay-agree-sub"><input type="checkbox" checked> <span>[필수] 이용약관 동의</span></label>
-        <label class="pay-agree pay-agree-sub"><input type="checkbox" checked> <span>[필수] 개인정보 수집 및 이용 동의</span></label>
-        <label class="pay-agree pay-agree-sub"><input type="checkbox"> <span>[선택] 마케팅 정보 수신 동의 (이메일 · SMS)</span></label>
+        <label class="pay-agree"><input type="checkbox" required> <span>[필수] 만 14세 이상이며 이용약관 및 개인정보처리방침에 동의합니다</span></label>
       </div>
 
-      <button type="submit" class="btn" style="width:100%; justify-content:center; margin-top:22px;">가입 완료</button>
+      <button type="submit" class="btn" style="width:100%; justify-content:center; margin-top:22px;">인증 메일 받고 가입하기</button>
     </form>
 
     <p class="auth-footer-text">이미 계정이 있으신가요? <a href="login.html">로그인</a></p>
