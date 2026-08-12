@@ -2,7 +2,7 @@
 
 캠핑장 운영자(호스트)가 예약, 상담, 매출, 리뷰를 한 화면에서 관리할 수 있는 관리자 콘솔입니다.
 
-🔗 **Live Demo**: https://jwc95090-hash.github.io/trippick-host/
+🔗 **Live Demo**: https://jwc95090-hash.github.io/trippick-site/admin
 
 ## 주요 기능
 
