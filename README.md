@@ -3,7 +3,7 @@
 초보 캠퍼를 위한 감성 캠핑 예약 서비스 프론트엔드. 프레임워크 없이 순수 HTML/CSS/JS로 만든 정적 사이트다.
 
 - **라이브**: https://jwc95090-hash.github.io/trippick-site/
-- **정보 구조도**: [information-architecture.md](information-architecture.md) — 전체 페이지 구성과 흐름 정리
+- **트립픽관리자페이지**:https://github.com/jwc95090-hash/trippick-site/admin
 
 ## 스택
 
