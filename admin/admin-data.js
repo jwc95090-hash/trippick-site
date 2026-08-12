@@ -36,6 +36,25 @@
     </tr>`).join('')}</tbody></table></div>`;
   }
 
+  async function renderMemberPreview() {
+    const target = document.getElementById('adminMemberPreview');
+    if (!target) return;
+    const { data, error } = await db.from('portfolio_members')
+      .select('masked_email,signup_provider,joined_at')
+      .order('joined_at', { ascending: false })
+      .limit(5);
+    if (error) {
+      target.innerHTML = `<p style="color:#d9a18d;font-size:13px;">${esc(error.message)}</p>`;
+      return;
+    }
+    target.innerHTML = `<div class="host-stat-grid" style="grid-template-columns:minmax(180px,240px) 1fr;margin-bottom:0;">
+      <article class="host-stat"><div class="host-stat-label">최근 가입 회원</div><div class="host-stat-val">${data.length}<small>명 표시</small></div><div class="host-stat-delta up">Supabase 실시간 연동</div></article>
+      <div class="host-table-wrap"><table class="host-table" style="min-width:520px;"><thead><tr><th>가입일</th><th>가입 방식</th><th>이메일</th><th>상태</th></tr></thead><tbody>${data.length ? data.map(user => `<tr>
+        <td>${new Date(user.joined_at).toLocaleDateString('ko-KR')}</td><td>${esc(user.signup_provider === 'google' ? 'Google' : '이메일')}</td><td>${esc(user.masked_email)}</td><td><span class="host-pill host-pill-sage">가입 완료</span></td>
+      </tr>`).join('') : '<tr><td colspan="4">아직 가입한 회원이 없습니다.</td></tr>'}</tbody></table></div>
+    </div>`;
+  }
+
   async function renderReviews() {
     if (!/admin-review\.html$/.test(location.pathname)) return;
     const first = document.querySelector('.host-review-card');
@@ -69,7 +88,7 @@
   async function init() {
     addUsersNav();
     setPortfolioMode();
-    await Promise.all([renderUsers(), renderReviews(), renderPosts()]);
+    await Promise.all([renderUsers(), renderMemberPreview(), renderReviews(), renderPosts()]);
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();
