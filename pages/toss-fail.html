@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700&family=Noto+Serif+KR:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/styles.css">
+  <title>결제 실패 | TRIPPICK</title>
+</head>
+<body>
+  <main class="payment-result-page">
+    <section class="payment-result-card">
+      <span class="eyebrow"><i></i>Toss Payments</span>
+      <h1>결제가 완료되지 않았습니다</h1>
+      <p id="failureMessage">결제를 취소했거나 인증 과정에서 문제가 발생했습니다.</p>
+      <div class="payment-result-actions">
+        <a href="payment.html" class="btn">다시 결제하기</a>
+        <a href="../index.html" class="btn btn-secondary">홈으로 돌아가기</a>
+      </div>
+    </section>
+  </main>
+  <script>
+    (function () {
+      var params = new URLSearchParams(window.location.search);
+      var message = params.get('message');
+      if (message) document.getElementById('failureMessage').textContent = message;
+      sessionStorage.removeItem('trippickPendingPayment');
+    })();
+  </script>
+</body>
+</html>

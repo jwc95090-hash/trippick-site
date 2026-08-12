@@ -398,6 +398,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function closePopup(popup){
     popup.style.display = 'none';
     popup.classList.remove('open');
+    document.body.style.overflow = '';
   }
 
   /* 위임(delegated) 방식으로 바인딩 — 라이트박스처럼 나중에 JS로 추가되는 .site-popup/.popup-close도

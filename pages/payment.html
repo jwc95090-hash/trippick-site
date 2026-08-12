@@ -174,32 +174,15 @@
 
           <div class="detail-block">
             <h2>결제 수단</h2>
-            <div class="pay-methods">
-              <label class="pay-method">
-                <input type="radio" name="payMethod" checked>
-                <span class="pay-icon pay-kakao">K</span><span class="pay-label">카카오페이</span><span class="pay-check"></span>
-              </label>
-              <label class="pay-method">
-                <input type="radio" name="payMethod">
-                <span class="pay-icon pay-naver">N</span><span class="pay-label">네이버페이</span><span class="pay-check"></span>
-              </label>
-              <label class="pay-method">
-                <input type="radio" name="payMethod">
-                <span class="pay-icon pay-toss">T</span><span class="pay-label">토스페이</span><span class="pay-check"></span>
-              </label>
-              <label class="pay-method">
-                <input type="radio" name="payMethod">
-                <span class="pay-icon pay-card"><svg width="15" height="15" viewBox="0 0 20 20" fill="none"><rect x="2" y="5" width="16" height="11" rx="1.6" stroke="currentColor" stroke-width="1.3"/><path d="M2 8.5h16" stroke="currentColor" stroke-width="1.3"/></svg></span><span class="pay-label">신용 · 체크카드</span><span class="pay-check"></span>
-              </label>
+            <p class="toss-test-notice"><strong>토스페이먼츠 테스트 결제</strong><br>아래 결제수단으로 테스트할 수 있으며 실제 금액은 청구되지 않습니다.</p>
+            <div id="tossPaymentMethods" aria-live="polite">
+              <p class="toss-loading">결제수단을 불러오는 중입니다.</p>
             </div>
           </div>
 
           <div class="detail-block">
             <h2>약관 동의</h2>
-            <label class="pay-agree"><input type="checkbox" checked> <span>전체 동의 (필수 항목 포함)</span></label>
-            <label class="pay-agree pay-agree-sub"><input type="checkbox" checked> <span>[필수] 이용약관 및 예약 취소·환불 규정 동의</span></label>
-            <label class="pay-agree pay-agree-sub"><input type="checkbox" checked> <span>[필수] 개인정보 수집 및 이용 동의</span></label>
-            <label class="pay-agree pay-agree-sub"><input type="checkbox"> <span>[선택] 혜택·이벤트 알림 수신 동의</span></label>
+            <div id="tossAgreement" aria-live="polite"></div>
           </div>
 
         </div>
@@ -210,8 +193,8 @@
             <div class="detail-book-row"><span>이용 요금 (1박 · 2명)</span><strong>71,200원</strong></div>
             <div class="detail-book-row"><span>사이트 옵션</span><strong>0원</strong></div>
             <div class="detail-book-row detail-book-total"><span>총 결제 금액</span><strong>71,200원</strong></div>
-            <button class="btn btn-block" id="payConfirmPage" type="button">71,200원 결제하기</button>
-            <p class="detail-book-note">결제 진행 시 이용약관 및 환불 규정에 동의한 것으로 간주됩니다.</p>
+            <button class="btn btn-block" id="payConfirmPage" type="button" disabled>71,200원 결제하기</button>
+            <p class="detail-book-note" id="paymentStatus" role="status">토스페이먼츠 결제수단을 준비하고 있습니다.</p>
           </div>
         </aside>
 
@@ -221,28 +204,6 @@
 
 </main>
 
-<!-- ============ 팝업: 결제 완료 안내 ============ -->
-<div class="site-popup" id="paySuccessPopup">
-  <div class="popup-inner">
-    <button class="popup-close" type="button" aria-label="닫기">
-      <svg width="16" height="16" viewBox="0 0 22 22" fill="none"><path d="M4 4l14 14M18 4L4 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-    </button>
-    <span class="eyebrow"><i></i>Payment Complete</span>
-    <h2>예약이 확정되었습니다</h2>
-    <p>태안 선셋 캠프사이트 · 7월 26일(토) · 1박 · 2명<br>예약 확인서를 이메일로 보내드렸어요.</p>
-    <a href="../index.html" class="btn popup-cta">홈으로 돌아가기</a>
-  </div>
-</div>
-
-<script>
-  document.getElementById('payConfirmPage')?.addEventListener('click', function(){
-    var popup = document.getElementById('paySuccessPopup');
-    popup.style.display = 'flex';
-  });
-  document.querySelectorAll('#paySuccessPopup .popup-close').forEach(function(btn){
-    btn.addEventListener('click', function(){ document.getElementById('paySuccessPopup').style.display='none'; });
-  });
-</script>
 <!-- ============ 푸터 ============ -->
 <footer class="site-footer">
   <div class="wrap footer-top">
@@ -271,5 +232,8 @@
 </footer>
 
 <script src="../js/script.js"></script>
+<script src="https://js.tosspayments.com/v2/standard"></script>
+<script src="../js/toss-payment-config.js"></script>
+<script src="../js/toss-payment.js?v=1"></script>
 </body>
 </html>

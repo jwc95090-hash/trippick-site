@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700&family=Noto+Serif+KR:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/styles.css">
+  <title>결제 승인 중 | TRIPPICK</title>
+</head>
+<body>
+  <main class="payment-result-page">
+    <section class="payment-result-card" aria-live="polite">
+      <span class="eyebrow"><i></i>Toss Payments</span>
+      <h1 id="resultTitle">결제를 승인하고 있습니다</h1>
+      <p id="resultMessage">창을 닫지 말고 잠시만 기다려 주세요.</p>
+      <div class="payment-result-details" id="resultDetails" hidden></div>
+      <div class="payment-result-actions" id="resultActions" hidden>
+        <a href="../index.html" class="btn">홈으로 돌아가기</a>
+        <a href="payment.html" class="btn btn-secondary" id="retryLink">다시 결제하기</a>
+      </div>
+    </section>
+  </main>
+  <script src="../js/toss-payment-config.js"></script>
+  <script src="../js/toss-payment-success.js?v=1"></script>
+</body>
+</html>
