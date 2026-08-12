@@ -1,0 +1,6 @@
+name = "trippick-ai"
+main = "src/index.js"
+compatibility_date = "2026-08-12"
+
+[vars]
+ALLOWED_ORIGIN = "https://jwc95090-hash.github.io"

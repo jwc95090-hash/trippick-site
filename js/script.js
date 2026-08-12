@@ -1399,3 +1399,17 @@ document.addEventListener('DOMContentLoaded', () => {
   })();
 
 });
+
+// AI 챗봇은 별도 파일로 관리하며, 현재 페이지의 js/ 경로를 기준으로 불러옵니다.
+(function loadAiChat() {
+  const current = document.currentScript;
+  if (!current || !current.src) return;
+  const config = document.createElement('script');
+  config.src = new URL('ai-chat-config.js', current.src).href;
+  config.onload = function () {
+    const chat = document.createElement('script');
+    chat.src = new URL('ai-chat.js', current.src).href;
+    document.head.appendChild(chat);
+  };
+  document.head.appendChild(config);
+})();
