@@ -8,7 +8,8 @@
     auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
   });
   window.trippickHostSupabase = db;
-  let passwordRecoveryMode = /(?:[?#&])(?:type=recovery|password-reset=1)/.test(location.href);
+  const PORTFOLIO_PUBLIC_MODE = true;
+  let passwordRecoveryMode = PORTFOLIO_PUBLIC_MODE ? false : /(?:[?#&])(?:type=recovery|password-reset=1)/.test(location.href);
 
   const state = {
     posts: [],
@@ -167,6 +168,20 @@
   }
 
   async function requireAdmin() {
+    if (PORTFOLIO_PUBLIC_MODE) {
+      document.getElementById('hostAuthGate')?.remove();
+      const shell = document.querySelector('.host-shell');
+      shell?.removeAttribute('inert');
+      shell?.removeAttribute('aria-hidden');
+      document.querySelectorAll('.host-logout, #hostSignOut').forEach(el => el.remove());
+      document.querySelectorAll('.host-account-name').forEach(el => { el.textContent = 'TRIPPICK 관리자 데모'; });
+      document.querySelectorAll('.host-account-role').forEach(el => { el.textContent = '포트폴리오 공개 모드'; });
+      const topbarUser = document.querySelector('.host-user');
+      if (topbarUser) topbarUser.innerHTML = '<span><strong>관리자 데모</strong><small>로그인 없이 둘러보기</small></span>';
+      await renderCurrentPage();
+      startAutoRefresh();
+      return true;
+    }
     if (passwordRecoveryMode) {
       const { data } = await db.auth.getSession();
       if (data.session) {
