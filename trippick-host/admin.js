@@ -200,3 +200,22 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
 });
+
+/* Supabase 공개 키로 접속하되, 실제 조회·수정 권한은 로그인 사용자의 admin RLS로 판정합니다. */
+(function loadTrippickHostData() {
+  const current = document.currentScript;
+  if (!current || !current.src) return;
+  const sdk = document.createElement('script');
+  sdk.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.3/dist/umd/supabase.min.js';
+  sdk.onload = function () {
+    const config = document.createElement('script');
+    config.src = '../js/supabase-config.js';
+    config.onload = function () {
+      const data = document.createElement('script');
+      data.src = 'admin-data.js?v=1';
+      document.head.appendChild(data);
+    };
+    document.head.appendChild(config);
+  };
+  document.head.appendChild(sdk);
+})();
