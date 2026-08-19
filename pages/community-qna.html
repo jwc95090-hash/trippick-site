@@ -6,7 +6,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700;800&family=Noto+Serif+KR:wght@400;500;600;700&family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/styles.css">
+<link rel="stylesheet" href="../css/styles.css?v=9">
 <title>상담게시판 · 커뮤니티 | TRIPPICK</title>
 <meta name="description" content="TRIPPICK 상담게시판. 예약과 이용에 대해 궁금한 점을 문의하고 답변을 받아보세요.">
 <link rel="canonical" href="https://jwc95090-hash.github.io/trippick-site/pages/community-qna.html">
@@ -147,11 +147,11 @@
 
       <form class="review-form" id="qnaForm" style="display:none;">
         <div class="cf-field">
-          <span>작성자 이름</span>
+          <label for="qnaAuthor">작성자 이름</label>
           <input type="text" id="qnaAuthor" maxlength="30" placeholder="이름 또는 닉네임을 입력해주세요" required>
         </div>
         <div class="cf-field">
-          <span>문의유형</span>
+          <label for="qnaCategory">문의유형</label>
           <select id="qnaCategory">
             <option value="예약문의">예약문의</option>
             <option value="이용문의">이용문의</option>
@@ -160,11 +160,11 @@
           </select>
         </div>
         <div class="cf-field">
-          <span>제목</span>
+          <label for="qnaTitle">제목</label>
           <input type="text" id="qnaTitle" placeholder="제목을 입력해주세요" required>
         </div>
         <div class="cf-field">
-          <span>내용</span>
+          <label for="qnaBody">내용</label>
           <textarea id="qnaBody" rows="5" placeholder="궁금하신 내용을 자세히 남겨주세요" required></textarea>
         </div>
         <div class="cf-field">
@@ -174,7 +174,7 @@
           </label>
         </div>
         <div class="cf-field" id="qnaSecretPwField" style="display:none;">
-          <span>비밀번호</span>
+          <label for="qnaSecretPw">비밀번호</label>
           <input type="password" id="qnaSecretPw" placeholder="숫자 4~12자리" inputmode="numeric" pattern="[0-9]{4,12}">
         </div>
         <div style="display:flex; gap:10px;">
@@ -217,7 +217,7 @@
   </div>
 </footer>
 
-<script src="../js/script.js?v=13"></script>
+<script src="../js/script.js?v=15"></script>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   const QNA_KEY = 'trippick_qna_v1';
