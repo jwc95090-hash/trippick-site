@@ -645,3 +645,31 @@ button.host-consult-item{width:100%; color:inherit; text-align:left; background:
 .mt-18{margin-top:18px;}
 .opacity-60{opacity:.6;}
 .label-118{display:inline-block; width:118px;}
+
+
+/* ---------- 회원 관리: 공개 포트폴리오 개인정보 보호형 목록 ---------- */
+.host-privacy-notice{
+  display:flex; align-items:flex-start; gap:18px; margin-bottom:22px; padding:18px 20px;
+  border:1px solid rgba(173,138,76,.35); background:rgba(173,138,76,.08);
+}
+.host-privacy-notice strong{flex:0 0 auto; color:var(--brass-light); font-size:13px;}
+.host-privacy-notice p{color:var(--host-text-soft); font-size:12.5px; line-height:1.7;}
+.host-member-toolbar{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:18px;}
+.host-member-toolbar .host-search{flex:1; max-width:480px;}
+.host-member-table-wrap{overflow-x:auto; border:1px solid var(--host-border-soft);}
+.host-member-table{min-width:760px;}
+.host-member-row{
+  display:grid; grid-template-columns:1.2fr 1.6fr .9fr .9fr .7fr;
+  align-items:center; gap:14px; min-height:62px; padding:12px 16px;
+  border-bottom:1px solid var(--host-border-soft); color:var(--host-text-soft); font-size:12.5px;
+}
+.host-member-row:last-child{border-bottom:0;}
+.host-member-head{min-height:44px; background:var(--host-raise); color:var(--host-text-mute); font-family:var(--caps); font-size:10px; letter-spacing:.06em;}
+.host-member-row strong{color:var(--ivory); font-family:var(--caps); font-size:12px; letter-spacing:.03em;}
+.host-member-provider{display:inline-flex; padding:5px 9px; border:1px solid var(--host-border); border-radius:999px; color:var(--brass-light);}
+.host-stat-date{font-size:clamp(18px,2vw,25px)!important;}
+@media(max-width:720px){
+  .host-privacy-notice{flex-direction:column; gap:7px;}
+  .host-member-toolbar{align-items:stretch; flex-direction:column;}
+  .host-member-toolbar .host-search{max-width:none;}
+}
