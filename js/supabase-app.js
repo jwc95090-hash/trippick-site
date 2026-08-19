@@ -99,13 +99,51 @@
         password: passwords[0]?.value,
         options: {
           emailRedirectTo: 'https://jwc95090-hash.github.io/trippick-site/pages/login.html',
-          data: { full_name: email.split('@')[0] }
+          data: {
+            full_name: email.split('@')[0],
+            welcome_coupon_code: 'TRIPPICK10',
+            welcome_coupon_discount: 10,
+            welcome_coupon_issued_at: new Date().toISOString()
+          }
         }
       });
       if (error) return message(form, error.message, true);
+      try {
+        localStorage.setItem('trippick_welcome_coupon_v1', JSON.stringify({
+          code: 'TRIPPICK10', discount: 10, issuedAt: new Date().toISOString(), used: false
+        }));
+      } catch (e) { /* 저장 실패는 회원가입을 막지 않음 */ }
       if (data.session) location.href = 'mypage.html';
-      else message(form, '가입 확인 메일을 보냈습니다. 이메일의 인증 링크를 눌러주세요.', false);
+      else message(form, '가입 확인 메일을 보냈습니다. 인증을 마치면 마이페이지에 첫 예약 10% 할인 쿠폰이 자동으로 담겨요.', false);
     }, true);
+  }
+
+  async function setupMypageCoupon() {
+    if (!/\/mypage\.html$/.test(location.pathname)) return;
+    const user = await currentUser();
+    if (!user) return;
+    const content = document.querySelector('.mypage-content');
+    const menuGrid = content?.querySelector('.mypage-menu-grid');
+    if (!content || !menuGrid || document.getElementById('welcomeCouponCard')) return;
+
+    let coupon = null;
+    try { coupon = JSON.parse(localStorage.getItem('trippick_welcome_coupon_v1')); } catch (e) { /* 무시 */ }
+    const metadata = user.user_metadata || {};
+    const discount = Number(coupon?.discount || metadata.welcome_coupon_discount || 10);
+    const code = coupon?.code || metadata.welcome_coupon_code || 'TRIPPICK10';
+
+    menuGrid.insertAdjacentHTML('beforebegin', `
+      <section id="welcomeCouponCard" aria-label="내 쿠폰" style="margin-bottom:28px;padding:24px;border:1px solid var(--line);background:var(--ivory);display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;">
+        <div>
+          <span class="eyebrow"><i></i>Welcome Coupon</span>
+          <h3 style="font-family:var(--serif);font-size:22px;margin:7px 0;">첫 예약 ${discount}% 할인 쿠폰</h3>
+          <p style="font-size:13px;color:var(--text-mute);">회원가입 축하 쿠폰이 자동으로 발급되었습니다. 첫 예약 결제 시 사용할 수 있어요.</p>
+        </div>
+        <div style="min-width:150px;padding:18px 22px;background:var(--brand);color:#fff;text-align:center;border-radius:4px;">
+          <strong style="display:block;font-size:30px;line-height:1;">${discount}%</strong>
+          <span style="display:block;margin-top:8px;font-size:11px;letter-spacing:.08em;">${esc(code)}</span>
+        </div>
+      </section>`);
   }
 
   async function setupReviewForm() {
@@ -196,7 +234,10 @@
       list.innerHTML = data.length ? data.map(post => `<details class="faq-item"><summary>
         <span>${post.is_secret ? '🔒 ' : ''}${esc(post.title)}</span>
         <span style="font-size:11.5px;color:var(--text-mute);margin-left:auto;">${esc(post.author_name)} · ${new Date(post.created_at).toLocaleDateString('ko-KR')}</span>
-      </summary><p>${esc(post.body)}</p>${post.admin_answer ? `<div style="margin:12px 0;padding:14px;background:var(--ivory);">트립픽 답변: ${esc(post.admin_answer)}</div>` : ''}</details>`).join('') : '<p>아직 등록된 문의가 없습니다.</p>';
+      </summary>${post.is_secret
+        ? '<p style="color:var(--text-mute);">비밀번호가 설정된 비밀글입니다. 작성자만 내용을 확인할 수 있습니다.</p>'
+        : `<p>${esc(post.body)}</p>${post.admin_answer ? `<div style="margin:12px 0;padding:14px;background:var(--ivory);">트립픽 답변: ${esc(post.admin_answer)}</div>` : ''}`
+      }</details>`).join('') : '<p>아직 등록된 문의가 없습니다.</p>';
     };
     form.addEventListener('submit', async event => {
       event.preventDefault();
@@ -223,6 +264,7 @@
     setupLogin();
     setupSignup();
     await updateAuthLinks();
+    await setupMypageCoupon();
     await setupReviewForm();
     await renderPublicReviews();
     await setupBoard();
