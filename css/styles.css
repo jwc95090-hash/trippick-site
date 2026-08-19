@@ -1364,6 +1364,24 @@ textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible{
   position:absolute; left:14px; bottom:14px; width:34px; height:34px; border-radius:50%;
   background:rgba(19,32,24,.72); display:flex; align-items:center; justify-content:center;
 }
+.video-status-badge{
+  position:absolute; left:10px; top:10px; z-index:2; padding:5px 9px;
+  background:rgba(19,32,24,.82); color:var(--ivory); font-size:10.5px;
+  font-family:var(--caps); letter-spacing:.04em; pointer-events:none;
+}
+.video-card-pending{cursor:pointer;}
+.video-card-pending:focus-visible{outline:3px solid var(--brass); outline-offset:5px;}
+.video-card-pending .video-play{transition:transform .2s ease, background-color .2s ease;}
+.video-card-pending:hover .video-play{transform:scale(1.08); background:rgba(156,74,48,.88);}
+.video-toast{
+  position:fixed; left:50%; bottom:96px; z-index:1200; transform:translate(-50%,12px);
+  max-width:min(420px,calc(100vw - 32px)); padding:13px 18px; border-radius:999px;
+  background:var(--forest); color:var(--ivory); font-size:13px; text-align:center;
+  box-shadow:0 12px 32px rgba(19,32,24,.24); opacity:0; pointer-events:none;
+  transition:opacity .22s ease, transform .22s ease;
+}
+.video-toast.is-visible{opacity:1; transform:translate(-50%,0);}
+
 .video-duration{
   position:absolute; right:10px; bottom:10px; background:rgba(19,32,24,.72); color:var(--ivory);
   font-size:10.5px; padding:3px 7px; font-family:var(--caps); letter-spacing:.04em;
