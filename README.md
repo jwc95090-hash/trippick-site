@@ -7,7 +7,7 @@
 - [상담게시판](https://jwc95090-hash.github.io/trippick-site/pages/community-qna.html)
 - [리뷰게시판](https://jwc95090-hash.github.io/trippick-site/pages/community-reviews.html)
 
-> 호스트센터는 포트폴리오 검토를 위해 로그인 없이 열리는 읽기 중심 공개 데모입니다. 비밀 상담글 본문과 실제 관리 권한은 공개 화면에서 제한됩니다.
+> 호스트센터는 포트폴리오 검토를 위해 로그인 없이 열리는 공개 데모입니다. 일부 입력·상태 변경 인터랙션은 화면에서 체험할 수 있지만 실제 관리자 권한과 민감한 데이터는 제공하지 않으며, 비밀 상담글 본문은 숫자 비밀번호 확인 후에만 열립니다.
 
 ## 주요 기능
 
@@ -20,7 +20,8 @@
 - 로그인 여부와 관계없는 상담글 목록·비회원 상담 작성
 - 숫자 비밀번호로 보호되는 비밀 상담글
 - 24시간 AI 상담 UI와 Cloudflare Worker 프록시 구조
-- 고객 사이트와 호스트센터 간 왕복 동선
+- 로그인 없이 확인 가능한 공개 호스트센터와 고객 사이트 간 왕복 동선
+- 호스트 상담·리뷰 화면의 공개 데이터 연결 및 안전한 예시 데이터 대체 표시
 - 반응형 레이아웃, 모바일 하단 탭, 퀵메뉴, 팝업
 
 ## 기술 구성
@@ -50,6 +51,8 @@ js/script.js               공통 UI, 검색, 팝업, 퀵메뉴, 접근성 동�
 js/supabase-app.js         회원·쿠폰·리뷰·상담 데이터 연결
 js/ai-chat.js              AI 상담 클라이언트
 trippick-host/             공개 포트폴리오용 호스트센터
+  admin-data.js            상담·리뷰 공개 데이터 연결
+  admin.js                 호스트 공통 인터랙션·렌더링
 worker/                    AI 상담용 Cloudflare Worker
 images/, videos/           이미지·영상 에셋
 sitemap.xml, robots.txt    검색엔진 노출 설정
