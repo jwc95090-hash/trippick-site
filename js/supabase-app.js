@@ -226,36 +226,99 @@
     const form = document.getElementById('qnaForm');
     const list = document.getElementById('qnaList');
     if (!form || !list) return;
+
+    const authorInput = document.getElementById('qnaAuthor');
+    const user = await currentUser();
+    if (user && authorInput) {
+      authorInput.value = user.user_metadata?.full_name || user.email?.split('@')[0] || '';
+    }
+
     const render = async () => {
       const pagination = document.getElementById('qnaPagination');
       if (pagination) pagination.innerHTML = '';
-      const { data } = await db.from('board_posts').select('id,author_name,category,title,body,is_secret,admin_answer,status,created_at').order('created_at', { ascending: false }).limit(100);
-      if (!data) return;
-      list.innerHTML = data.length ? data.map(post => `<details class="faq-item"><summary>
-        <span>${post.is_secret ? '🔒 ' : ''}${esc(post.title)}</span>
-        <span style="font-size:11.5px;color:var(--text-mute);margin-left:auto;">${esc(post.author_name)} · ${new Date(post.created_at).toLocaleDateString('ko-KR')}</span>
-      </summary>${post.is_secret
-        ? '<p style="color:var(--text-mute);">비밀번호가 설정된 비밀글입니다. 작성자만 내용을 확인할 수 있습니다.</p>'
-        : `<p>${esc(post.body)}</p>${post.admin_answer ? `<div style="margin:12px 0;padding:14px;background:var(--ivory);">트립픽 답변: ${esc(post.admin_answer)}</div>` : ''}`
-      }</details>`).join('') : '<p>아직 등록된 문의가 없습니다.</p>';
+      const { data, error } = await db.rpc('list_board_posts');
+      if (error) {
+        list.innerHTML = '<p>상담글을 불러오지 못했습니다. 잠시 후 다시 시도해주세요.</p>';
+        return;
+      }
+      list.innerHTML = data.length ? data.map(post => `<details class="faq-item" data-server-post-id="${post.id}" data-secret="${post.is_secret}">
+        <summary>
+          <span>${post.is_secret ? '🔒 ' : ''}${esc(post.title)}</span>
+          <span style="font-size:11.5px;color:var(--text-mute);margin-left:auto;">${esc(post.author_name)} · ${new Date(post.created_at).toLocaleDateString('ko-KR')}</span>
+        </summary>
+        ${post.is_secret ? `
+          <div class="server-secret-gate" style="padding:18px;background:var(--ivory);text-align:center;">
+            <p style="font-size:12.5px;color:var(--text-mute);margin-bottom:12px;">비밀글입니다. 작성자가 설정한 숫자 비밀번호를 입력해주세요.</p>
+            <div style="display:flex;gap:8px;justify-content:center;max-width:280px;margin:0 auto;">
+              <input type="password" inputmode="numeric" class="server-secret-password" placeholder="비밀번호" style="flex:1;min-width:0;padding:9px 11px;border:1px solid var(--line);">
+              <button type="button" class="btn-ghost server-secret-submit">확인</button>
+            </div>
+            <p class="server-secret-error" style="display:none;color:var(--secondary);font-size:11.5px;margin-top:9px;">비밀번호가 일치하지 않습니다.</p>
+          </div>
+          <div class="server-secret-content" style="display:none;"></div>`
+        : `<p>${esc(post.body)}</p>${post.admin_answer ? `<div style="margin:12px 0;padding:14px;background:var(--ivory);">트립픽 답변: ${esc(post.admin_answer)}</div>` : ''}`}
+      </details>`).join('') : '<p>아직 등록된 문의가 없습니다.</p>';
     };
+
+    list.addEventListener('click', async event => {
+      const button = event.target.closest('.server-secret-submit');
+      if (!button) return;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      const details = button.closest('details');
+      const input = details.querySelector('.server-secret-password');
+      const errorEl = details.querySelector('.server-secret-error');
+      const password = input.value.trim();
+      if (!/^\d{4,12}$/.test(password)) {
+        errorEl.textContent = '숫자 4~12자리를 입력해주세요.';
+        errorEl.style.display = 'block';
+        return;
+      }
+      button.disabled = true;
+      const { data, error } = await db.rpc('unlock_board_post', {
+        p_post_id: Number(details.dataset.serverPostId),
+        p_password: password
+      });
+      button.disabled = false;
+      if (error || !data?.length) {
+        errorEl.textContent = '비밀번호가 일치하지 않습니다.';
+        errorEl.style.display = 'block';
+        input.value = '';
+        input.focus();
+        return;
+      }
+      const post = data[0];
+      details.querySelector('.server-secret-gate').style.display = 'none';
+      const content = details.querySelector('.server-secret-content');
+      content.innerHTML = `<p>${esc(post.body)}</p>${post.admin_answer ? `<div style="margin:12px 0;padding:14px;background:var(--ivory);">트립픽 답변: ${esc(post.admin_answer)}</div>` : ''}`;
+      content.style.display = 'block';
+    }, true);
+
     form.addEventListener('submit', async event => {
       event.preventDefault();
       event.stopImmediatePropagation();
-      const user = await currentUser();
-      if (!user) { alert('문의 작성은 로그인 후 이용할 수 있습니다.'); location.href = 'login.html'; return; }
       const rawCategory = document.getElementById('qnaCategory').value;
       const category = /취소|환불/.test(rawCategory) ? '취소/환불' : /이용|시설/.test(rawCategory) ? '시설' : /예약/.test(rawCategory) ? '예약' : '기타';
-      const { error } = await db.from('board_posts').insert({
-        user_id: user.id,
-        author_name: user.user_metadata?.full_name || user.email.split('@')[0],
-        category,
-        title: document.getElementById('qnaTitle').value.trim(),
-        body: document.getElementById('qnaBody').value.trim(),
-        is_secret: document.getElementById('qnaSecretToggle').checked
+      const isSecret = document.getElementById('qnaSecretToggle').checked;
+      const password = document.getElementById('qnaSecretPw').value.trim();
+      const authorName = authorInput?.value.trim() || '';
+      if (authorName.length < 2) return alert('작성자 이름을 2자 이상 입력해주세요.');
+      if (isSecret && !/^\d{4,12}$/.test(password)) return alert('비밀글 비밀번호는 숫자 4~12자리로 입력해주세요.');
+
+      const { error } = await db.rpc('create_board_post', {
+        p_author_name: authorName,
+        p_category: category,
+        p_title: document.getElementById('qnaTitle').value.trim(),
+        p_body: document.getElementById('qnaBody').value.trim(),
+        p_is_secret: isSecret,
+        p_password: isSecret ? password : null
       });
       if (error) return alert(error.message);
-      form.reset(); form.style.display = 'none'; await render();
+      form.reset();
+      if (user && authorInput) authorInput.value = user.user_metadata?.full_name || user.email?.split('@')[0] || '';
+      document.getElementById('qnaSecretPwField').style.display = 'none';
+      form.style.display = 'none';
+      await render();
     }, true);
     await render();
   }
