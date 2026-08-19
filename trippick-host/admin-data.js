@@ -14,6 +14,7 @@
   const state = {
     posts: [],
     reviews: [],
+    members: [],
     selectedPostId: null,
     reviewMode: 'all',
     reviewQuery: '',
@@ -479,8 +480,87 @@
     await renderReviews();
   }
 
+  function maskedMemberId(value) {
+    const id = String(value || '').replace(/-/g, '');
+    return id ? `TP-${id.slice(0, 4).toUpperCase()}••••${id.slice(-4).toUpperCase()}` : 'TP-미확인';
+  }
+
+  function memberProviderLabel(value) {
+    const provider = String(value || 'email').toLowerCase();
+    if (provider === 'email') return '이메일';
+    if (provider === 'google') return 'Google';
+    return provider.replace(/[^a-z0-9_-]/gi, '').slice(0, 20) || '소셜 로그인';
+  }
+
+  async function renderMembers() {
+    if (!/admin-members\.html$/.test(location.pathname)) return;
+    const target = document.getElementById('hostMemberTable');
+    if (!target) return;
+
+    const { data, error } = await db.from('portfolio_members')
+      .select('user_id,masked_email,signup_provider,joined_at')
+      .order('joined_at', { ascending: false });
+
+    if (error) {
+      target.innerHTML = `<div class="host-empty-state"><strong>회원 정보를 불러오지 못했습니다</strong><p>${esc(error.message)}</p></div>`;
+      return;
+    }
+
+    state.members = data || [];
+    const emailMembers = state.members.filter(member => String(member.signup_provider || 'email').toLowerCase() === 'email');
+    const socialMembers = state.members.filter(member => String(member.signup_provider || '').toLowerCase() !== 'email');
+    const latest = state.members[0]?.joined_at ? new Date(state.members[0].joined_at).toLocaleDateString('ko-KR') : '-';
+    setStat(0, state.members.length, '명', '실제 가입 데이터', 'up');
+    setStat(1, emailMembers.length, '명', 'Email');
+    setStat(2, socialMembers.length, '명', 'Google 등');
+    setStat(3, latest, '', '가입일 기준');
+
+    const navCount = document.getElementById('memberNavCount');
+    if (navCount) navCount.textContent = state.members.length;
+
+    const search = document.getElementById('hostMemberSearch');
+    const provider = document.getElementById('hostMemberProvider');
+
+    const draw = () => {
+      const query = String(search?.value || '').trim().toLowerCase();
+      const mode = provider?.value || 'all';
+      const visible = state.members.filter(member => {
+        const providerValue = String(member.signup_provider || 'email').toLowerCase();
+        const providerMatch = mode === 'all'
+          || (mode === 'email' && providerValue === 'email')
+          || (mode === 'social' && providerValue !== 'email');
+        const textMatch = !query || [maskedMemberId(member.user_id), member.masked_email]
+          .some(value => String(value || '').toLowerCase().includes(query));
+        return providerMatch && textMatch;
+      });
+
+      target.innerHTML = visible.length ? `<div class="host-member-table" role="table" aria-label="가입 회원 목록">
+        <div class="host-member-row host-member-head" role="row">
+          <span role="columnheader">회원 아이디</span><span role="columnheader">이메일</span><span role="columnheader">가입 방법</span><span role="columnheader">가입일</span><span role="columnheader">상태</span>
+        </div>
+        ${visible.map(member => `<div class="host-member-row" role="row">
+          <strong role="cell">${esc(maskedMemberId(member.user_id))}</strong>
+          <span role="cell">${esc(member.masked_email || '이메일 비공개')}</span>
+          <span role="cell"><span class="host-member-provider">${esc(memberProviderLabel(member.signup_provider))}</span></span>
+          <time role="cell" datetime="${esc(member.joined_at || '')}">${esc(member.joined_at ? new Date(member.joined_at).toLocaleDateString('ko-KR') : '-')}</time>
+          <span role="cell"><span class="host-pill host-pill-sage"><i></i>가입 완료</span></span>
+        </div>`).join('')}
+      </div>` : '<div class="host-empty-state"><strong>조건에 맞는 회원이 없습니다</strong><p>검색어나 가입 방법 필터를 변경해보세요.</p></div>';
+    };
+
+    if (search && !search.dataset.bound) {
+      search.dataset.bound = 'true';
+      search.addEventListener('input', draw);
+    }
+    if (provider && !provider.dataset.bound) {
+      provider.dataset.bound = 'true';
+      provider.addEventListener('change', draw);
+    }
+    draw();
+  }
+
   async function renderCurrentPage() {
-    await Promise.all([renderNavCounts(), renderPosts(), renderReviews()]);
+    await Promise.all([renderNavCounts(), renderPosts(), renderReviews(), renderMembers()]);
   }
 
   async function renderNavCounts() {
