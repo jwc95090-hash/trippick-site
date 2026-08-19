@@ -549,6 +549,47 @@ textarea:focus-visible,
 .host-msg.from-host{align-self:flex-end; background:rgba(173,138,76,.18); color:var(--ivory); border-bottom-right-radius:3px;}
 .host-msg time{display:block; font-size:10px; color:var(--host-text-mute); margin-top:6px;}
 
+/* ---------- Supabase 연동 관리자 상태 ---------- */
+.host-auth-gate{position:fixed; inset:0; z-index:1000; display:grid; place-items:center; padding:20px; background:rgba(8,20,14,.94); backdrop-filter:blur(12px);}
+.host-auth-card{width:min(420px,100%); padding:34px; border:1px solid var(--host-border); border-radius:18px; background:var(--host-panel); box-shadow:var(--host-shadow);}
+.host-auth-kicker{font-family:var(--caps); color:var(--brass-light); font-size:11px; letter-spacing:.18em;}
+.host-auth-card h1{margin:10px 0 8px; font-family:var(--serif); font-size:28px;}
+.host-auth-card>p{margin-bottom:24px; color:var(--host-text-mute); font-size:13px; line-height:1.7;}
+.host-auth-card form{display:grid; gap:15px;}
+.host-auth-card label{display:grid; gap:7px; color:var(--host-text-soft); font-size:12px;}
+.host-auth-card input{width:100%; min-height:48px; padding:0 14px; border:1px solid var(--host-border); border-radius:9px; color:var(--ivory); background:var(--host-panel-2);}
+.host-auth-card input:focus-visible{outline:2px solid var(--brass-light); outline-offset:2px;}
+.host-auth-card form .host-btn{margin-top:5px; justify-content:center;}
+.host-auth-message{min-height:20px; color:var(--ember-light); font-size:12px;}
+.host-auth-reset-link{justify-self:center; padding:5px; color:var(--brass-light); font-size:12px; text-decoration:underline; text-underline-offset:3px;}
+.host-auth-reset-link:hover{color:var(--ivory);}
+.host-auth-reset-link:disabled{opacity:.55; cursor:wait;}
+.host-auth-card>a{display:inline-block; margin-top:18px; color:var(--host-text-mute); font-size:12px; text-decoration:underline;}
+.host-user-session{display:flex; align-items:center; gap:10px; color:inherit; text-align:left;}
+.host-user-session small{display:block; max-width:190px; overflow:hidden; color:var(--host-text-mute); text-overflow:ellipsis; white-space:nowrap;}
+.host-data-toast{position:fixed; right:24px; bottom:24px; z-index:1100; max-width:380px; padding:13px 17px; border:1px solid var(--host-border); border-radius:10px; background:var(--host-panel); color:var(--ivory); box-shadow:var(--host-shadow); opacity:0; transform:translateY(16px); pointer-events:none; transition:.22s;}
+.host-data-toast.show{opacity:1; transform:translateY(0);}
+.host-data-toast.success{border-color:var(--sage-light);}
+.host-data-toast.error{border-color:var(--ember-light);}
+.host-empty-state{padding:40px 22px; border:1px dashed var(--host-border); border-radius:12px; color:var(--host-text-mute); text-align:center;}
+.host-empty-state strong{display:block; margin-bottom:7px; color:var(--ivory); font-size:15px;}
+.host-empty-state p{margin-bottom:18px; font-size:12.5px; line-height:1.7;}
+button.host-consult-item{width:100%; color:inherit; text-align:left; background:transparent;}
+.host-consult-preview{display:flex; align-items:center; gap:8px; min-width:0; overflow:hidden; color:var(--host-text-mute); font-size:12px; text-overflow:ellipsis; white-space:nowrap;}
+.host-consult-preview .host-pill{flex-shrink:0; padding:3px 7px; font-size:10px;}
+.host-consult-title{margin-bottom:16px; color:var(--ivory); font-family:var(--serif); font-size:18px; line-height:1.5;}
+.host-data-reply-form{align-items:stretch; flex-direction:column;}
+.host-data-actions{display:flex; justify-content:flex-end; gap:8px;}
+.host-review-card.is-hidden{opacity:.62;}
+.host-review-status{display:flex; align-items:center; gap:9px;}
+.host-review-body strong{color:var(--ivory);}
+@media (max-width:680px){
+  .host-auth-card{padding:26px 20px;}
+  .host-data-actions{align-items:stretch; flex-direction:column;}
+  .host-data-actions .host-btn{justify-content:center;}
+  .host-review-top{align-items:flex-start; flex-direction:column;}
+}
+
 /* 스크롤바 */
 .host-nav::-webkit-scrollbar, .host-consult-list::-webkit-scrollbar{width:6px;}
 .host-nav::-webkit-scrollbar-thumb, .host-consult-list::-webkit-scrollbar-thumb{background:var(--host-raise); border-radius:3px;}

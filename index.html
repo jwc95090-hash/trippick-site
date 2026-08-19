@@ -16,7 +16,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700;800&family=Noto+Serif+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/styles.css?v=7">
+<link rel="stylesheet" href="css/styles.css?v=8">
 </head>
 <body>
 
@@ -181,6 +181,56 @@
           캠핑장 찾기
         </button>
       </div>
+      <details class="filter-more" id="advancedFilter">
+        <summary>
+          <span>
+            <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 5h14M5.5 10h9M8 15h4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+            상세 조건으로 더 정확하게 찾기
+          </span>
+          <span class="filter-more-count" id="advancedFilterCount" aria-live="polite">선택 0</span>
+        </summary>
+        <div class="advanced-filter-grid">
+          <label class="advanced-field advanced-field-keyword">
+            <span>키워드</span>
+            <input id="keywordInput" type="search" placeholder="캠핑장명, 계곡, 해변…" autocomplete="off">
+          </label>
+          <label class="advanced-field">
+            <span>인원</span>
+            <select id="guestInput">
+              <option value="2">2명</option>
+              <option value="3">3명</option>
+              <option value="4">4명</option>
+              <option value="5">5명 이상</option>
+            </select>
+          </label>
+          <label class="advanced-field">
+            <span>결과 정렬</span>
+            <select id="sortInput">
+              <option value="recommend">추천순</option>
+              <option value="name">이름순</option>
+              <option value="recent">최근 등록순</option>
+            </select>
+          </label>
+          <fieldset class="advanced-field advanced-facilities">
+            <legend>필수 시설</legend>
+            <div class="filter-chips" id="facilityFilters">
+              <label><input type="checkbox" value="전기"><span>전기</span></label>
+              <label><input type="checkbox" value="온수"><span>온수</span></label>
+              <label><input type="checkbox" value="샤워"><span>샤워실</span></label>
+              <label><input type="checkbox" value="와이파이"><span>와이파이</span></label>
+              <label><input type="checkbox" value="반려동물"><span>반려동물</span></label>
+              <label><input type="checkbox" value="물놀이"><span>물놀이</span></label>
+            </div>
+          </fieldset>
+          <label class="switch-field">
+            <input id="beginnerInput" type="checkbox">
+            <span class="switch-ui" aria-hidden="true"></span>
+            <span><strong>초보 안심 캠핑장만</strong><small>화장실·샤워실·전기 정보가 확인된 곳</small></span>
+          </label>
+          <button class="advanced-reset" id="advancedFilterReset" type="button">상세 조건 초기화</button>
+        </div>
+      </details>
+      <p class="filter-assist" id="filterAssist" aria-live="polite">지역과 스타일을 고른 뒤, 필요한 시설까지 한 번에 비교해보세요.</p>
     </div>
   </div>
 
@@ -210,8 +260,15 @@
         <div><span class="eyebrow"><i></i>Search</span><h2 id="filterResultsTitle">검색 결과</h2></div>
         <a href="#" class="link-underline" id="filterResultsReset">필터 초기화</a>
       </div>
-      <p id="filterResultsNote"></p>
+      <div class="result-summary-row">
+        <p id="filterResultsNote" aria-live="polite"></p>
+        <span class="result-data-badge">한국관광공사 공공데이터</span>
+      </div>
+      <div class="active-filter-chips" id="activeFilterChips" aria-label="적용된 검색 조건"></div>
       <div class="grid" id="filterResultsGrid"></div>
+      <div class="result-more-wrap">
+        <button class="btn-outline" id="filterResultsMore" type="button" hidden>결과 더 보기</button>
+      </div>
     </div>
   </section>
 
@@ -230,6 +287,76 @@
         <a class="cat-tile" href="pages/mountain.html"><div class="cat-circle"><svg viewBox="0 0 20 20" fill="none"><path d="M2 15l4-6 3 4 3-7 6 9H2z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg></div><span>마운틴뷰</span></a>
         <a class="cat-tile" href="pages/sea.html"><div class="cat-circle"><svg viewBox="0 0 20 20" fill="none"><path d="M2 8.5c1.5-1.5 3-1.5 4.5 0s3 1.5 4.5 0 3-1.5 4.5 0" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M2 13c1.5-1.5 3-1.5 4.5 0s3 1.5 4.5 0 3-1.5 4.5 0" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></div><span>바다근처</span></a>
         <a class="cat-tile" href="pages/new.html"><div class="cat-circle"><svg viewBox="0 0 20 20" fill="none"><path d="M10 2L11.6 8.4L18 10L11.6 11.6L10 18L8.4 11.6L2 10L8.4 8.4Z" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/></svg></div><span>신규오픈</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 취향 추천 · 초보 준비도 ============ -->
+  <section class="section planner-section reveal" id="tripMatch">
+    <div class="wrap">
+      <div class="section-head">
+        <div><span class="eyebrow"><i></i>Personal Planner</span><h2>내 캠핑 취향과 준비도를 한 번에</h2></div>
+        <p class="section-head-note">처음이어도 1분이면 추천과 준비 목록이 완성됩니다.</p>
+      </div>
+      <div class="planner-grid">
+        <article class="planner-card match-card">
+          <div class="planner-card-head">
+            <span class="planner-step">01</span>
+            <div><h3>트립픽 취향 매치</h3><p>세 가지 선택으로 나에게 맞는 캠핑장을 추천해요.</p></div>
+          </div>
+          <form id="tripMatchForm" class="match-form">
+            <fieldset>
+              <legend>어떤 풍경에서 쉬고 싶나요?</legend>
+              <div class="match-options">
+                <label><input type="radio" name="nature" value="forest" checked><span>숲·계곡</span></label>
+                <label><input type="radio" name="nature" value="ocean"><span>바다·노을</span></label>
+                <label><input type="radio" name="nature" value="mountain"><span>산·전망</span></label>
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend>원하는 편안함은 어느 정도인가요?</legend>
+              <div class="match-options">
+                <label><input type="radio" name="comfort" value="camping"><span>직접 텐트</span></label>
+                <label><input type="radio" name="comfort" value="glamping" checked><span>편한 글램핑</span></label>
+                <label><input type="radio" name="comfort" value="caravan"><span>프라이빗 카라반</span></label>
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend>누구와 함께 떠나나요?</legend>
+              <div class="match-options">
+                <label><input type="radio" name="party" value="couple" checked><span>둘이서</span></label>
+                <label><input type="radio" name="party" value="family"><span>아이와 가족</span></label>
+                <label><input type="radio" name="party" value="pet"><span>반려동물과</span></label>
+              </div>
+            </fieldset>
+            <button class="btn match-submit" type="submit">내 취향 캠핑장 추천받기</button>
+          </form>
+          <div class="match-result" id="tripMatchResult" aria-live="polite" hidden></div>
+        </article>
+
+        <article class="planner-card readiness-card">
+          <div class="planner-card-head">
+            <span class="planner-step">02</span>
+            <div><h3>첫 캠핑 준비도</h3><p>체크한 내용은 이 브라우저에 자동 저장됩니다.</p></div>
+          </div>
+          <div class="readiness-score">
+            <div class="readiness-ring" id="readinessRing" style="--progress:0">
+              <strong id="readinessPercent">0%</strong><span>준비 완료</span>
+            </div>
+            <div><strong id="readinessMessage">하나씩 준비해볼까요?</strong><p>준비 항목을 체크하면 상황에 맞는 다음 행동을 안내해요.</p></div>
+          </div>
+          <div class="readiness-list" id="readinessList">
+            <label><input type="checkbox" value="site"><span><strong>캠핑장·날짜 정하기</strong><small>날씨와 이동시간까지 확인</small></span></label>
+            <label><input type="checkbox" value="sleep"><span><strong>텐트·침구 준비</strong><small>최저기온 기준으로 침낭 선택</small></span></label>
+            <label><input type="checkbox" value="cook"><span><strong>취사도구·식재료</strong><small>화기 사용 가능 여부 확인</small></span></label>
+            <label><input type="checkbox" value="safety"><span><strong>랜턴·구급함</strong><small>여분 배터리와 상비약 포함</small></span></label>
+            <label><input type="checkbox" value="policy"><span><strong>매너타임·환불 규정</strong><small>입실 전 운영 정책 확인</small></span></label>
+          </div>
+          <div class="readiness-actions">
+            <a href="pages/guide.html" class="btn-outline">초보 캠핑 가이드 보기</a>
+            <button type="button" class="text-btn" id="readinessReset">체크 초기화</button>
+          </div>
+        </article>
       </div>
     </div>
   </section>
@@ -286,8 +413,8 @@
             <p class="p-region">강원 홍천</p>
             <h3 class="p-name"><a href="pages/detail.html">홍천 리버사이드 오토캠핑</a></h3>
             <p class="p-desc">마운틴뷰 · 차박 가능</p>
-            <div class="p-price"><span class="~</span></div>
-          </div>old">95,000원</span><span class="pct">15%</span><span class="now">80,750원
+            <div class="p-price"><span class="old">95,000원</span><span class="pct">15%</span><span class="now">80,750원~</span></div>
+          </div>
         </article>
 
         <article class="p-card">
@@ -318,6 +445,17 @@
           </div>
         </article>
       </div>
+    </div>
+  </section>
+
+  <!-- ============ 최근 본 캠핑장 ============ -->
+  <section class="section recent-section reveal" id="recentSites" hidden>
+    <div class="wrap">
+      <div class="section-head">
+        <div><span class="eyebrow"><i></i>Recently Viewed</span><h2>이어서 살펴볼 캠핑장</h2></div>
+        <button class="link-underline recent-clear" id="recentSitesClear" type="button">기록 지우기</button>
+      </div>
+      <div class="recent-list" id="recentSitesList"></div>
     </div>
   </section>
 
@@ -475,6 +613,26 @@
   </div>
 </footer>
 
+<!-- ============ 비교함 ============ -->
+<aside class="compare-tray" id="compareTray" aria-live="polite" hidden>
+  <div class="compare-tray-copy"><span>캠핑장 비교</span><strong id="compareTrayCount">0 / 3</strong></div>
+  <div class="compare-tray-items" id="compareTrayItems"></div>
+  <button class="btn" id="compareOpen" type="button" disabled>선택한 캠핑장 비교하기</button>
+  <button class="compare-clear" id="compareClear" type="button">전체 비우기</button>
+</aside>
+
+<div class="site-popup compare-popup" id="comparePopup" role="dialog" aria-modal="true" aria-labelledby="compareTitle">
+  <div class="popup-inner compare-popup-inner">
+    <button class="popup-close" type="button" aria-label="닫기">
+      <svg width="16" height="16" viewBox="0 0 22 22" fill="none"><path d="M4 4l14 14M18 4L4 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </button>
+    <span class="eyebrow"><i></i>Smart Compare</span>
+    <h2 id="compareTitle">캠핑장 조건 비교</h2>
+    <p class="compare-popup-lead">위치, 유형, 편의시설과 반려동물 동반 여부를 같은 기준으로 확인하세요.</p>
+    <div class="compare-table-wrap" id="compareTableWrap"></div>
+  </div>
+</div>
+
 <!-- ============ 모바일 하단 탭 · 상담/쿠폰 팝업 ============
      js/script.js가 전 페이지 공통으로 주입합니다 (bottomTabHTML/couponPopupHTML/consultPopupHTML). --><!-- ============ 팝업: 전체 캠핑장 지도 ============ -->
 <div class="site-popup" id="siteMapPopup">
@@ -513,6 +671,6 @@
   </div>
 </div>
 
-<script src="js/script.js?v=9"></script>
+<script src="js/script.js?v=10"></script>
 </body>
 </html>

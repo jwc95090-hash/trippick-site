@@ -13,8 +13,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* pages/ 하위 페이지인지에 따라 루트 상대 경로를 보정 (전 페이지 공통 삽입 스크립트이므로 필요) */
   const ROOT_PREFIX = location.pathname.includes('/pages/') ? '' : 'pages/';
+  const HOST_CENTER_HREF = location.pathname.includes('/pages/') ? '../trippick-host/admin-camp.html' : 'trippick-host/admin-camp.html';
   /* 회원가입 쿠폰 팝업은 메인(홈) 화면에서만 노출 */
   const isHomePage = !location.pathname.includes('/pages/');
+
+  /* 고객 사이트 ↔ 호스트 콘솔 왕복 동선. 모든 페이지에 공통 스크립트로 한 번만 추가한다. */
+  document.querySelectorAll('.account-dropdown').forEach(menu => {
+    if (menu.querySelector('[data-host-center-link]')) return;
+    const link = document.createElement('a');
+    link.href = HOST_CENTER_HREF;
+    link.target = '_blank';
+    link.rel = 'noopener';
+    link.dataset.hostCenterLink = 'true';
+    link.setAttribute('role', 'menuitem');
+    link.textContent = '호스트 센터';
+    menu.appendChild(link);
+  });
+  document.querySelectorAll('.mobile-menu').forEach(menu => {
+    if (menu.querySelector('[data-host-center-link]')) return;
+    const link = document.createElement('a');
+    link.href = HOST_CENTER_HREF;
+    link.target = '_blank';
+    link.rel = 'noopener';
+    link.dataset.hostCenterLink = 'true';
+    link.className = 'mobile-menu-host';
+    link.textContent = '호스트 센터';
+    menu.appendChild(link);
+  });
 
   /* ---------- 0-1. 위시리스트 · 리뷰 데이터 레이어 (전 페이지 공통, localStorage 기반) ----------
      이 사이트는 별도 서버가 없는 정적 사이트이므로, 찜/리뷰 모두 브라우저 localStorage에 저장해
@@ -680,44 +705,166 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  const goCampingRegistry = new Map();
+  const RECENT_SITES_KEY = 'trippick_recent_sites_v1';
+  const READINESS_KEY = 'trippick_readiness_v1';
+
+  function gcItemKey(item){
+    return encodeURIComponent(String(item.contentId || wishSlug(item.facltNm || 'camp')));
+  }
+  function registerGoCampingItem(item){
+    const key = gcItemKey(item);
+    goCampingRegistry.set(key, item);
+    return key;
+  }
+  function gcFacilityText(item){
+    return [item.sbrsCl, item.posblFcltyCl, item.posblFcltyEtc, item.intro, item.lineIntro, item.animalCmgCl, item.aninmalCmgCl]
+      .filter(Boolean).join(' ');
+  }
+  function gcIsPetFriendly(item){
+    return item.animalCmgCl === '가능' || item.aninmalCmgCl === '가능' || /반려동물|애견|펫\s?동반/.test(gcFacilityText(item));
+  }
+  function gcMatchesFacility(item, facility){
+    const text = gcFacilityText(item);
+    if (facility === '반려동물') return gcIsPetFriendly(item);
+    if (facility === '와이파이') return /와이파이|무선\s?인터넷|wifi/i.test(text);
+    if (facility === '물놀이') return /물놀이|수영장|계곡|해수욕|해변/.test(text + ' ' + (item.addr1 || ''));
+    return text.includes(facility);
+  }
+  function gcIsBeginnerFriendly(item){
+    const text = gcFacilityText(item);
+    return /전기/.test(text) && /샤워|온수/.test(text) && /화장실|화장/.test(text);
+  }
+  function gcFeatureTags(item){
+    const text = gcFacilityText(item);
+    const tags = [];
+    if (gcIsBeginnerFriendly(item)) tags.push('초보 안심');
+    if (gcIsPetFriendly(item)) tags.push('반려동물');
+    if (/전기/.test(text)) tags.push('전기');
+    if (/온수|샤워/.test(text)) tags.push('온수·샤워');
+    if (/물놀이|수영장|계곡|해수욕|해변/.test(text + ' ' + (item.addr1 || ''))) tags.push('물놀이');
+    return tags.slice(0, 3);
+  }
+  window.trippickOpenSiteById = function(key){
+    const item = goCampingRegistry.get(key);
+    if (!item) return;
+    try { sessionStorage.setItem('trippick_selected_site', JSON.stringify(item)); } catch (e) { /* 저장 실패는 무시 */ }
+  };
+
   function gcResultCardHTML(item){
+    const key = registerGoCampingItem(item);
     const name = gcEscapeHtml(item.facltNm || '이름 미상 캠핑장');
     const img = item.firstImageUrl ? gcEscapeHtml(item.firstImageUrl) : GOCAMPING_FALLBACK_IMG;
     const region = gcEscapeHtml(gcShortAddr(item.addr1));
     const desc = gcEscapeHtml((item.induty || '캠핑장').split(',').slice(0, 2).join(' · '));
     const tel = item.tel ? gcEscapeHtml(item.tel) : '전화번호 미등록';
-    const telHref = (item.tel || '').replace(/[^0-9]/g, '');
+    const cid = gcEscapeHtml(key);
+    const href = `${ROOT_PREFIX}detail.html?src=api&contentId=${cid}`;
+    const tags = gcFeatureTags(item).map(tag => `<span>${gcEscapeHtml(tag)}</span>`).join('');
     return `
-        <article class="p-card">
-          <a href="${telHref ? 'tel:' + telHref : '#'}" class="p-thumb">
+        <article class="p-card result-card" data-wish-id="api-${cid}" data-compare-id="${cid}">
+          <a href="${href}" class="p-thumb" onclick="window.trippickOpenSiteById('${cid}')">
             <img src="${img}" alt="${name}" loading="lazy" onerror="this.onerror=null;this.src='${GOCAMPING_FALLBACK_IMG}';">
             <span class="p-tag p-tag-alt">공공데이터</span>
+            <button class="p-like" aria-label="${name} 찜하기" type="button"><svg width="14" height="14" viewBox="0 0 22 22" fill="none"><path d="M11 18s-7-4.5-7-9a4 4 0 018 0 4 4 0 018 0c0 4.5-7 9-7 9z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></button>
           </a>
           <div class="p-body">
             <p class="p-region">${region}</p>
-            <h3 class="p-name">${name}</h3>
+            <h3 class="p-name"><a href="${href}" onclick="window.trippickOpenSiteById('${cid}')">${name}</a></h3>
             <p class="p-desc">${desc}</p>
-            <div class="p-price"><span class="now" style="font-size:12.5px; font-weight:500; color:var(--text-mute);">${tel}</span></div>
+            <div class="result-meta">${tags || '<span>정보 확인중</span>'}</div>
+            <div class="p-price"><span class="now" style="font-size:12px; font-weight:500; color:var(--text-mute);">${tel}</span></div>
+            <div class="result-card-actions">
+              <a href="${href}" onclick="window.trippickOpenSiteById('${cid}')">상세 보기</a>
+              <button class="compare-toggle" type="button" aria-pressed="false" onclick="window.trippickToggleCompare('${cid}')">+ 비교</button>
+            </div>
           </div>
         </article>`;
   }
 
-  /* ---------- 8. 홈 필터 바 (지역 · 체크인/체크아웃 · 스타일) ---------- */
+  /* ---------- 8. 홈 고급 검색 (지역 · 날짜 · 스타일 · 시설 · 정렬) ---------- */
   const checkinInput = document.getElementById('checkinInput');
   const checkoutInput = document.getElementById('checkoutInput');
+  const filterAssist = document.getElementById('filterAssist');
+  const todayIso = (() => {
+    const d = new Date();
+    return new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+  })();
+  if (checkinInput) checkinInput.min = todayIso;
+  if (checkoutInput) checkoutInput.min = todayIso;
   checkinInput?.addEventListener('change', () => {
-    if (checkoutInput) {
-      checkoutInput.min = checkinInput.value;
-      if (checkoutInput.value && checkoutInput.value < checkinInput.value) {
-        checkoutInput.value = checkinInput.value;
-      }
-    }
+    if (!checkoutInput) return;
+    checkoutInput.min = checkinInput.value || todayIso;
+    if (checkoutInput.value && checkoutInput.value <= checkinInput.value) checkoutInput.value = '';
   });
 
   const filterResultsSection = document.getElementById('filterResults');
   const filterResultsGrid = document.getElementById('filterResultsGrid');
   const filterResultsTitle = document.getElementById('filterResultsTitle');
   const filterResultsNote = document.getElementById('filterResultsNote');
+  const filterResultsMore = document.getElementById('filterResultsMore');
+  const activeFilterChips = document.getElementById('activeFilterChips');
+  let currentFilterResults = [];
+  let renderedFilterCount = 0;
+  const FILTER_PAGE_SIZE = 8;
+
+  function collectAdvancedFilters(){
+    return {
+      keyword: (document.getElementById('keywordInput')?.value || '').trim().toLowerCase(),
+      guests: document.getElementById('guestInput')?.value || '2',
+      sort: document.getElementById('sortInput')?.value || 'recommend',
+      facilities: [...document.querySelectorAll('#facilityFilters input:checked')].map(input => input.value),
+      beginner: !!document.getElementById('beginnerInput')?.checked
+    };
+  }
+  function updateAdvancedCount(){
+    const filters = collectAdvancedFilters();
+    const count = filters.facilities.length + (filters.keyword ? 1 : 0) + (filters.beginner ? 1 : 0) + (filters.guests !== '2' ? 1 : 0) + (filters.sort !== 'recommend' ? 1 : 0);
+    const el = document.getElementById('advancedFilterCount');
+    if (el) el.textContent = `선택 ${count}`;
+  }
+  document.querySelectorAll('#advancedFilter input, #advancedFilter select').forEach(el => {
+    el.addEventListener(el.type === 'search' ? 'input' : 'change', updateAdvancedCount);
+  });
+
+  function resetAdvancedFilters(){
+    const keyword = document.getElementById('keywordInput');
+    const guests = document.getElementById('guestInput');
+    const sort = document.getElementById('sortInput');
+    const beginner = document.getElementById('beginnerInput');
+    if (keyword) keyword.value = '';
+    if (guests) guests.value = '2';
+    if (sort) sort.value = 'recommend';
+    if (beginner) beginner.checked = false;
+    document.querySelectorAll('#facilityFilters input').forEach(input => { input.checked = false; });
+    updateAdvancedCount();
+  }
+  document.getElementById('advancedFilterReset')?.addEventListener('click', resetAdvancedFilters);
+
+  function renderActiveFilters(regionLabel, styleLabel, advanced, checkin, checkout){
+    if (!activeFilterChips) return;
+    const chips = [regionLabel, styleLabel, `${advanced.guests}명`];
+    if (checkin && checkout) chips.push(`${checkin} → ${checkout}`);
+    if (advanced.keyword) chips.push(`“${advanced.keyword}”`);
+    if (advanced.beginner) chips.push('초보 안심');
+    chips.push(...advanced.facilities);
+    activeFilterChips.innerHTML = chips.map(chip => `<span>${gcEscapeHtml(chip)}</span>`).join('');
+  }
+  function renderFilterResultPage(reset){
+    if (!filterResultsGrid || !filterResultsMore) return;
+    if (reset) {
+      renderedFilterCount = 0;
+      filterResultsGrid.innerHTML = '';
+    }
+    const next = currentFilterResults.slice(renderedFilterCount, renderedFilterCount + FILTER_PAGE_SIZE);
+    filterResultsGrid.insertAdjacentHTML('beforeend', next.map(gcResultCardHTML).join(''));
+    renderedFilterCount += next.length;
+    filterResultsMore.hidden = renderedFilterCount >= currentFilterResults.length;
+    if (!filterResultsMore.hidden) filterResultsMore.textContent = `결과 더 보기 (${currentFilterResults.length - renderedFilterCount}곳 남음)`;
+    renderWishlistState();
+    syncCompareButtons();
+  }
+  filterResultsMore?.addEventListener('click', () => renderFilterResultPage(false));
 
   document.getElementById('homeFilterSubmit')?.addEventListener('click', () => {
     const regionSelect = document.getElementById('regionInput');
@@ -726,38 +873,65 @@ document.addEventListener('DOMContentLoaded', () => {
     const style = styleSelect?.value;
     const checkin = checkinInput?.value;
     const checkout = checkoutInput?.value;
+    const advanced = collectAdvancedFilters();
 
     if (!region || !style) {
       document.getElementById('homeFilterBar')?.classList.add('shake');
+      if (filterAssist) filterAssist.textContent = '지역과 스타일을 먼저 선택해주세요.';
       setTimeout(() => document.getElementById('homeFilterBar')?.classList.remove('shake'), 500);
+      return;
+    }
+    if ((checkin && !checkout) || (!checkin && checkout)) {
+      if (filterAssist) filterAssist.textContent = '체크인과 체크아웃 날짜를 모두 선택해주세요.';
+      (checkin ? checkoutInput : checkinInput)?.focus();
+      return;
+    }
+    if (checkin && checkout && checkout <= checkin) {
+      if (filterAssist) filterAssist.textContent = '체크아웃은 체크인 다음 날부터 선택할 수 있어요.';
+      checkoutInput?.focus();
       return;
     }
     if (!filterResultsSection || !filterResultsGrid) return;
 
     const regionLabel = regionSelect.options[regionSelect.selectedIndex]?.textContent || '전체 지역';
     const styleLabel = styleSelect.options[styleSelect.selectedIndex]?.textContent || '전체 스타일';
-
     filterResultsSection.style.display = '';
     filterResultsTitle.textContent = '캠핑장을 찾고 있습니다…';
-    filterResultsNote.textContent = '';
+    filterResultsNote.textContent = '선택한 조건을 공공데이터와 대조하고 있습니다.';
     filterResultsGrid.innerHTML = '<p style="grid-column:1/-1; color:var(--text-mute); font-size:13px;">한국관광공사 고캠핑 공공데이터에서 검색 중입니다…</p>';
+    if (filterResultsMore) filterResultsMore.hidden = true;
     filterResultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
     loadGoCampingList().then(list => {
-      const filtered = list.filter(it => it.facltNm && gcMatchRegion(it, region) && gcMatchStyle(it, style));
-      filterResultsTitle.textContent = `${regionLabel} · ${styleLabel} 캠핑장 ${filtered.length}곳`;
-      filterResultsNote.textContent = (checkin && checkout)
-        ? `${checkin} ~ ${checkout} 예약 가능 여부는 공공데이터에 포함되어 있지 않아, 각 캠핑장에 직접 확인해주세요.`
-        : '한국관광공사 고캠핑 공공데이터로 실시간 제공되는 검색 결과입니다.';
-      if (!filtered.length) {
-        filterResultsGrid.innerHTML = '<p style="grid-column:1/-1; color:var(--text-mute); font-size:13px;">조건에 맞는 캠핑장을 찾지 못했습니다. 다른 지역이나 스타일로 다시 검색해보세요.</p>';
+      const keywordMatch = item => {
+        if (!advanced.keyword) return true;
+        return [item.facltNm, item.addr1, item.induty, gcFacilityText(item)].filter(Boolean).join(' ').toLowerCase().includes(advanced.keyword);
+      };
+      currentFilterResults = list.filter(item => item.facltNm && gcMatchRegion(item, region) && gcMatchStyle(item, style)
+        && keywordMatch(item)
+        && advanced.facilities.every(facility => gcMatchesFacility(item, facility))
+        && (!advanced.beginner || gcIsBeginnerFriendly(item)));
+      if (advanced.sort === 'name') currentFilterResults.sort((a, b) => String(a.facltNm).localeCompare(String(b.facltNm), 'ko'));
+      if (advanced.sort === 'recent') currentFilterResults.sort((a, b) => Number(b.createdtime || 0) - Number(a.createdtime || 0));
+      if (advanced.sort === 'recommend') currentFilterResults.sort((a, b) => (Number(!!b.firstImageUrl) + Number(gcIsBeginnerFriendly(b))) - (Number(!!a.firstImageUrl) + Number(gcIsBeginnerFriendly(a))));
+
+      filterResultsTitle.textContent = `${regionLabel} · ${styleLabel} ${currentFilterResults.length}곳`;
+      const nights = checkin && checkout ? Math.round((new Date(checkout) - new Date(checkin)) / 86400000) : 0;
+      filterResultsNote.textContent = nights
+        ? `${advanced.guests}명 · ${nights}박 일정입니다. 실제 잔여 사이트와 요금은 캠핑장 확인이 필요합니다.`
+        : `${advanced.guests}명 기준으로 비교하기 좋은 캠핑장을 모았습니다. 실제 잔여 사이트는 캠핑장 확인이 필요합니다.`;
+      renderActiveFilters(regionLabel, styleLabel, advanced, checkin, checkout);
+      if (filterAssist) filterAssist.textContent = `${currentFilterResults.length}곳을 찾았습니다. 최대 3곳까지 비교함에 담을 수 있어요.`;
+      if (!currentFilterResults.length) {
+        filterResultsGrid.innerHTML = '<p style="grid-column:1/-1; color:var(--text-mute); font-size:13px;">조건에 맞는 캠핑장을 찾지 못했습니다. 필수 시설을 한두 개 줄여 다시 검색해보세요.</p>';
+        if (filterResultsMore) filterResultsMore.hidden = true;
         return;
       }
-      filterResultsGrid.innerHTML = filtered.slice(0, 24).map(gcResultCardHTML).join('');
+      renderFilterResultPage(true);
     }).catch(err => {
       filterResultsTitle.textContent = '검색 결과를 불러오지 못했습니다';
-      filterResultsNote.textContent = '';
-      filterResultsGrid.innerHTML = '<p style="grid-column:1/-1; color:var(--text-mute); font-size:13px;">일시적인 오류로 실시간 데이터를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.</p>';
+      filterResultsNote.textContent = '공공데이터 연결이 잠시 원활하지 않습니다.';
+      filterResultsGrid.innerHTML = '<p style="grid-column:1/-1; color:var(--text-mute); font-size:13px;">잠시 후 다시 시도하거나 아래 추천 캠핑장을 확인해주세요.</p>';
       console.warn('[홈 필터 검색]', err && err.message ? err.message : err);
     });
   });
@@ -771,7 +945,173 @@ document.addEventListener('DOMContentLoaded', () => {
     if (styleSelect) styleSelect.selectedIndex = 0;
     if (checkinInput) checkinInput.value = '';
     if (checkoutInput) checkoutInput.value = '';
+    resetAdvancedFilters();
+    if (activeFilterChips) activeFilterChips.innerHTML = '';
+    if (filterAssist) filterAssist.textContent = '지역과 스타일을 고른 뒤, 필요한 시설까지 한 번에 비교해보세요.';
   });
+
+  /* ---------- 8-1. 캠핑장 비교함 (최대 3곳) ---------- */
+  let compareIds = [];
+  const compareTray = document.getElementById('compareTray');
+  function syncCompareButtons(){
+    document.querySelectorAll('.compare-toggle').forEach(button => {
+      const id = button.closest('[data-compare-id]')?.dataset.compareId;
+      const on = compareIds.includes(id);
+      button.setAttribute('aria-pressed', on ? 'true' : 'false');
+      button.textContent = on ? '✓ 비교 중' : '+ 비교';
+    });
+  }
+  function renderCompareTray(){
+    if (!compareTray) return;
+    compareTray.hidden = compareIds.length === 0;
+    const count = document.getElementById('compareTrayCount');
+    const items = document.getElementById('compareTrayItems');
+    const open = document.getElementById('compareOpen');
+    if (count) count.textContent = `${compareIds.length} / 3`;
+    if (items) items.innerHTML = compareIds.map(id => {
+      const item = goCampingRegistry.get(id);
+      return `<span class="compare-chip"><span>${gcEscapeHtml(item?.facltNm || '캠핑장')}</span><button type="button" data-compare-remove="${gcEscapeHtml(id)}" aria-label="비교함에서 삭제">×</button></span>`;
+    }).join('');
+    if (open) open.disabled = compareIds.length < 2;
+    syncCompareButtons();
+  }
+  window.trippickToggleCompare = function(id){
+    if (!id) return;
+    if (compareIds.includes(id)) compareIds = compareIds.filter(value => value !== id);
+    else if (compareIds.length < 3) compareIds.push(id);
+    else if (filterAssist) filterAssist.textContent = '비교함에는 최대 3곳까지 담을 수 있어요.';
+    renderCompareTray();
+  };
+  document.addEventListener('click', e => {
+    const remove = e.target.closest('[data-compare-remove]');
+    if (remove) {
+      compareIds = compareIds.filter(id => id !== remove.dataset.compareRemove);
+      renderCompareTray();
+    }
+  });
+  document.getElementById('compareClear')?.addEventListener('click', () => { compareIds = []; renderCompareTray(); });
+
+  function compareValue(item, row){
+    if (row === 'region') return item.addr1 || '주소 정보 없음';
+    if (row === 'type') return item.induty || '캠핑장';
+    if (row === 'facility') return (item.sbrsCl || '등록 정보 없음').split(',').slice(0, 6).join(' · ');
+    if (row === 'pet') return gcIsPetFriendly(item) ? '동반 가능' : '등록 정보 없음';
+    if (row === 'beginner') return gcIsBeginnerFriendly(item) ? '추천' : '시설 추가 확인 필요';
+    if (row === 'tel') return item.tel || '전화번호 미등록';
+    return '';
+  }
+  document.getElementById('compareOpen')?.addEventListener('click', () => {
+    const selected = compareIds.map(id => ({ id, item: goCampingRegistry.get(id) })).filter(entry => entry.item);
+    if (selected.length < 2) return;
+    const labels = [['region','위치'],['type','유형'],['facility','주요 시설'],['pet','반려동물'],['beginner','초보 추천'],['tel','문의']];
+    const table = `
+      <table class="compare-table">
+        <thead><tr><th>비교 기준</th>${selected.map(({ id, item }) => `<th><img src="${gcEscapeHtml(item.firstImageUrl || GOCAMPING_FALLBACK_IMG)}" alt=""><span class="compare-name">${gcEscapeHtml(item.facltNm)}</span><a class="compare-go" href="${ROOT_PREFIX}detail.html?src=api&contentId=${gcEscapeHtml(id)}" onclick="window.trippickOpenSiteById('${gcEscapeHtml(id)}')">상세 보기</a></th>`).join('')}</tr></thead>
+        <tbody>${labels.map(([key,label]) => `<tr><th>${label}</th>${selected.map(({ item }) => `<td>${gcEscapeHtml(compareValue(item,key))}</td>`).join('')}</tr>`).join('')}</tbody>
+      </table>`;
+    const wrap = document.getElementById('compareTableWrap');
+    if (wrap) wrap.innerHTML = table;
+    openPopup(document.getElementById('comparePopup'));
+  });
+
+  /* ---------- 8-2. 취향 매치 추천 ---------- */
+  document.getElementById('tripMatchForm')?.addEventListener('submit', e => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const nature = new FormData(form).get('nature');
+    const comfort = new FormData(form).get('comfort');
+    const party = new FormData(form).get('party');
+    const result = document.getElementById('tripMatchResult');
+    if (!result) return;
+    result.hidden = false;
+    result.innerHTML = '<div class="match-loading">취향과 공공데이터를 매칭하고 있어요…</div>';
+    loadGoCampingList().then(list => {
+      const naturePattern = nature === 'ocean' ? /바다|해변|해수욕|오션|노을/ : nature === 'mountain' ? /산|마운틴|고원|전망/ : /숲|계곡|자연|휴양림/;
+      const scored = list.filter(item => item.facltNm).map(item => {
+        const text = [item.facltNm, item.addr1, item.intro, item.lineIntro, gcFacilityText(item)].filter(Boolean).join(' ');
+        let score = 0;
+        if (naturePattern.test(text)) score += 4;
+        if (gcMatchStyle(item, comfort)) score += 5;
+        if (party === 'pet' && gcIsPetFriendly(item)) score += 5;
+        if (party === 'family' && /놀이터|물놀이|수영장|키즈/.test(text)) score += 4;
+        if (party === 'couple' && /조용|힐링|노을|감성|뷰/.test(text)) score += 3;
+        if (item.firstImageUrl) score += 1;
+        if (gcIsBeginnerFriendly(item)) score += 2;
+        return { item, score };
+      }).sort((a,b) => b.score - a.score).slice(0,3);
+      const natureLabel = { forest:'숲·계곡', ocean:'바다·노을', mountain:'산·전망' }[nature];
+      result.innerHTML = `<div class="match-result-head"><strong>${gcEscapeHtml(natureLabel)} 취향 추천</strong><span>상위 ${scored.length}곳</span></div><div class="match-result-list">${scored.map(({item,score}) => {
+        const id = registerGoCampingItem(item);
+        return `<article class="match-mini-card"><img src="${gcEscapeHtml(item.firstImageUrl || GOCAMPING_FALLBACK_IMG)}" alt=""><div><strong>${gcEscapeHtml(item.facltNm)}</strong><small>${gcEscapeHtml(gcShortAddr(item.addr1))} · 매치 ${Math.min(99,70 + score)}%</small></div><a href="${ROOT_PREFIX}detail.html?src=api&contentId=${gcEscapeHtml(id)}" onclick="window.trippickOpenSiteById('${gcEscapeHtml(id)}')">자세히</a></article>`;
+      }).join('')}</div>`;
+    }).catch(() => {
+      result.innerHTML = `<div class="match-loading">추천 데이터를 잠시 불러오지 못했어요. <a href="${ROOT_PREFIX}types.html" class="link-underline">유형별 캠핑장 보기</a></div>`;
+    });
+  });
+
+  /* ---------- 8-3. 첫 캠핑 준비도 ---------- */
+  (function initReadiness(){
+    const listEl = document.getElementById('readinessList');
+    if (!listEl) return;
+    let saved = [];
+    try { saved = JSON.parse(localStorage.getItem(READINESS_KEY)) || []; } catch (e) { saved = []; }
+    listEl.querySelectorAll('input').forEach(input => { input.checked = saved.includes(input.value); });
+    function render(){
+      const inputs = [...listEl.querySelectorAll('input')];
+      const checked = inputs.filter(input => input.checked).map(input => input.value);
+      const percent = Math.round((checked.length / inputs.length) * 100);
+      try { localStorage.setItem(READINESS_KEY, JSON.stringify(checked)); } catch (e) { /* 저장 실패 무시 */ }
+      document.getElementById('readinessRing')?.style.setProperty('--progress', percent);
+      const percentEl = document.getElementById('readinessPercent');
+      const message = document.getElementById('readinessMessage');
+      if (percentEl) percentEl.textContent = `${percent}%`;
+      if (message) message.textContent = percent === 100 ? '떠날 준비가 끝났어요!' : percent >= 60 ? '거의 다 준비됐어요.' : percent >= 20 ? '좋아요, 차근차근 진행 중!' : '하나씩 준비해볼까요?';
+    }
+    listEl.addEventListener('change', render);
+    document.getElementById('readinessReset')?.addEventListener('click', () => {
+      listEl.querySelectorAll('input').forEach(input => { input.checked = false; });
+      render();
+    });
+    render();
+  })();
+
+  /* ---------- 8-4. 최근 본 캠핑장 ---------- */
+  function getRecentSites(){
+    try { return JSON.parse(localStorage.getItem(RECENT_SITES_KEY)) || []; } catch (e) { return []; }
+  }
+  function pushRecentSite(item){
+    const id = gcItemKey(item);
+    const compact = {
+      contentId:item.contentId, facltNm:item.facltNm, addr1:item.addr1, induty:item.induty,
+      firstImageUrl:item.firstImageUrl, tel:item.tel, intro:item.intro, lineIntro:item.lineIntro,
+      sbrsCl:item.sbrsCl, posblFcltyCl:item.posblFcltyCl, posblFcltyEtc:item.posblFcltyEtc,
+      animalCmgCl:item.animalCmgCl, aninmalCmgCl:item.aninmalCmgCl, viewedAt:Date.now()
+    };
+    const next = [compact, ...getRecentSites().filter(entry => gcItemKey(entry) !== id)].slice(0,6);
+    try { localStorage.setItem(RECENT_SITES_KEY, JSON.stringify(next)); } catch (e) { /* 저장 실패 무시 */ }
+  }
+  function renderRecentSites(){
+    const section = document.getElementById('recentSites');
+    const listEl = document.getElementById('recentSitesList');
+    if (!section || !listEl) return;
+    const recent = getRecentSites();
+    section.hidden = recent.length === 0;
+    window.__trippickRecentItems = recent;
+    listEl.innerHTML = recent.map((item,index) => {
+      const id = gcItemKey(item);
+      return `<a class="recent-card" href="${ROOT_PREFIX}detail.html?src=api&contentId=${gcEscapeHtml(id)}" onclick="window.trippickRestoreRecent(${index})"><img src="${gcEscapeHtml(item.firstImageUrl || GOCAMPING_FALLBACK_IMG)}" alt=""><span><strong>${gcEscapeHtml(item.facltNm || '캠핑장')}</strong><span>${gcEscapeHtml(gcShortAddr(item.addr1))} · 다시 보기</span></span></a>`;
+    }).join('');
+  }
+  window.trippickRestoreRecent = function(index){
+    const item = window.__trippickRecentItems?.[index];
+    if (!item) return;
+    try { sessionStorage.setItem('trippick_selected_site', JSON.stringify(item)); } catch (e) { /* 무시 */ }
+  };
+  document.getElementById('recentSitesClear')?.addEventListener('click', () => {
+    localStorage.removeItem(RECENT_SITES_KEY);
+    renderRecentSites();
+  });
+  renderRecentSites();
 
   /* ---------- 9. 고캠핑(한국관광공사) 공공데이터 연동 ----------
      "이번 주 가장 많이 찾은 캠핑장" 4장을 실제 공공데이터로 채웁니다.
@@ -1090,6 +1430,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // 다음 단계(예약/결제)에서도 동일 캠핑장 정보를 이어쓸 수 있도록 저장 유지
       try { sessionStorage.setItem('trippick_selected_site', JSON.stringify(item)); } catch (e) { /* 무시 */ }
+      pushRecentSite(item);
     }
 
     const stored = getStoredItem() || findInCache();

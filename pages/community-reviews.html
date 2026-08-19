@@ -142,8 +142,38 @@
     <div class="wrap">
       <div class="section-head mb-24">
         <div><span class="eyebrow"><i></i>Reviews</span><h2>전체 후기</h2></div>
-        <a href="mypage-reviews.html" class="btn">글쓰기</a>
+        <button type="button" class="btn" id="communityReviewWriteToggle" aria-expanded="false" aria-controls="reviewForm">리뷰 작성</button>
       </div>
+      <form class="review-form community-review-form" id="reviewForm" style="display:none;" aria-label="리뷰 작성 폼">
+        <div class="cf-field">
+          <span>이용한 캠핑장</span>
+          <select id="reviewSite" required>
+            <option value="">캠핑장을 선택해주세요</option>
+            <option value="static-여주-블루마린-캠핑장">여주 블루마린 캠핑장</option>
+            <option value="static-태안-선셋-캠프사이트">태안 선셋 캠프사이트</option>
+            <option value="static-가평-포레스트-글램핑">가평 포레스트 글램핑</option>
+          </select>
+        </div>
+        <div class="cf-field">
+          <span>별점</span>
+          <div class="review-star-input" id="reviewStars" role="group" aria-label="별점 선택">
+            <button type="button" aria-label="1점">★</button><button type="button" aria-label="2점">★</button><button type="button" aria-label="3점">★</button><button type="button" aria-label="4점">★</button><button type="button" aria-label="5점">★</button>
+          </div>
+        </div>
+        <div class="cf-field">
+          <span>제목</span>
+          <input type="text" id="reviewTitle" maxlength="120" placeholder="후기 제목을 입력해주세요" required>
+        </div>
+        <div class="cf-field">
+          <span>후기</span>
+          <textarea id="reviewBody" rows="5" maxlength="5000" placeholder="캠핑장에서의 경험을 자세히 들려주세요" required></textarea>
+        </div>
+        <p class="community-form-note">로그인한 회원이 작성한 내용은 Supabase에 저장되며, 호스트가 남긴 답글도 이 게시판에서 확인할 수 있습니다.</p>
+        <div style="display:flex; gap:10px;">
+          <button type="submit" class="btn">등록</button>
+          <button type="button" class="btn-ghost" id="communityReviewCancel">취소</button>
+        </div>
+      </form>
       <div id="communityReviewList" style="display:flex; flex-direction:column; gap:1px; background:var(--line-soft);"></div>
       <nav class="board-pagination" id="reviewPagination" aria-label="리뷰게시판 페이지 이동"></nav>
     </div>
@@ -181,6 +211,22 @@
 <script src="../js/script.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
+  const writeToggle = document.getElementById('communityReviewWriteToggle');
+  const reviewForm = document.getElementById('reviewForm');
+  const cancelReview = document.getElementById('communityReviewCancel');
+  writeToggle?.addEventListener('click', () => {
+    const willOpen = reviewForm.style.display === 'none';
+    reviewForm.style.display = willOpen ? 'block' : 'none';
+    writeToggle.setAttribute('aria-expanded', String(willOpen));
+    if (willOpen) document.getElementById('reviewSite')?.focus();
+  });
+  cancelReview?.addEventListener('click', () => {
+    reviewForm.reset();
+    document.querySelectorAll('#reviewStars button').forEach(button => button.classList.remove('on'));
+    reviewForm.style.display = 'none';
+    writeToggle?.setAttribute('aria-expanded', 'false');
+  });
+
   const T = window.trippick;
   const listEl = document.getElementById('communityReviewList');
   if (!listEl || !T) return;

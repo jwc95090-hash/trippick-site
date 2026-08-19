@@ -111,11 +111,21 @@
   async function setupReviewForm() {
     const form = document.getElementById('reviewForm');
     if (!form) return;
+    const starButtons = Array.from(document.querySelectorAll('#reviewStars button'));
+    starButtons.forEach((button, index) => {
+      button.addEventListener('click', () => {
+        starButtons.forEach((item, itemIndex) => item.classList.toggle('on', itemIndex <= index));
+      });
+    });
     form.addEventListener('submit', async event => {
       event.preventDefault();
       event.stopImmediatePropagation();
       const user = await currentUser();
-      if (!user) { alert('리뷰 작성은 로그인 후 이용할 수 있습니다.'); location.href = 'login.html'; return; }
+      if (!user) {
+        alert('리뷰 작성은 로그인 후 이용할 수 있습니다.');
+        location.href = location.pathname.includes('/pages/') ? 'login.html' : 'pages/login.html';
+        return;
+      }
       const site = document.getElementById('reviewSite');
       const activeStars = document.querySelectorAll('#reviewStars button.on').length;
       if (!site?.value || !activeStars) return alert('캠핑장과 별점을 선택해주세요.');
@@ -133,6 +143,12 @@
       form.reset();
       document.querySelectorAll('#reviewStars button').forEach(button => button.classList.remove('on'));
       await renderMyReviews(user.id);
+      await renderPublicReviews();
+      if (document.getElementById('communityReviewList')) {
+        form.style.display = 'none';
+        document.getElementById('communityReviewWriteToggle')?.setAttribute('aria-expanded', 'false');
+        alert('리뷰가 등록되었습니다. 호스트 답글도 이 게시판에서 확인할 수 있어요.');
+      }
     }, { capture: true });
     const user = await currentUser();
     if (user) await renderMyReviews(user.id);
@@ -153,8 +169,10 @@
 
   async function renderPublicReviews() {
     if (!/community-reviews\.html$/.test(location.pathname)) return;
-    const list = document.getElementById('reviewList');
+    const list = document.getElementById('communityReviewList') || document.getElementById('reviewList');
     if (!list) return;
+    const pagination = document.getElementById('reviewPagination');
+    if (pagination) pagination.innerHTML = '';
     const { data } = await db.from('reviews').select('id,author_name,site_id,site_name,rating,title,body,admin_reply,status,created_at').eq('status', 'visible').order('created_at', { ascending: false }).limit(50);
     if (!data) return;
     list.innerHTML = data.length ? data.map(review => `<div class="review-item" style="background:var(--paper);">
@@ -162,8 +180,8 @@
         <span class="review-stars text-brass">${'★'.repeat(review.rating)}${'☆'.repeat(5-review.rating)}</span>
         <span class="who text-mute">${esc(review.site_name)} · ${esc(review.author_name)} · ${new Date(review.created_at).toLocaleDateString('ko-KR')}</span>
       </div><p class="quote" style="color:var(--text-mute);min-height:auto;"><strong style="color:var(--ink);">${esc(review.title)}</strong><br>${esc(review.body)}</p>
-      ${review.admin_reply ? `<p style="margin-top:12px;padding:12px;background:var(--ivory);">호스트 답변: ${esc(review.admin_reply)}</p>` : ''}
-    </div>`).join('') : '<div class="review-item"><p>아직 등록된 리뷰가 없습니다.</p></div>';
+      ${review.admin_reply ? `<p class="community-host-reply"><strong>호스트 답글</strong>${esc(review.admin_reply)}</p>` : ''}
+    </div>`).join('') : '<div class="review-item" style="background:var(--paper);"><p class="quote" style="min-height:auto;">아직 실제 등록된 리뷰가 없습니다. 첫 리뷰를 작성해보세요.</p></div>';
   }
 
   async function setupBoard() {
@@ -171,6 +189,8 @@
     const list = document.getElementById('qnaList');
     if (!form || !list) return;
     const render = async () => {
+      const pagination = document.getElementById('qnaPagination');
+      if (pagination) pagination.innerHTML = '';
       const { data } = await db.from('board_posts').select('id,author_name,category,title,body,is_secret,admin_answer,status,created_at').order('created_at', { ascending: false }).limit(100);
       if (!data) return;
       list.innerHTML = data.length ? data.map(post => `<details class="faq-item"><summary>
