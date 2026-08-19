@@ -3,6 +3,11 @@
    ============================================================ */
 document.addEventListener('DOMContentLoaded', () => {
 
+  /* 포트폴리오 공개 모드: 별도 관리자 로그인 없이 전체 화면을 시연합니다. */
+  document.querySelectorAll('.host-logout').forEach(link => link.remove());
+  document.querySelectorAll('.host-account-role').forEach(el => { el.textContent = '포트폴리오 공개 모드'; });
+  document.querySelectorAll('.host-account-name').forEach(el => { el.textContent = 'TRIPPICK 관리자 데모'; });
+
   /* ---------- 모바일 사이드바 ---------- */
   const side = document.getElementById('hostSide');
   const scrim = document.getElementById('hostScrim');
