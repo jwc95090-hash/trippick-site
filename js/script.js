@@ -1751,7 +1751,7 @@ document.addEventListener('DOMContentLoaded', () => {
     config.src = new URL('supabase-config.js', current.src).href;
     config.onload = function () {
       const app = document.createElement('script');
-      app.src = new URL('supabase-app.js', current.src).href;
+      app.src = new URL('supabase-app.js?v=4', current.src).href;
       document.head.appendChild(app);
     };
     document.head.appendChild(config);
