@@ -255,10 +255,16 @@
     if (!/admin-consult\.html$/.test(location.pathname)) return;
     const panelDescription = document.querySelector('.host-consult-layout')?.closest('.host-panel')?.querySelector('.host-panel-head p');
     if (panelDescription) panelDescription.textContent = '고객 상담게시판에 등록된 실제 문의를 확인하고 답변을 저장하세요. 목록은 30초마다 자동 갱신됩니다.';
-    const { data, error } = await db.from('board_posts')
-      .select('id,author_name,category,title,body,is_secret,admin_answer,status,created_at,updated_at')
-      .order('created_at', { ascending: false })
-      .limit(200);
+    let data, error;
+    if (PORTFOLIO_PUBLIC_MODE) {
+      ({ data, error } = await db.rpc('list_board_posts'));
+      data = (data || []).map(post => ({ ...post, updated_at: post.created_at }));
+    } else {
+      ({ data, error } = await db.from('board_posts')
+        .select('id,author_name,category,title,body,is_secret,admin_answer,status,created_at,updated_at')
+        .order('created_at', { ascending: false })
+        .limit(200));
+    }
     if (error) return toast(`문의 목록을 불러오지 못했습니다: ${error.message}`, 'error');
     state.posts = data || [];
     if (!state.posts.some(post => String(post.id) === String(state.selectedPostId))) {
@@ -315,13 +321,14 @@
     </div>
     <h3 class="host-consult-title">${post.is_secret ? '<span aria-label="비밀글">🔒</span> ' : ''}${esc(post.title)}</h3>
     <div class="host-consult-thread">
-      <div class="host-msg from-guest">${nl2br(post.body)}<time>${esc(dateText(post.created_at))}</time></div>
+      <div class="host-msg from-guest">${post.is_secret && !post.body ? '비밀글 본문은 고객 게시판에서 설정된 번호를 입력해야 확인할 수 있습니다.' : nl2br(post.body)}<time>${esc(dateText(post.created_at))}</time></div>
       ${post.admin_answer ? `<div class="host-msg from-host">${nl2br(post.admin_answer)}<time>${esc(dateText(post.updated_at || post.created_at))}</time></div>` : ''}
     </div>
+    ${PORTFOLIO_PUBLIC_MODE ? '<div class="host-empty-state" style="margin-top:14px;"><strong>포트폴리오 공개 모드</strong><p>상담 목록은 실제 데이터와 연결되어 있으며, 개인정보 보호를 위해 비밀글 본문과 답변 수정 기능은 잠겨 있습니다.</p></div>' : `
     <div class="host-reply-form host-data-reply-form">
       <textarea rows="3" id="hostPostAnswer" maxlength="5000" placeholder="고객에게 보낼 답변을 입력하세요" required aria-label="상담 답변 입력">${esc(post.admin_answer || '')}</textarea>
       <div class="host-data-actions"><button type="button" class="host-btn host-btn-primary" id="hostPostReplySave">${post.admin_answer ? '답변 수정' : '답변 등록'}</button><button type="button" class="host-btn host-btn-ghost" id="hostPostVisibility">${post.status === 'hidden' ? '게시글 공개' : '게시글 숨김'}</button></div>
-    </div>`;
+    </div>`}`;
     document.getElementById('hostPostReplySave')?.addEventListener('click', () => savePostReply(post));
     document.getElementById('hostPostVisibility')?.addEventListener('click', () => togglePostVisibility(post));
   }
