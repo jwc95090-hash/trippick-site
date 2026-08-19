@@ -492,7 +492,16 @@ textarea:focus-visible,
 }
 .host-review-reply .tag{font-family:var(--caps); font-size:10px; letter-spacing:.1em; color:var(--brass-light); display:block; margin-bottom:5px;}
 .host-reply-form{display:flex; gap:10px; margin-top:12px;}
-.host-reply-form textarea{flex:1; min-height:44px;}
+.host-reply-form textarea{
+  flex:1; min-height:44px; background:#fff; color:#111812; caret-color:#111812;
+  -webkit-text-fill-color:#111812;
+}
+.host-reply-form textarea::placeholder{color:#5f665f; opacity:1; -webkit-text-fill-color:#5f665f;}
+.host-status-select{
+  min-height:36px; padding:7px 30px 7px 10px; border:1px solid #d8ddd9; border-radius:0;
+  background-color:#fff; color:#111812; color-scheme:light; -webkit-text-fill-color:#111812;
+}
+.host-status-select option{background:#fff; color:#111812;}
 .host-reply-form textarea.is-invalid,
 .host-field input:invalid,
 .host-field select:invalid,
