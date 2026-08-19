@@ -211,17 +211,17 @@ document.addEventListener('DOMContentLoaded', () => {
         <button class="popup-close" type="button" aria-label="닫기">
           <svg width="16" height="16" viewBox="0 0 22 22" fill="none"><path d="M4 4l14 14M18 4L4 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         </button>
-        <span class="eyebrow"><i></i>Consulting</span>
-        <h2>궁금한 점을 남겨주시면<br>순서대로 답변드려요</h2>
+        <span class="eyebrow"><i></i>AI Consulting</span>
+        <h2>트립픽 AI가 궁금한 점에<br>바로 답변해드려요</h2>
         <div class="consult-hours">
-          <div class="consult-hours-row"><span>상담 가능시간</span><strong>평일 10:00–17:00 (점심 12:00–13:00 제외)</strong></div>
-          <div class="consult-hours-row"><span>운영시간</span><strong>연중무휴 24시간 예약 · 상담 답변은 영업일 기준</strong></div>
+          <div class="consult-hours-row"><span>AI 상담</span><strong>24시간 즉시 답변</strong></div>
+          <div class="consult-hours-row"><span>추가 안내</span><strong>필요한 문의는 고객센터로 이어서 도와드려요</strong></div>
         </div>
         <div class="consult-chat">
           <div class="consult-chat-thread" id="consultChatThread"></div>
           <div class="consult-chat-status" id="consultChatStatus" style="display:none;"></div>
           <form class="consult-chat-bar" id="consultChatForm">
-            <input type="text" id="consultChatInput" placeholder="이름을 입력해주세요" autocomplete="off" required>
+            <input type="text" id="consultChatInput" placeholder="AI에게 궁금한 점을 입력하세요" autocomplete="off" required>
             <button type="submit" class="btn">전송</button>
           </form>
         </div>
@@ -503,7 +503,7 @@ document.addEventListener('DOMContentLoaded', () => {
         </a>
         <button type="button" class="fab-quick-item" id="fabConsultBtn">
           <svg width="14" height="14" viewBox="0 0 22 22" fill="none"><path d="M3 5.5A2.5 2.5 0 015.5 3h11A2.5 2.5 0 0119 5.5v6A2.5 2.5 0 0116.5 14H9l-4.5 4v-4H5.5A2.5 2.5 0 013 11.5v-6z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
-          <span class="fab-quick-label">실시간 상담</span>
+          <span class="fab-quick-label">AI 상담</span>
         </button>
       </div>
     </div>
@@ -521,8 +521,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 
-  /* 상담 문의 팝업: 말풍선 채팅형. 이름을 먼저 확인한 뒤 문의를 남기면 순서대로 검토 후
-     답변이 채팅으로 도착하는 흐름을 시뮬레이션하고, localStorage에 대화가 남아 다음에 다시 열어도 이어짐. */
+  /* AI 상담 팝업: 24시간 즉시 답변하는 말풍선 채팅형. 대화는 브라우저에 저장되어 다시 열어도 이어진다. */
   (function initConsultChat(){
     const consultPopup = document.getElementById('consultPopup');
     const thread = document.getElementById('consultChatThread');
@@ -531,20 +530,24 @@ document.addEventListener('DOMContentLoaded', () => {
     const input = document.getElementById('consultChatInput');
     if (!consultPopup || !thread || !form || !input) return;
 
-    const STORE_KEY = 'trippick_consult_chat_v1';
-    const GREETING = '안녕하세요, 트립픽 상담입니다 🙂 먼저 성함을 알려주시겠어요?';
-    const AUTO_REPLIES = [
-      '문의 남겨주셔서 감사합니다! 확인 후 순서대로 답변드릴게요.',
-      '네, 잘 확인했습니다. 상담 가능시간 내에 자세히 안내드릴게요.',
-      '말씀 주신 내용 접수했어요. 곧 담당 호스트가 답변드릴 예정이에요.'
-    ];
+    const STORE_KEY = 'trippick_ai_consult_chat_v2';
+    const GREETING = '안녕하세요! 트립픽 AI 상담이에요. 캠핑장, 예약, 결제, 취소에 관해 무엇이든 물어보세요.';
+    function buildAiReply(question) {
+      const text = question.toLowerCase();
+      if (/취소|환불/.test(text)) return '예약 취소와 환불 기준은 캠핑장과 이용일까지 남은 기간에 따라 달라요. 마이페이지 예약내역에서 해당 예약의 취소 규정을 확인해주세요.';
+      if (/결제|카드|카카오|네이버|토스/.test(text)) return '신용·체크카드와 간편결제를 이용할 수 있어요. 결제 단계에서 원하는 수단을 선택하면 됩니다.';
+      if (/쿠폰|할인/.test(text)) return '신규 회원에게 첫 예약 10% 할인 쿠폰을 드려요. 가입 후 마이페이지의 내 쿠폰에서 확인할 수 있습니다.';
+      if (/반려|애견|강아지|펫/.test(text)) return '반려동물 동반 가능 여부는 캠핑장마다 달라요. 상세 페이지의 이용 안내를 확인하거나 반려동물 필터를 이용해주세요.';
+      if (/예약|날짜|인원/.test(text)) return '캠핑장을 선택한 뒤 날짜와 인원을 입력하면 예약 가능한 옵션을 확인할 수 있어요.';
+      return '문의 내용을 확인했어요. 캠핑장 이름과 이용 날짜를 함께 알려주시면 더 정확하게 안내해드릴게요.';
+    }
 
     function loadState(){
       try {
         const raw = localStorage.getItem(STORE_KEY);
         if (raw) return JSON.parse(raw);
       } catch (e) { /* 저장소 파손 시 새로 시작 */ }
-      return { name: null, messages: [] };
+      return { messages: [] };
     }
     function saveState(){
       try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch (e) { /* 저장 실패는 무시 */ }
@@ -580,7 +583,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updatePlaceholder(){
-      input.placeholder = state.name ? '문의하실 내용을 입력하세요' : '이름을 입력해주세요';
+      input.placeholder = 'AI에게 궁금한 점을 입력하세요';
     }
 
     function pushMessage(role, text){
@@ -615,26 +618,12 @@ document.addEventListener('DOMContentLoaded', () => {
       input.value = '';
       clearTimeout(replyTimer);
 
-      if (!state.name) {
-        state.name = text;
-        saveState();
-        pushMessage('user', text);
-        updatePlaceholder();
-        setStatus('', null);
-        replyTimer = setTimeout(() => {
-          pushMessage('host', `반가워요, ${state.name}님! 궁금하신 내용을 편하게 남겨주세요.`);
-        }, 700);
-        return;
-      }
-
       pushMessage('user', text);
-      setStatus('답변 대기중', 'pending');
-      const askedCount = state.messages.filter(m => m.role === 'user').length;
-      const reply = AUTO_REPLIES[(askedCount - 1) % AUTO_REPLIES.length];
+      setStatus('AI가 답변을 작성하고 있어요', 'pending');
       replyTimer = setTimeout(() => {
-        pushMessage('host', reply);
-        setStatus('답변 완료', 'done');
-      }, 1500 + Math.random() * 1200);
+        pushMessage('host', buildAiReply(text));
+        setStatus('AI 답변 완료', 'done');
+      }, 450);
     });
   })();
 
