@@ -1105,3 +1105,28 @@ document.querySelectorAll('video[data-initial-volume]').forEach((video) => {
   if (video.readyState >= 1) applyInitialVolume();
   else video.addEventListener('loadedmetadata', applyInitialVolume, { once: true });
 });
+
+
+/* 아직 MP4가 등록되지 않은 가이드 카드도 클릭 피드백을 제공합니다. */
+(() => {
+  const pendingCards = document.querySelectorAll('.video-card-pending');
+  if (!pendingCards.length) return;
+
+  const toast = document.createElement('div');
+  toast.className = 'video-toast';
+  toast.setAttribute('role', 'status');
+  toast.setAttribute('aria-live', 'polite');
+  document.body.appendChild(toast);
+
+  let toastTimer;
+  pendingCards.forEach((card) => {
+    card.addEventListener('click', (event) => {
+      event.preventDefault();
+      const title = card.querySelector('h3')?.textContent?.trim() || '이 영상';
+      toast.textContent = title + ' 영상은 준비 중입니다. MP4 등록 후 이 자리에서 바로 재생됩니다.';
+      toast.classList.add('is-visible');
+      window.clearTimeout(toastTimer);
+      toastTimer = window.setTimeout(() => toast.classList.remove('is-visible'), 2800);
+    });
+  });
+})();
