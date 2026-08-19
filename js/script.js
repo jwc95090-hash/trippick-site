@@ -17,6 +17,29 @@ document.addEventListener('DOMContentLoaded', () => {
   /* 회원가입 쿠폰 팝업은 메인(홈) 화면에서만 노출 */
   const isHomePage = !location.pathname.includes('/pages/');
 
+  /* ---------- 0-0. 공통 접근성 기초 ---------- */
+  const mainContent = document.querySelector('main');
+  if (mainContent) {
+    if (!mainContent.id) mainContent.id = 'mainContent';
+    if (!document.querySelector('.skip-link')) {
+      const skip = document.createElement('a');
+      skip.className = 'skip-link';
+      skip.href = '#' + mainContent.id;
+      skip.textContent = '본문 바로가기';
+      document.body.prepend(skip);
+    }
+  }
+  document.querySelectorAll('button:not([type])').forEach(button => {
+    button.type = button.closest('form') ? 'submit' : 'button';
+  });
+  document.querySelectorAll('a[href="#"]').forEach(link => {
+    link.setAttribute('aria-disabled', 'true');
+    link.addEventListener('click', event => event.preventDefault());
+  });
+  document.querySelectorAll('.main-nav a.active, .mypage-nav a.active').forEach(link => {
+    link.setAttribute('aria-current', 'page');
+  });
+
   /* 고객 사이트 ↔ 호스트 콘솔 왕복 동선. 모든 페이지에 공통 스크립트로 한 번만 추가한다. */
   document.querySelectorAll('.account-dropdown').forEach(menu => {
     if (menu.querySelector('[data-host-center-link]')) return;
@@ -416,14 +439,29 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ---------- 4. 팝업 공통 ---------- */
+  let lastPopupTrigger = null;
   function openPopup(popup){
+    if (!popup) return;
+    lastPopupTrigger = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    popup.setAttribute('role', 'dialog');
+    popup.setAttribute('aria-modal', 'true');
+    popup.setAttribute('aria-hidden', 'false');
     popup.style.display = 'flex';
-    requestAnimationFrame(() => popup.classList.add('open'));
+    document.body.style.overflow = 'hidden';
+    requestAnimationFrame(() => {
+      popup.classList.add('open');
+      const focusTarget = popup.querySelector('.popup-close, input, select, textarea, button, a[href]');
+      focusTarget?.focus();
+    });
   }
   function closePopup(popup){
+    if (!popup) return;
     popup.style.display = 'none';
     popup.classList.remove('open');
+    popup.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
+    if (lastPopupTrigger?.isConnected) lastPopupTrigger.focus();
+    lastPopupTrigger = null;
   }
 
   /* 위임(delegated) 방식으로 바인딩 — 라이트박스처럼 나중에 JS로 추가되는 .site-popup/.popup-close도
@@ -432,6 +470,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeBtn = e.target.closest('.popup-close, [data-popup-close]');
     if (closeBtn) { closePopup(closeBtn.closest('.site-popup')); return; }
     if (e.target.classList && e.target.classList.contains('site-popup')) closePopup(e.target);
+  });
+  document.addEventListener('keydown', (e) => {
+    const popup = document.querySelector('.site-popup.open');
+    if (!popup) return;
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      closePopup(popup);
+      return;
+    }
+    if (e.key !== 'Tab') return;
+    const focusables = Array.from(popup.querySelectorAll('a[href]:not([aria-disabled="true"]), button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'))
+      .filter(el => el.offsetParent !== null);
+    if (!focusables.length) return;
+    const first = focusables[0];
+    const last = focusables[focusables.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
   });
 
   /* ---------- 회원가입 첫예약 쿠폰 팝업 (홈 진입 시 1회) ---------- */
