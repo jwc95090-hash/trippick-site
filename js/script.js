@@ -1813,3 +1813,17 @@ document.addEventListener('DOMContentLoaded', () => {
   };
   document.head.appendChild(sdk);
 })();
+
+
+/* 가이드 영상은 갑작스럽게 크게 들리지 않도록 편안한 초기 음량으로 시작합니다. */
+document.querySelectorAll('video[data-initial-volume]').forEach((video) => {
+  const requestedVolume = Number.parseFloat(video.dataset.initialVolume || '0.28');
+  const initialVolume = Number.isFinite(requestedVolume)
+    ? Math.min(1, Math.max(0, requestedVolume))
+    : 0.28;
+  const applyInitialVolume = () => {
+    video.volume = initialVolume;
+  };
+  if (video.readyState >= 1) applyInitialVolume();
+  else video.addEventListener('loadedmetadata', applyInitialVolume, { once: true });
+});
