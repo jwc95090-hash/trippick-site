@@ -217,7 +217,7 @@ document.addEventListener('DOMContentLoaded', () => {
     config.src = '../js/supabase-config.js';
     config.onload = function () {
       const data = document.createElement('script');
-      data.src = 'admin-data.js?v=4';
+      data.src = 'admin-data.js?v=5';
       document.head.appendChild(data);
     };
     document.head.appendChild(config);
