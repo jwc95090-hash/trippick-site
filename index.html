@@ -37,7 +37,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700;800&family=Noto+Serif+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/styles.css?v=9">
+<link rel="stylesheet" href="css/styles.css?v=11">
 </head>
 <body>
 
@@ -145,14 +145,24 @@
 
   <!-- ============ 히어로 ============ -->
   <section class="hero" id="search">
-    <video class="hero-video" autoplay muted loop playsinline preload="auto">
+    <!-- 별도 poster 이미지를 사용하지 않고 영상을 선로딩해 첫 화면에 사진이 먼저 나타나지 않도록 한다. -->
+    <video class="hero-video" autoplay muted loop playsinline preload="auto" aria-hidden="true">
       <source src="videos/hero-video.mp4" type="video/mp4">
     </video>
     <div class="hero-overlay"></div>
     <div class="wrap hero-content">
+      <span class="hero-kicker">처음 떠나는 캠핑도 쉽게</span>
       <h1>계획 없이 떠나도,<br>후회 없는 캠핑</h1>
-      <p>초보자도 헤매지 않도록, 검증된 캠핑장과 준비물 가이드를 한 화면에 정리했습니다.</p>
-      <a href="#pick" class="btn">캠핑장 둘러보기</a>
+      <p>검증된 캠핑장 검색부터 비교, 첫 캠핑 준비까지 한곳에서 시작하세요.</p>
+      <div class="hero-actions">
+        <a href="#homeFilterBar" class="btn hero-primary">캠핑장 검색하기</a>
+        <a href="#tripMatch" class="btn hero-secondary">1분 취향 추천</a>
+      </div>
+      <ul class="hero-proof" aria-label="트립픽 주요 특징">
+        <li>한국관광공사 공공데이터</li>
+        <li>최대 3곳 비교</li>
+        <li>초보 준비 체크</li>
+      </ul>
     </div>
 
     <div class="scroll-cue"><span></span>Scroll</div>
@@ -390,12 +400,12 @@
       </div>
       <div class="intro-copy">
         <span class="eyebrow"><i></i>About Trippick</span>
-        <h2>자연의 여유와 신뢰의 정보가<br>만나는 단 하나의 캠핑 플랫폼</h2>
-        <p>트립픽은 검색 → 비교 → 예약까지 흩어진 캠핑 준비 과정을 한 화면에 모았습니다. 감성 좋은 캠핑장을 발굴하고, 실구매자의 후기로 검증하고, 초보자를 위한 준비물 가이드까지 더해 처음 떠나는 캠핑도 망설임 없이 준비할 수 있도록 돕습니다.</p>
+        <h2>자연의 여유와 신뢰할 수 있는 정보가<br>만나는 캠핑 플랫폼</h2>
+        <p>트립픽은 검색 → 비교 → 예약까지 흩어진 캠핑 준비 과정을 한 화면에 모았습니다. 한국관광공사 공공데이터를 바탕으로 시설 정보를 비교하고, 초보자를 위한 준비물 가이드까지 더해 처음 떠나는 캠핑도 망설임 없이 준비할 수 있도록 돕습니다.</p>
         <div class="intro-stats">
-          <div><strong data-count-to="1200" data-suffix="+">0</strong><span>제휴 캠핑장</span></div>
-          <div><strong data-count-to="4.8" data-decimals="1">0</strong><span>평균 후기 평점</span></div>
-          <div><strong data-count-to="3" data-suffix="분">0</strong><span>평균 예약 소요시간</span></div>
+          <div><strong>공공데이터</strong><span>캠핑장 정보 출처</span></div>
+          <div><strong>최대 3곳</strong><span>동일 기준 비교</span></div>
+          <div><strong>5단계</strong><span>첫 캠핑 준비 체크</span></div>
         </div>
       </div>
     </div>
@@ -405,17 +415,18 @@
   <section class="section reveal" id="benefit" style="padding-top:0;">
     <div class="wrap">
       <div class="section-head">
-        <div><span class="eyebrow"><i></i>Best</span><h2>이번 주 가장 많이 찾은 캠핑장</h2></div>
+        <div><span class="eyebrow"><i></i>Curated Demo</span><h2>트립픽이 제안하는 캠핑장</h2></div>
         <!-- <a href="#" class="link-underline">전체보기</a> -->
       </div>
+      <p class="data-disclaimer">카드의 가격과 혜택은 예약 화면을 설명하기 위한 포트폴리오 예시이며, 실제 요금은 캠핑장 확인이 필요합니다.</p>
 
       <div class="grid bento-grid" id="campGrid">
         <article class="p-card">
-          <a href="pages/detail.html" class="p-thumb">
-            <img src="https://images.unsplash.com/photo-1508873696983-2dfd5898f08b?auto=format&fit=crop&w=600&q=70" alt="반려견과 함께 호숫가 텐트에서 쉬는 모습" loading="lazy">
+          <div class="p-thumb">
+            <a href="pages/detail.html" class="p-thumb-link" aria-label="여주 블루마린 캠핑장 상세 보기"><img src="https://images.unsplash.com/photo-1508873696983-2dfd5898f08b?auto=format&fit=crop&w=600&q=70" alt="반려견과 함께 호숫가 텐트에서 쉬는 모습" loading="lazy"></a>
             <span class="p-tag">신규오픈</span>
-            <button class="p-like" aria-label="찜하기" onclick="event.preventDefault()"><svg width="14" height="14" viewBox="0 0 22 22" fill="none"><path d="M11 18s-7-4.5-7-9a4 4 0 018 0 4 4 0 018 0c0 4.5-7 9-7 9z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></button>
-          </a>
+            <button class="p-like" type="button" aria-label="여주 블루마린 캠핑장 찜하기" aria-pressed="false"><svg width="14" height="14" viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M11 18s-7-4.5-7-9a4 4 0 018 0 4 4 0 018 0c0 4.5-7 9-7 9z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></button>
+          </div>
           <div class="p-body">
             <p class="p-region">경기 여주</p>
             <h3 class="p-name"><a href="pages/detail.html">여주 블루마린 캠핑장</a></h3>
@@ -425,11 +436,11 @@
         </article>
 
         <article class="p-card">
-          <a href="pages/detail.html" class="p-thumb">
-            <img src="https://images.unsplash.com/photo-1632367294096-4e77d53c4ae9?auto=format&fit=crop&w=600&q=70" alt="산 능선이 보이는 들판의 캠핑 텐트" loading="lazy">
+          <div class="p-thumb">
+            <a href="pages/detail.html" class="p-thumb-link" aria-label="홍천 리버사이드 오토캠핑 상세 보기"><img src="https://images.unsplash.com/photo-1632367294096-4e77d53c4ae9?auto=format&fit=crop&w=600&q=70" alt="산 능선이 보이는 들판의 캠핑 텐트" loading="lazy"></a>
             <span class="p-tag sale">SALE</span>
-            <button class="p-like on" aria-label="찜하기" onclick="event.preventDefault()"><svg width="14" height="14" viewBox="0 0 22 22" fill="none"><path d="M11 18s-7-4.5-7-9a4 4 0 018 0 4 4 0 018 0c0 4.5-7 9-7 9z" fill="currentColor"/></svg></button>
-          </a>
+            <button class="p-like on" type="button" aria-label="홍천 리버사이드 오토캠핑 찜 해제" aria-pressed="true"><svg width="14" height="14" viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M11 18s-7-4.5-7-9a4 4 0 018 0 4 4 0 018 0c0 4.5-7 9-7 9z" fill="currentColor"/></svg></button>
+          </div>
           <div class="p-body">
             <p class="p-region">강원 홍천</p>
             <h3 class="p-name"><a href="pages/detail.html">홍천 리버사이드 오토캠핑</a></h3>
@@ -439,11 +450,11 @@
         </article>
 
         <article class="p-card">
-          <a href="pages/detail.html" class="p-thumb">
-            <img src="https://images.unsplash.com/photo-1641569618527-68e26db76db0?auto=format&fit=crop&w=600&q=70" alt="초록 언덕 위에 자리한 하얀 돔형 글램핑 텐트" loading="lazy">
+          <div class="p-thumb">
+            <a href="pages/detail.html" class="p-thumb-link" aria-label="가평 포레스트 글램핑 상세 보기"><img src="https://images.unsplash.com/photo-1641569618527-68e26db76db0?auto=format&fit=crop&w=600&q=70" alt="초록 언덕 위에 자리한 하얀 돔형 글램핑 텐트" loading="lazy"></a>
             <span class="p-tag">마감임박</span>
-            <button class="p-like" aria-label="찜하기" onclick="event.preventDefault()"><svg width="14" height="14" viewBox="0 0 22 22" fill="none"><path d="M11 18s-7-4.5-7-9a4 4 0 018 0 4 4 0 018 0c0 4.5-7 9-7 9z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></button>
-          </a>
+            <button class="p-like" type="button" aria-label="가평 포레스트 글램핑 찜하기" aria-pressed="false"><svg width="14" height="14" viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M11 18s-7-4.5-7-9a4 4 0 018 0 4 4 0 018 0c0 4.5-7 9-7 9z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></button>
+          </div>
           <div class="p-body">
             <p class="p-region">경기 가평</p>
             <h3 class="p-name"><a href="pages/detail.html">가평 포레스트 글램핑</a></h3>
@@ -453,11 +464,11 @@
         </article>
 
         <article class="p-card">
-          <a href="pages/detail.html" class="p-thumb">
-            <img src="https://images.unsplash.com/photo-1749047899565-6f026c3bb809?auto=format&fit=crop&w=600&q=70" alt="해변에서 노을을 맞이하는 캠핑 텐트" loading="lazy">
+          <div class="p-thumb">
+            <a href="pages/detail.html" class="p-thumb-link" aria-label="태안 선셋 캠프사이트 상세 보기"><img src="https://images.unsplash.com/photo-1749047899565-6f026c3bb809?auto=format&fit=crop&w=600&q=70" alt="해변에서 노을을 맞이하는 캠핑 텐트" loading="lazy"></a>
             <span class="p-tag p-tag-alt">바다근처</span>
-            <button class="p-like" aria-label="찜하기" onclick="event.preventDefault()"><svg width="14" height="14" viewBox="0 0 22 22" fill="none"><path d="M11 18s-7-4.5-7-9a4 4 0 018 0 4 4 0 018 0c0 4.5-7 9-7 9z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></button>
-          </a>
+            <button class="p-like" type="button" aria-label="태안 선셋 캠프사이트 찜하기" aria-pressed="false"><svg width="14" height="14" viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M11 18s-7-4.5-7-9a4 4 0 018 0 4 4 0 018 0c0 4.5-7 9-7 9z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></button>
+          </div>
           <div class="p-body">
             <p class="p-region">충남 태안</p>
             <h3 class="p-name"><a href="pages/detail.html">태안 선셋 캠프사이트</a></h3>
@@ -511,25 +522,40 @@
   <section class="section dark-section reveal" id="guide">
     <div class="wrap">
       <div class="section-head">
-        <div><span class="eyebrow eyebrow-light"><i></i>Why Trippick</span><h2>예약 다음, 준비까지 함께합니다</h2></div>
+        <div><span class="eyebrow eyebrow-light"><i></i>Why Trippick</span><h2>이용자 후기 예시</h2></div>
         <a href="pages/community-reviews.html" class="link-underline">리뷰 전체보기</a>
       </div>
       <div class="review-grid">
         <div class="review-item">
           <div class="quote-mark">“</div>
           <p class="quote">사진이랑 실제 시설이 똑같았어요. 처음이라 걱정했는데 준비물 리스트 덕분에 하나도 안 빠뜨렸습니다.</p>
-          <div class="review-foot"><span class="review-stars">★★★★★</span><span class="who">박OO · 첫 캠핑</span></div>
+          <div class="review-foot"><span class="review-score" aria-label="평점 5점 만점에 5점">5.0 / 5</span><span class="who">박OO · 첫 캠핑</span></div>
         </div>
         <div class="review-item">
           <div class="quote-mark">“</div>
           <p class="quote">필터로 반려동물 동반 가능한 곳만 골라볼 수 있어서 좋았어요. 예약도 3분이면 끝나요.</p>
-          <div class="review-foot"><span class="review-stars">★★★★★</span><span class="who">김OO · 반려견 동반</span></div>
+          <div class="review-foot"><span class="review-score" aria-label="평점 5점 만점에 5점">5.0 / 5</span><span class="who">김OO · 반려견 동반</span></div>
         </div>
         <div class="review-item">
           <div class="quote-mark">“</div>
           <p class="quote">매너타임 후기가 진짜 정확해서 조용히 쉬고 싶을 때 큰 도움이 됐어요.</p>
-          <div class="review-foot"><span class="review-stars">★★★★☆</span><span class="who">이OO · 감성 캠퍼</span></div>
+          <div class="review-foot"><span class="review-score" aria-label="평점 5점 만점에 4점">4.0 / 5</span><span class="who">이OO · 감성 캠퍼</span></div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 후기 다음 예약 CTA ============ -->
+  <section class="booking-cta-section" aria-labelledby="bookingCtaTitle">
+    <div class="wrap booking-cta-inner">
+      <div>
+        <span class="eyebrow eyebrow-light"><i></i>Start Your Trip</span>
+        <h2 id="bookingCtaTitle">이번 주말, 나에게 맞는 캠핑장을 찾아보세요</h2>
+        <p>지역과 날짜로 바로 검색하거나, 세 가지 질문으로 취향부터 확인할 수 있어요.</p>
+      </div>
+      <div class="booking-cta-actions">
+        <a href="#homeFilterBar" class="btn booking-cta-primary">캠핑장 검색하기</a>
+        <a href="#tripMatch" class="btn-outline booking-cta-secondary">1분 취향 추천</a>
       </div>
     </div>
   </section>
@@ -692,6 +718,13 @@
   </div>
 </div>
 
-<script src="js/script.js?v=15"></script>
+<script src="js/script.js?v=18"></script>
+<script>
+  /* 공통 스크립트의 상세 조건 초기화 뒤에도 보조 문구 영역을 비워 둔다. */
+  document.getElementById('advancedFilterReset')?.addEventListener('click', () => {
+    const filterAssist = document.getElementById('filterAssist');
+    if (filterAssist) filterAssist.textContent = '';
+  });
+</script>
 </body>
 </html>
