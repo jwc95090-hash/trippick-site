@@ -13,7 +13,7 @@ from pathlib import Path
 
 import imageio_ffmpeg
 import numpy as np
-from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont, ImageOps
+from PIL import Image, ImageDraw, ImageFont, ImageOps
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -34,7 +34,7 @@ SAGE = "#8FB79B"
 FONT_REGULAR = Path(r"C:\Windows\Fonts\malgun.ttf")
 FONT_BOLD = Path(r"C:\Windows\Fonts\malgunbd.ttf")
 
-MASCOT_PATH = ROOT / "images" / "trippick-safety-bear.png"
+MASCOT_PATH = ROOT / "images" / "trippick-safety-bear-3d-clean.png"
 VIDEO_PATH = ROOT / "videos" / "trippick-safety-guide.mp4"
 POSTER_PATH = ROOT / "images" / "trippick-safety-guide-poster.jpg"
 AUDIO_PATH = ROOT / "videos" / "trippick-safety-guide-music.wav"
@@ -45,7 +45,7 @@ SCENES = [
         "start": 0,
         "end": 7,
         "tag": "TRIPPICK SAFETY GUIDE",
-        "title": "곰이와 함께하는\n캠핑 안전 가이드",
+        "title": "출발 전에 확인하는\n캠핑 안전 가이드",
         "body": "출발 전 75초만 확인하면\n첫 캠핑도 더 안전하고 즐거워요!",
         "tip": "여섯 가지 약속을 함께 확인해요",
     },
@@ -119,33 +119,13 @@ F_TIP = font(21, True)
 F_SMALL = font(16, True)
 
 
-def rounded_image(image: Image.Image, size: tuple[int, int], radius: int) -> Image.Image:
-    fitted = ImageOps.fit(image, size, Image.Resampling.LANCZOS, centering=(0.5, 0.46))
-    mask = Image.new("L", size, 0)
-    ImageDraw.Draw(mask).rounded_rectangle((0, 0, size[0] - 1, size[1] - 1), radius, fill=255)
-    fitted.putalpha(mask)
-    return fitted
-
-
 def make_background() -> Image.Image:
-    top = (11, 23, 16)
-    bottom = (19, 37, 26)
-    strip = Image.new("RGB", (1, HEIGHT))
-    pixels = strip.load()
-    for y in range(HEIGHT):
-        p = y / max(1, HEIGHT - 1)
-        pixels[0, y] = tuple(round(top[i] * (1 - p) + bottom[i] * p) for i in range(3))
-    bg = strip.resize((WIDTH, HEIGHT))
-    glow = Image.new("RGBA", (WIDTH, HEIGHT), (0, 0, 0, 0))
-    gd = ImageDraw.Draw(glow)
-    gd.ellipse((770, -210, 1390, 410), fill=(173, 138, 76, 35))
-    gd.ellipse((-260, 430, 460, 1010), fill=(93, 130, 103, 32))
-    return Image.alpha_composite(bg.convert("RGBA"), glow.filter(ImageFilter.GaussianBlur(90)))
+    return Image.new("RGBA", (WIDTH, HEIGHT), FOREST)
 
 
 BASE_BG = make_background()
-MASCOT_SOURCE = Image.open(MASCOT_PATH).convert("RGB")
-MASCOT = rounded_image(ImageEnhance.Color(MASCOT_SOURCE).enhance(1.05), (385, 578), 32)
+MASCOT_SOURCE = Image.open(MASCOT_PATH).convert("RGBA")
+MASCOT = ImageOps.contain(MASCOT_SOURCE, (390, 590), Image.Resampling.LANCZOS)
 
 
 def draw_check(draw: ImageDraw.ImageDraw, x: int, y: int, color: str = SAGE) -> None:
@@ -156,13 +136,6 @@ def draw_check(draw: ImageDraw.ImageDraw, x: int, y: int, color: str = SAGE) -> 
 def draw_frame(scene: dict, t: float, scene_index: int) -> Image.Image:
     frame = BASE_BG.copy()
     draw = ImageDraw.Draw(frame, "RGBA")
-
-    # Slow floating firefly dots give the static illustrations some life.
-    for i in range(18):
-        x = (83 * i + int(t * (7 + i % 3))) % WIDTH
-        y = 80 + (47 * i + int(11 * math.sin(t * 0.7 + i))) % 560
-        alpha = 28 + int(18 * (1 + math.sin(t * 1.2 + i)) / 2)
-        draw.ellipse((x, y, x + 3, y + 3), fill=(216, 190, 135, alpha))
 
     # Top brand and scene progress.
     draw.text((64, 42), "TRIPPICK", font=F_TAG, fill=IVORY)
@@ -182,12 +155,8 @@ def draw_frame(scene: dict, t: float, scene_index: int) -> Image.Image:
     draw_check(draw, 108, 566)
     draw.text((158, 568), scene["tip"], font=F_TIP, fill=IVORY)
 
-    # Mascot card bobs gently to mimic a character animation.
-    bob = int(7 * math.sin(t * 2.1))
-    shadow = Image.new("RGBA", (440, 620), (0, 0, 0, 0))
-    ImageDraw.Draw(shadow).rounded_rectangle((18, 18, 422, 606), 36, fill=(0, 0, 0, 80))
-    frame.alpha_composite(shadow.filter(ImageFilter.GaussianBlur(16)), (816, 92 + bob))
-    frame.alpha_composite(MASCOT, (843, 109 + bob))
+    # Keep the dimensional mascot clean and stable, without glow, shadow or motion effects.
+    frame.alpha_composite(MASCOT, (844, 84))
 
     # Bottom timeline.
     progress = min(1.0, max(0.0, t / DURATION))

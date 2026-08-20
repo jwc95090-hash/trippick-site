@@ -6,7 +6,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700;800&family=Noto+Serif+KR:wght@400;500;600;700&family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/styles.css?v=20260820-guide6">
+<link rel="stylesheet" href="../css/styles.css?v=20260820-responsive3">
 <title>캠핑입문가이드 | TRIPPICK</title>
 <meta name="description" content="캠핑입문가이드. 처음 캠핑을 떠나는 분들을 위한 준비물 체크리스트와 주의사항을 안내합니다.">
 <link rel="canonical" href="https://jwc95090-hash.github.io/trippick-site/pages/guide.html">
@@ -26,7 +26,7 @@
 <meta property="og:image:height" content="1080">
 <meta property="og:image:alt" content="캠핑입문가이드 | TRIPPICK">
 </head>
-<body>
+<body class="guide-page">
 
 <!-- ============ 헤더 ============ -->
 <header class="site-header" id="siteHeader">
@@ -167,26 +167,20 @@
         <a href="#rainy-video" class="guide-tab">날씨·상황 판단</a>
       </nav>
 
-      <article class="guide-featured" id="featured-guide-video">
-        <div class="video-player-card guide-featured-player">
-          <video class="guide-video" controls preload="metadata" playsinline data-initial-volume="0.28" controlslist="nodownload" poster="../images/trippick-safety-guide-poster.jpg" aria-label="곰이와 함께하는 캠핑 안전 가이드 영상">
-            <source src="../videos/trippick-safety-guide.mp4" type="video/mp4">
-            브라우저가 MP4 영상을 지원하지 않습니다.
-          </video>
-        </div>
-        <div class="guide-featured-copy">
-          <span class="guide-video-label">FEATURED · 75 SEC</span>
-          <h2>곰이와 함께하는<br>캠핑 안전 가이드</h2>
-          <p>텐트 설치부터 불·가스·날씨·쓰레기·비상대응까지, 출발 전에 꼭 알아야 할 핵심 안전수칙을 한 편에 담았습니다.</p>
-          <dl class="guide-featured-meta">
-            <div><dt>제작</dt><dd>트립픽 자체 제작</dd></div>
-            <div><dt>재생 시간</dt><dd>1분 15초</dd></div>
-            <div><dt>추천 대상</dt><dd>첫 캠핑을 준비하는 분</dd></div>
-          </dl>
-        </div>
-      </article>
+      <div class="guide-course-grid" aria-label="초보 캠핑 영상 과정">
+        <article class="video-card video-card-local guide-featured" id="featured-guide-video">
+          <div class="video-thumb video-slot video-player-card guide-featured-player">
+            <video class="guide-video" controls preload="metadata" playsinline data-initial-volume="0.28" controlslist="nodownload" poster="../images/trippick-safety-guide-poster.jpg" aria-label="출발 전에 확인하는 캠핑 안전 가이드 영상">
+              <source src="../videos/trippick-safety-guide.mp4" type="video/mp4">
+              브라우저가 MP4 영상을 지원하지 않습니다.
+            </video>
+          </div>
+          <span class="guide-video-label">SAFETY · 75 SEC</span>
+          <h3>출발 전에 확인하는 캠핑 안전 가이드</h3>
+          <p class="video-meta">1분 15초 · 트립픽 자체 제작</p>
+        </article>
 
-      <div class="video-grid guide-video-grid" aria-label="초보 캠핑 실전 영상">
+        <div class="video-grid guide-video-grid">
         <article class="video-card video-card-size-md video-card-local" id="packing-video">
           <div class="video-thumb video-slot video-player-card">
             <video class="guide-video" controls preload="metadata" playsinline data-initial-volume="0.28" controlslist="nodownload" poster="../videos/guide/posters/first-camp-essentials.jpg" aria-label="첫 캠핑 준비물 열두 가지 영상">
@@ -246,6 +240,7 @@
           <h3>우천 시 캠핑, 이것만은 꼭 확인하세요</h3>
           <p class="video-meta">45초 캐릭터 가이드</p>
         </article>
+        </div>
       </div>
     </div>
   </section>
