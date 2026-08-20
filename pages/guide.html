@@ -128,98 +128,155 @@
   <a href="login.html" class="mobile-menu-login">로그인 · 회원가입</a>
 </div>
 
-<main id="top">
+<main id="top" class="guide-page">
 
-  <section class="subhero">
-    <div class="wrap">
-      <div class="crumb"><a href="../index.html">홈</a><span>/</span><span>캠핑입문가이드</span></div>
-      <h1>캠핑입문가이드</h1>
-      <p>초보 캠퍼를 위한 안전수칙부터 준비물, 매너까지 트립픽이 정리했습니다.</p>
+  <section class="guide-service-hero wrap" aria-labelledby="guideHeroTitle">
+    <div class="guide-service-hero-media">
+      <div class="guide-hero-crumb"><a href="../index.html">홈</a><span>/</span><span>캠핑입문가이드</span></div>
+      <div class="guide-hero-copy">
+        <span class="guide-hero-kicker">TRIPPICK CAMPING CLASS</span>
+        <h1 id="guideHeroTitle">처음 떠나는 캠핑도<br>안전하고 즐겁게</h1>
+          <p>준비물부터 캠핑 매너, 날씨 판단까지<br>안전 가이드와 다섯 편의 실전 영상으로 쉽게 익혀보세요.</p>
+        <div class="guide-hero-actions">
+          <a class="guide-hero-btn guide-hero-btn-primary" href="#featured-guide-video">75초 안전 영상 보기 <span aria-hidden="true">▶</span></a>
+            <a class="guide-hero-btn guide-hero-btn-accent" href="#videos">초보 캠핑 영상 둘러보기 <span aria-hidden="true">↘</span></a>
+        </div>
+      </div>
     </div>
   </section>
 
-  <section class="section" style="padding-top:36px;">
+  <section class="guide-learning-section">
     <div class="wrap">
-      <div class="section-head" style="border-bottom:none; margin-bottom:0;">
-        <div><span class="eyebrow"><i></i>Guide</span></div>
-      </div>
+      <div class="guide-learning-shell">
+        <div class="guide-catalog-head">
+          <div>
+            <span class="eyebrow"><i></i>Camping Guide</span>
+            <h2>초보 캠퍼를 위한 필수 가이드</h2>
+            <p>필요한 과정을 골라 보고, 출발 전에 한 번 더 확인하세요.</p>
+          </div>
+          <span class="guide-course-count">영상 가이드 <b>6편</b></span>
+        </div>
 
-      <div class="guide-tabs">
-        <a href="#videos" class="guide-tab active">안전 영상</a>
-        <a href="#" class="guide-tab">준비물 체크리스트</a>
-        <a href="#" class="guide-tab">캠핑주의사항</a>
-        <a href="#" class="guide-tab">FAQ</a>
-      </div>
+        <nav class="guide-tabs" aria-label="가이드 카테고리">
+          <a href="#featured-guide-video" class="guide-tab active">안전 영상</a>
+          <a href="#videos" class="guide-tab">준비물</a>
+          <a href="#videos" class="guide-tab">캠핑 매너</a>
+          <a href="#videos" class="guide-tab">날씨·상황 판단</a>
+        </nav>
 
-      <div class="video-grid" id="videos">
-
-        <article class="video-card video-card-local video-card-size-lg">
-          <div class="video-thumb video-player-card">
-            <video class="guide-video" controls preload="metadata" playsinline data-initial-volume="0.28" controlslist="nodownload" poster="../images/trippick-safety-guide-poster.jpg" aria-label="곰이와 함께하는 캠핑 안전 가이드 영상">
+        <article class="guide-featured" id="featured-guide-video">
+          <div class="video-player-card guide-featured-player">
+            <video controls preload="metadata" playsinline poster="../images/trippick-safety-guide-poster.jpg" aria-label="출발 전 캠핑 안전 가이드 영상">
               <source src="../videos/trippick-safety-guide.mp4" type="video/mp4">
               브라우저가 MP4 영상을 지원하지 않습니다.
             </video>
           </div>
-          <h3>곰이와 함께하는 캠핑 안전 가이드</h3>
-          <p class="video-meta">트립픽 자체 제작 · 2026-08-19 · 1분 15초</p>
-          <p class="video-caption">텐트 설치부터 불·가스·날씨·쓰레기·비상대응까지 핵심 안전수칙을 짧게 확인하세요. 처음 재생 음량은 편안한 수준으로 설정됩니다.</p>
+          <div class="guide-featured-copy">
+            <div class="guide-featured-label"><span>LESSON 01</span><em>필수</em></div>
+            <h3>출발 전에 확인하는<br>75초 캠핑 안전 가이드</h3>
+            <p>텐트 설치부터 불·가스·날씨·쓰레기·비상대응까지 출발 전에 확인할 여섯 가지 안전 약속을 안내합니다.</p>
+            <div class="guide-featured-meta"><span>75초 핵심 요약</span><span>초보 추천</span></div>
+            <div class="guide-featured-character" aria-hidden="true">
+              <img src="../assets/brand/guide-crew/b1-compass-bear-card.jpg" alt="" width="640" height="640">
+            </div>
+          </div>
         </article>
 
-        <article class="video-card video-card-size-sm video-card-local">
-          <div class="video-thumb video-slot video-player-card">
-            <video class="guide-video" controls preload="metadata" playsinline data-initial-volume="0.28" controlslist="nodownload" poster="https://images.unsplash.com/photo-1600452556550-9ff29bb0e6cf?auto=format&fit=crop&w=600&q=70" aria-label="첫 캠핑, 준비물 열두 가지면 충분합니다 영상">
-              <source src="../videos/camping-packing.mp4" type="video/mp4">
+        <div class="guide-list-head" id="videos">
+          <div>
+            <span>STEP BY STEP</span>
+            <h2>영상으로 배우는 캠핑 기초</h2>
+          </div>
+          <p>실제 캠핑 장면과 함께 핵심만 쉽게 익혀보세요.</p>
+        </div>
+
+        <div class="video-grid">
+          <button type="button" class="video-card guide-video-select is-active" aria-pressed="true" aria-controls="guideVideoDetail" data-video-src="../videos/guide/first-camp-essentials.mp4" data-video-poster="../videos/guide/posters/first-camp-essentials.jpg" data-lesson="LESSON 02 · 준비물" data-title="꼭 필요한 장비부터 순서대로 챙기기" data-description="첫 캠핑에 필요한 장비를 잠자리·취사·안전 세 영역으로 나누어 살펴봅니다. 한 번에 모두 구매하기보다 실제 사용 빈도를 기준으로 우선순위를 정해보세요." data-points="침낭·매트·텐트 등 잠자리 장비부터 확인하기|랜턴·버너·식기 등 취사 장비를 사용 순서대로 묶기|구급함·보조 배터리·예비 조명을 마지막으로 점검하기">
+            <div class="video-thumb">
+              <img class="video-scene" src="https://images.unsplash.com/photo-1600452556550-9ff29bb0e6cf?auto=format&amp;fit=crop&amp;w=900&amp;q=78" alt="캠핑 장비를 준비하는 모습" width="900" height="560" loading="lazy" decoding="async">
+              <span class="video-thumb-copy"><small>LESSON 02</small><strong>첫 캠핑<br>준비물 12가지</strong></span>
+              <span class="video-character-art" aria-hidden="true"><img src="../assets/brand/guide-crew/a1-tent-spirit-card.jpg" alt="" width="640" height="640" loading="lazy" decoding="async"></span>
+              <span class="video-play"><svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M6 4l10 6-10 6V4z" fill="#F6F1E6"/></svg></span>
+              <span class="video-card-play-label">영상 보기</span>
+            </div>
+            <h3>꼭 필요한 장비부터 순서대로 챙기기</h3>
+            <p class="video-card-summary">랜턴·침낭·의자부터 구급함까지, 초보 캠퍼에게 필요한 장비만 골라 소개해요.</p>
+            <p class="video-meta">TRIPPICK ORIGINAL · 0:42 · 초보 필수</p>
+          </button>
+
+          <button type="button" class="video-card guide-video-select" aria-pressed="false" aria-controls="guideVideoDetail" data-video-src="../videos/guide/camping-manners.mp4" data-video-poster="../videos/guide/posters/camping-manners.jpg" data-lesson="LESSON 03 · 캠핑 매너" data-title="밤 10시 이후, 이웃 캠퍼를 배려하는 법" data-description="캠핑장의 매너타임은 모두가 편안하게 쉬기 위한 약속입니다. 소리와 조명뿐 아니라 차량 이동과 공용 공간 사용까지 함께 확인합니다." data-points="매너타임 전 대화·음악·조명 밝기를 미리 낮추기|늦은 시간 차량 이동과 장비 정리를 최소화하기|공용 개수대와 화장실을 다음 사람이 바로 쓰도록 정리하기">
+            <div class="video-thumb">
+              <img class="video-scene" src="https://images.unsplash.com/photo-1638284647862-0dac1edeb8ab?auto=format&amp;fit=crop&amp;w=900&amp;q=78" alt="저녁 캠핑장에서 불을 밝힌 텐트" width="900" height="560" loading="lazy" decoding="async">
+              <span class="video-thumb-copy"><small>LESSON 03</small><strong>서로 편안한<br>매너타임</strong></span>
+              <span class="video-character-art" aria-hidden="true"><img src="../assets/brand/guide-crew/a2-tent-spirit-card.jpg" alt="" width="640" height="640" loading="lazy" decoding="async"></span>
+              <span class="video-play"><svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M6 4l10 6-10 6V4z" fill="#F6F1E6"/></svg></span>
+              <span class="video-card-play-label">영상 보기</span>
+            </div>
+            <h3>밤 10시 이후, 이웃 캠퍼를 배려하는 법</h3>
+            <p class="video-card-summary">소음과 조명을 줄이는 기준부터 공용 공간을 깔끔하게 쓰는 방법까지 알려드려요.</p>
+            <p class="video-meta">TRIPPICK ORIGINAL · 0:37 · 에티켓</p>
+          </button>
+
+          <button type="button" class="video-card guide-video-select" aria-pressed="false" aria-controls="guideVideoDetail" data-video-src="../videos/guide/pet-camping-check.mp4" data-video-poster="../videos/guide/posters/pet-camping-check.jpg" data-lesson="LESSON 04 · 반려동물 동반" data-title="반려동물 동반 규정과 필수 준비물" data-description="예약 전에 동반 가능 여부와 견종·체중 제한을 확인하고, 현장에서는 안전과 위생을 위한 기본 펫티켓을 지켜야 합니다." data-points="예약 전 동반 가능 구역과 추가 요금·제한 조건 확인하기|리드줄·인식표·배변봉투·평소 먹던 사료 챙기기|진드기 예방과 화상·탈수 방지를 위해 쉴 공간 마련하기">
+            <div class="video-thumb">
+              <img class="video-scene" src="https://images.unsplash.com/photo-1508873696983-2dfd5898f08b?auto=format&amp;fit=crop&amp;w=900&amp;q=78" alt="캠핑장 잔디에서 쉬는 반려견" width="900" height="560" loading="lazy" decoding="async">
+              <span class="video-thumb-copy"><small>LESSON 04</small><strong>반려동물과<br>함께 떠나기</strong></span>
+              <span class="video-character-art" aria-hidden="true"><img src="../assets/brand/guide-crew/b2-compass-bear-card.jpg" alt="" width="640" height="640" loading="lazy" decoding="async"></span>
+              <span class="video-play"><svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M6 4l10 6-10 6V4z" fill="#F6F1E6"/></svg></span>
+              <span class="video-card-play-label">영상 보기</span>
+            </div>
+            <h3>반려동물 동반 규정과 필수 준비물</h3>
+            <p class="video-card-summary">리드줄·배변봉투·동반 규정을 확인하고 모두가 편안한 캠핑을 준비해요.</p>
+            <p class="video-meta">TRIPPICK ORIGINAL · 0:44 · 동반 캠핑</p>
+          </button>
+
+          <button type="button" class="video-card guide-video-select" aria-pressed="false" aria-controls="guideVideoDetail" data-video-src="../videos/guide/camping-style-guide.mp4" data-video-poster="../videos/guide/posters/camping-style-guide.jpg" data-lesson="LESSON 05 · 캠핑 스타일" data-title="차박과 오토캠핑, 어떤 방식이 맞을까?" data-description="두 방식의 비용과 공간, 준비 시간, 편의성을 비교해 첫 캠핑에서 시행착오를 줄여보세요. 이동 인원과 보유 장비를 기준으로 고르면 쉽습니다." data-points="차량 안에서 자는 차박과 사이트에 텐트를 치는 오토캠핑 구분하기|인원·수납공간·설치 시간을 기준으로 방식 선택하기|화장실·전기·취사 시설 등 필요한 편의시설 확인하기">
+            <div class="video-thumb">
+              <img class="video-scene" src="https://images.unsplash.com/photo-1638284648387-3f946944713e?auto=format&amp;fit=crop&amp;w=900&amp;q=78" alt="숲속 오토캠핑 사이트" width="900" height="560" loading="lazy" decoding="async">
+              <span class="video-thumb-copy"><small>LESSON 05</small><strong>나에게 맞는<br>캠핑 스타일</strong></span>
+              <span class="video-character-art" aria-hidden="true"><img src="../assets/brand/guide-crew/c1-pin-squirrel-card.jpg" alt="" width="640" height="640" loading="lazy" decoding="async"></span>
+              <span class="video-play"><svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M6 4l10 6-10 6V4z" fill="#F6F1E6"/></svg></span>
+              <span class="video-card-play-label">영상 보기</span>
+            </div>
+            <h3>차박과 오토캠핑, 어떤 방식이 맞을까?</h3>
+            <p class="video-card-summary">비용·장비·편의성을 비교하고 내 여행 성향에 맞는 캠핑장을 골라요.</p>
+            <p class="video-meta">TRIPPICK ORIGINAL · 0:46 · 유형 비교</p>
+          </button>
+
+          <button type="button" class="video-card guide-video-select" aria-pressed="false" aria-controls="guideVideoDetail" data-video-src="../videos/guide/rain-camping-safety.mp4" data-video-poster="../videos/guide/posters/rain-camping-safety.jpg" data-lesson="LESSON 06 · 날씨 판단" data-title="강수량·풍속·배수로 확인하는 안전 기준" data-description="우천 캠핑은 비의 양보다 바람과 지형, 배수 상태를 함께 보는 것이 중요합니다. 현장 상황이 악화되면 계획보다 철수를 먼저 선택하세요." data-points="출발 전 시간대별 강수량과 순간 최대 풍속 확인하기|계곡·하천변·낮은 지대와 배수 불량 사이트 피하기|천둥·강풍·침수 징후가 보이면 즉시 철수하기">
+            <div class="video-thumb">
+              <img class="video-scene" src="https://images.unsplash.com/photo-1631635589499-afd87d52bf64?auto=format&amp;fit=crop&amp;w=900&amp;q=78" alt="비 내리는 날의 숲속 캠핑" width="900" height="560" loading="lazy" decoding="async">
+              <span class="video-thumb-copy"><small>LESSON 06</small><strong>비 오는 날<br>출발 판단법</strong></span>
+              <span class="video-character-art" aria-hidden="true"><img src="../assets/brand/guide-crew/c2-pin-squirrel-card.jpg" alt="" width="640" height="640" loading="lazy" decoding="async"></span>
+              <span class="video-play"><svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M6 4l10 6-10 6V4z" fill="#F6F1E6"/></svg></span>
+              <span class="video-card-play-label">영상 보기</span>
+            </div>
+            <h3>강수량·풍속·배수로 확인하는 안전 기준</h3>
+            <p class="video-card-summary">날씨와 사이트 상태를 확인해 떠날지 미룰지 안전하게 결정해요.</p>
+            <p class="video-meta">TRIPPICK ORIGINAL · 0:45 · 안전 판단</p>
+          </button>
+        </div>
+
+        <section class="guide-video-detail" id="guideVideoDetail" aria-labelledby="guideVideoTitle">
+          <div class="guide-video-embed">
+            <video id="guideVideoFrame" controls preload="metadata" playsinline poster="../videos/guide/posters/first-camp-essentials.jpg" aria-label="꼭 필요한 장비부터 순서대로 챙기기 영상">
+              <source src="../videos/guide/first-camp-essentials.mp4" type="video/mp4">
               브라우저가 MP4 영상을 지원하지 않습니다.
             </video>
           </div>
-          <h3>첫 캠핑, 준비물 열두 가지면 충분합니다</h3>
-          <p class="video-meta">트립픽 자체 제작 · 2026-08-19 · 8초 모션 가이드</p>
-        </article>
-
-        <article class="video-card video-card-size-md video-card-local">
-          <div class="video-thumb video-slot video-player-card">
-            <video class="guide-video" controls preload="metadata" playsinline data-initial-volume="0.28" controlslist="nodownload" poster="https://images.unsplash.com/photo-1638284647862-0dac1edeb8ab?auto=format&fit=crop&w=600&q=70" aria-label="매너타임, 왜 지켜야 다시 초대받을까 영상">
-              <source src="../videos/camping-manners.mp4" type="video/mp4">
-              브라우저가 MP4 영상을 지원하지 않습니다.
-            </video>
+          <div class="guide-video-content">
+            <span class="guide-video-lesson" id="guideVideoLesson">LESSON 02 · 준비물</span>
+            <h2 id="guideVideoTitle">꼭 필요한 장비부터 순서대로 챙기기</h2>
+            <p id="guideVideoDescription">첫 캠핑에 필요한 장비를 잠자리·취사·안전 세 영역으로 나누어 살펴봅니다. 한 번에 모두 구매하기보다 실제 사용 빈도를 기준으로 우선순위를 정해보세요.</p>
+            <strong>영상 보기 전 체크포인트</strong>
+            <ul id="guideVideoPoints">
+              <li>침낭·매트·텐트 등 잠자리 장비부터 확인하기</li>
+              <li>랜턴·버너·식기 등 취사 장비를 사용 순서대로 묶기</li>
+              <li>구급함·보조 배터리·예비 조명을 마지막으로 점검하기</li>
+            </ul>
+            <span class="guide-video-origin"><i aria-hidden="true"></i>TRIPPICK 자체 제작 · 외부 영상 및 음원 없음</span>
           </div>
-          <h3>매너타임, 왜 지켜야 다시 초대받을까</h3>
-          <p class="video-meta">트립픽 자체 제작 · 2026-08-19 · 8초 모션 가이드</p>
-        </article>
-
-        <article class="video-card video-card-size-md video-card-local">
-          <div class="video-thumb video-slot video-player-card">
-            <video class="guide-video" controls preload="metadata" playsinline data-initial-volume="0.28" controlslist="nodownload" poster="https://images.unsplash.com/photo-1508873696983-2dfd5898f08b?auto=format&fit=crop&w=600&q=70" aria-label="반려동물과 함께, 매너 있게 캠핑하는 법 영상">
-              <source src="../videos/camping-with-pets.mp4" type="video/mp4">
-              브라우저가 MP4 영상을 지원하지 않습니다.
-            </video>
-          </div>
-          <h3>반려동물과 함께, 매너 있게 캠핑하는 법</h3>
-          <p class="video-meta">트립픽 자체 제작 · 2026-08-19 · 8초 모션 가이드</p>
-        </article>
-
-        <article class="video-card video-card-size-sm video-card-local">
-          <div class="video-thumb video-slot video-player-card">
-            <video class="guide-video" controls preload="metadata" playsinline data-initial-volume="0.28" controlslist="nodownload" poster="https://images.unsplash.com/photo-1638284648387-3f946944713e?auto=format&fit=crop&w=600&q=70" aria-label="차박 vs 오토캠핑, 나에게 맞는 스타일 찾기 영상">
-              <source src="../videos/car-camping.mp4" type="video/mp4">
-              브라우저가 MP4 영상을 지원하지 않습니다.
-            </video>
-          </div>
-          <h3>차박 vs 오토캠핑, 나에게 맞는 스타일 찾기</h3>
-          <p class="video-meta">트립픽 자체 제작 · 2026-08-19 · 8초 모션 가이드</p>
-        </article>
-
-        <article class="video-card video-card-size-lg video-card-local">
-          <div class="video-thumb video-slot video-player-card">
-            <video class="guide-video" controls preload="metadata" playsinline data-initial-volume="0.28" controlslist="nodownload" poster="https://images.unsplash.com/photo-1631635589499-afd87d52bf64?auto=format&fit=crop&w=600&q=70" aria-label="우천 시 캠핑, 이것만은 꼭 확인하세요 영상">
-              <source src="../videos/rainy-camping.mp4" type="video/mp4">
-              브라우저가 MP4 영상을 지원하지 않습니다.
-            </video>
-          </div>
-          <h3>우천 시 캠핑, 이것만은 꼭 확인하세요</h3>
-          <p class="video-meta">트립픽 자체 제작 · 2026-08-19 · 8초 모션 가이드</p>
-        </article>
-
+        </section>
       </div>
     </div>
   </section>
@@ -252,6 +309,7 @@
   </div>
 </footer>
 
-<script src="../js/script.js?v=20260819-guide5"></script>
+<script src="../js/script.js?v=20260820-guide6"></script>
+<script src="../js/guide.js?v=20260820-guide1"></script>
 </body>
 </html>

@@ -991,7 +991,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (checkoutInput) checkoutInput.value = '';
     resetAdvancedFilters();
     if (activeFilterChips) activeFilterChips.innerHTML = '';
-    if (filterAssist) filterAssist.textContent = '지역과 스타일을 고른 뒤, 필요한 시설까지 한 번에 비교해보세요.';
+    if (filterAssist) filterAssist.textContent = '';
   });
 
   /* ---------- 8-1. 캠핑장 비교함 (최대 3곳) ---------- */
