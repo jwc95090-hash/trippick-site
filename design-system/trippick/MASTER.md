@@ -2,7 +2,7 @@
 name: trippick-design-system
 product: "초보 캠퍼를 위한 캠핑 탐색·비교·예약 준비 서비스"
 stack: "Vanilla HTML / CSS / JavaScript"
-status: "local-preview"
+status: "deployed"
 last_updated: "2026-08-20"
 ---
 
