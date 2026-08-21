@@ -5,7 +5,6 @@
 
 [고객 사이트](https://jwc95090-hash.github.io/trippick-site/) · [UX 포트폴리오](https://jwc95090-hash.github.io/trippick-site/portfolio/) · [호스트센터 데모](https://jwc95090-hash.github.io/trippick-site/trippick-host/admin-camp.html) · [서비스 정책](https://jwc95090-hash.github.io/trippick-site/pages/policy.html)
 
-<img src="./images/og-desktop.jpg" alt="TRIPPICK 고객 사이트 대표 화면" width="900">
 
 ## 프로젝트 한눈에 보기
 
