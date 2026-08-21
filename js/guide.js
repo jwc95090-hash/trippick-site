@@ -9,6 +9,21 @@
 
   if (!lessonButtons.length || !detail || !frame || !lesson || !title || !description || !points) return;
 
+  // 가이드 영상은 오디오가 재생되지 않도록 항상 음소거 상태를 유지한다.
+  document.querySelectorAll('video[data-force-muted="true"]').forEach((video) => {
+    const enforceMuted = () => {
+      video.muted = true;
+      video.defaultMuted = true;
+      video.volume = 0;
+    };
+    enforceMuted();
+    video.addEventListener('loadedmetadata', enforceMuted);
+    video.addEventListener('play', enforceMuted);
+    video.addEventListener('volumechange', () => {
+      if (!video.muted || video.volume !== 0) enforceMuted();
+    });
+  });
+
   const selectLesson = (button) => {
     const videoSrc = button.dataset.videoSrc;
     const videoPoster = button.dataset.videoPoster;
