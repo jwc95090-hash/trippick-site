@@ -96,9 +96,13 @@ trippick-site/
 └── tools/                     # 영상 제작 보조 스크립트
 ```
 
-### 저장소 정리 메모
+### 저장소 정리 기준
 
-현재 실제 사용 경로는 `index.html`, `pages/`, `css/`, `js/`, `trippick-host/`입니다. 루트의 일부 HTML/CSS/JS와 `admin/`은 초기 URL 호환을 위해 유지하고 있습니다. 다음 리팩터링에서는 참조 경로를 확인한 뒤 중복 파일을 단계적으로 제거하고, 루트와 `videos/`에 중복된 `hero-video.mp4`를 하나로 통합하는 것이 좋습니다.
+- 실제 사용되는 히어로 영상은 `videos/hero-video.mp4`로 통일하고 루트 중복 파일을 제거했습니다.
+- 어떤 페이지에서도 불러오지 않던 jQuery 사본 3개를 제거했습니다.
+- 개인 편집기 설정인 `.vscode/`를 제거하고 `.gitignore`에 추가했습니다.
+- 현재 실제 사용 경로는 `index.html`, `pages/`, `css/`, `js/`, `trippick-host/`입니다.
+- 루트의 일부 HTML/CSS/JS와 `admin/`은 기존 공개 URL 호환을 위해 유지합니다.
 
 ## 트러블슈팅과 배운 점
 
