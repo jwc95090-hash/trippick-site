@@ -3,6 +3,7 @@
 초보 캠퍼를 위한 감성 캠핑 탐색·예약 포트폴리오입니다. 정적 HTML/CSS/JavaScript를 중심으로 만들고, 회원·커뮤니티 데이터는 Supabase, AI 상담 프록시는 Cloudflare Worker 구조로 연결했습니다.
 
 - [고객 사이트](https://jwc95090-hash.github.io/trippick-site/)
+- [반응형 UX 포트폴리오](https://jwc95090-hash.github.io/trippick-site/portfolio/)
 - [호스트센터 데모](https://jwc95090-hash.github.io/trippick-site/trippick-host/admin-camp.html)
 - [상담게시판](https://jwc95090-hash.github.io/trippick-site/pages/community-qna.html)
 - [리뷰게시판](https://jwc95090-hash.github.io/trippick-site/pages/community-reviews.html)
