@@ -576,110 +576,47 @@ document.addEventListener('DOMContentLoaded', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 
-  /* AI 상담 팝업: 24시간 즉시 답변하는 말풍선 채팅형. 대화는 브라우저에 저장되어 다시 열어도 이어진다. */
-  (function initConsultChat(){
-    const consultPopup = document.getElementById('consultPopup');
-    const thread = document.getElementById('consultChatThread');
-    const statusEl = document.getElementById('consultChatStatus');
-    const form = document.getElementById('consultChatForm');
-    const input = document.getElementById('consultChatInput');
-    if (!consultPopup || !thread || !form || !input) return;
+  /* 실제 AI 상담 클라이언트 로드
+     설정 파일을 먼저 불러온 뒤 API 호출 코드를 실행해 Worker 주소가 항상 준비되도록 한다. */
+  (function loadAiChatClient(){
+    const assetBase = location.pathname.includes('/pages/') ? '../js/' : 'js/';
+    const version = '20260821-real-ai1';
 
-    const STORE_KEY = 'trippick_ai_consult_chat_v2';
-    const GREETING = '안녕하세요! 트립픽 AI 상담이에요. 캠핑장, 예약, 결제, 취소에 관해 무엇이든 물어보세요.';
-    function buildAiReply(question) {
-      const text = question.toLowerCase();
-      if (/취소|환불/.test(text)) return '예약 취소와 환불 기준은 캠핑장과 이용일까지 남은 기간에 따라 달라요. 마이페이지 예약내역에서 해당 예약의 취소 규정을 확인해주세요.';
-      if (/결제|카드|카카오|네이버|토스/.test(text)) return '신용·체크카드와 간편결제를 이용할 수 있어요. 결제 단계에서 원하는 수단을 선택하면 됩니다.';
-      if (/쿠폰|할인/.test(text)) return '신규 회원에게 첫 예약 10% 할인 쿠폰을 드려요. 가입 후 마이페이지의 내 쿠폰에서 확인할 수 있습니다.';
-      if (/반려|애견|강아지|펫/.test(text)) return '반려동물 동반 가능 여부는 캠핑장마다 달라요. 상세 페이지의 이용 안내를 확인하거나 반려동물 필터를 이용해주세요.';
-      if (/예약|날짜|인원/.test(text)) return '캠핑장을 선택한 뒤 날짜와 인원을 입력하면 예약 가능한 옵션을 확인할 수 있어요.';
-      return '문의 내용을 확인했어요. 캠핑장 이름과 이용 날짜를 함께 알려주시면 더 정확하게 안내해드릴게요.';
-    }
+    function loadScript(id, src){
+      return new Promise((resolve, reject) => {
+        const existing = document.getElementById(id);
+        if (existing) {
+          if (existing.dataset.loaded === 'true') resolve();
+          else {
+            existing.addEventListener('load', resolve, { once: true });
+            existing.addEventListener('error', reject, { once: true });
+          }
+          return;
+        }
 
-    function loadState(){
-      try {
-        const raw = localStorage.getItem(STORE_KEY);
-        if (raw) return JSON.parse(raw);
-      } catch (e) { /* 저장소 파손 시 새로 시작 */ }
-      return { messages: [] };
-    }
-    function saveState(){
-      try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch (e) { /* 저장 실패는 무시 */ }
-    }
-
-    let state = loadState();
-    let replyTimer = null;
-
-    function nowLabel(){
-      const d = new Date();
-      return String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
-    }
-
-    function bubbleHTML(msg){
-      const role = msg.role === 'user' ? 'user' : 'host';
-      return `
-        <div class="chat-bubble chat-bubble-${role}">
-          <p>${gcEscapeHtml(msg.text)}</p>
-          <span class="chat-bubble-time">${gcEscapeHtml(msg.time)}</span>
-        </div>`;
-    }
-
-    function renderThread(){
-      thread.innerHTML = state.messages.map(bubbleHTML).join('');
-      thread.scrollTop = thread.scrollHeight;
-    }
-
-    function setStatus(text, mode){
-      if (!text) { statusEl.style.display = 'none'; return; }
-      statusEl.style.display = 'flex';
-      statusEl.className = 'consult-chat-status' + (mode ? ' ' + mode : '');
-      statusEl.innerHTML = `<span class="consult-status-dot"></span>${gcEscapeHtml(text)}`;
-    }
-
-    function updatePlaceholder(){
-      input.placeholder = 'AI에게 궁금한 점을 입력하세요';
-    }
-
-    function pushMessage(role, text){
-      const msg = { role, text, time: nowLabel() };
-      state.messages.push(msg);
-      saveState();
-      thread.insertAdjacentHTML('beforeend', bubbleHTML(msg));
-      thread.scrollTop = thread.scrollHeight;
-    }
-
-    function ensureGreeting(){
-      if (!state.messages.length) {
-        state.messages.push({ role: 'host', text: GREETING, time: nowLabel() });
-        saveState();
-      }
-      renderThread();
-      updatePlaceholder();
-    }
-
-    document.querySelectorAll('#fabConsultBtn, #faqConsultBtn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        ensureGreeting();
-        openPopup(consultPopup);
-        setTimeout(() => input.focus(), 250);
+        const script = document.createElement('script');
+        script.id = id;
+        script.src = src;
+        script.addEventListener('load', () => {
+          script.dataset.loaded = 'true';
+          resolve();
+        }, { once: true });
+        script.addEventListener('error', reject, { once: true });
+        document.head.appendChild(script);
       });
-    });
+    }
 
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const text = input.value.trim();
-      if (!text) return;
-      input.value = '';
-      clearTimeout(replyTimer);
-
-      pushMessage('user', text);
-      setStatus('AI가 답변을 작성하고 있어요', 'pending');
-      replyTimer = setTimeout(() => {
-        pushMessage('host', buildAiReply(text));
-        setStatus('AI 답변 완료', 'done');
-      }, 450);
-    });
+    loadScript('trippickAiConfig', assetBase + 'ai-chat-config.js?v=' + version)
+      .then(() => loadScript('trippickAiClient', assetBase + 'ai-chat.js?v=' + version))
+      .catch(error => {
+        console.error('TRIPPICK AI 상담 스크립트를 불러오지 못했습니다.', error);
+        const status = document.getElementById('consultChatStatus');
+        if (status) {
+          status.style.display = 'flex';
+          status.className = 'consult-chat-status error';
+          status.textContent = 'AI 상담 연결 파일을 불러오지 못했습니다. 잠시 후 새로고침해 주세요.';
+        }
+      });
   })();
 
   /* ---------- 8-0. 고캠핑(한국관광공사) 공공데이터 공통 로더 ----------
