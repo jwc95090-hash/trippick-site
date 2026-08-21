@@ -3,6 +3,7 @@
 초보 캠퍼를 위한 감성 캠핑 탐색·예약 포트폴리오입니다. 정적 HTML/CSS/JavaScript를 중심으로 만들고, 회원·커뮤니티 데이터는 Supabase, AI 상담 프록시는 Cloudflare Worker 구조로 연결했습니다.
 
 - [고객 사이트](https://jwc95090-hash.github.io/trippick-site/)
+- [반응형 UX 포트폴리오](https://jwc95090-hash.github.io/trippick-site/portfolio/)
 - [호스트센터 데모](https://jwc95090-hash.github.io/trippick-site/trippick-host/admin-camp.html)
 - [상담게시판](https://jwc95090-hash.github.io/trippick-site/pages/community-qna.html)
 - [리뷰게시판](https://jwc95090-hash.github.io/trippick-site/pages/community-reviews.html)
@@ -140,3 +141,10 @@ sitemap.xml, robots.txt    검색엔진 노출 설정
 ## 배포
 
 `main` 브랜치 변경 사항은 GitHub Pages에 반영됩니다. 정적 자산을 변경한 경우 HTML의 버전 쿼리(`?v=`)를 함께 올려 브라우저 캐시를 갱신합니다.
+
+## UX 실행 기준 및 정책
+
+- [고객 사이트 UX 실행 기준](docs/UX_EXECUTION_PLAN.md)
+- [서비스 정책·데이터 안내](pages/policy.html)
+
+공공데이터에는 실시간 재고와 최종 요금이 포함되지 않을 수 있습니다. AI 상담은 준비와 확인사항을 안내하며 예약을 확정하지 않습니다. 접근성은 WCAG 2.1 AA 주요 기준 적용을 목표로 하며 전체 준수 인증을 의미하지 않습니다.
