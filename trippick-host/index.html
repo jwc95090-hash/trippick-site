@@ -1,14 +1,27 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="robots" content="noindex, nofollow">
-  <title>TRIPPICK HOST | 포트폴리오 공개 데모</title>
-  <meta name="description" content="예약·상담·매출·리뷰 운영 흐름을 확인할 수 있는 TRIPPICK 호스트센터 공개 데모입니다.">
-  <meta http-equiv="refresh" content="0; url=admin-camp.html">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>오늘 할 일 | TRIPPICK HOST</title>
+<meta name="description" content="TRIPPICK HOST 공개 인터랙션 데모의 업무 우선순위 대시보드">
+<link rel="stylesheet" href="admin.css">
+<style>
+.host-demo-notice{margin-bottom:20px;padding:16px 18px;border:1px solid rgba(216,190,135,.45);background:rgba(173,138,76,.1);border-radius:10px;color:var(--host-text-soft)}.host-demo-notice strong{color:var(--brass-light)}.task-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.task-card{display:block;padding:24px;background:var(--host-panel);border:1px solid var(--host-border);border-radius:12px;transition:.18s}.task-card:hover{transform:translateY(-2px);border-color:var(--brass)}.task-priority{font-size:11px;color:var(--brass-light);letter-spacing:.12em}.task-card h2{font:600 22px var(--serif);margin:8px 0}.task-card p{color:var(--host-text-soft)}.task-meta{display:flex;justify-content:space-between;margin-top:18px;color:var(--host-text-mute);font-size:13px}.host-simple-nav{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px}.host-simple-nav a{padding:10px 14px;border:1px solid var(--host-border);border-radius:8px;color:var(--host-text-soft)}@media(max-width:700px){.task-grid{grid-template-columns:1fr}}
+</style>
 </head>
 <body>
-  <p><a href="admin-camp.html">TRIPPICK 호스트센터로 이동하기</a></p>
-</body>
-</html>
+<main class="host-main" id="main-content">
+<div class="host-topbar"><div class="host-topbar-left"><span class="host-crumb">Host / 오늘 할 일</span><h1 class="host-title">운영 우선순위</h1></div></div>
+<div class="host-content">
+<div class="host-demo-notice" role="note"><strong>포트폴리오 공개 데모</strong><br>화면의 예약·상담·매출 데이터는 예시입니다. 상태 변경은 UI 체험용이며 실제 예약·정산 처리나 관리자 권한을 제공하지 않습니다.</div>
+<section aria-labelledby="todayTasks"><div class="host-section-head"><div><span class="host-eyebrow">TODAY</span><h2 id="todayTasks">오늘 먼저 처리할 업무</h2></div></div>
+<div class="task-grid">
+<a class="task-card" href="admin-booking.html"><span class="task-priority">P1 · 오늘</span><h2>입금 대기 예약 확인</h2><p>미확인 예약을 검토하고 예약자에게 상태를 안내합니다.</p><div class="task-meta"><span>예약 관리</span><strong>2건</strong></div></a>
+<a class="task-card" href="admin-consult.html"><span class="task-priority">P1 · 미답변</span><h2>상담 답변하기</h2><p>예약 전 시설과 반려동물 문의에 답변합니다.</p><div class="task-meta"><span>상담 관리</span><strong>3건</strong></div></a>
+<a class="task-card" href="admin-review.html"><span class="task-priority">P2 · 이번 주</span><h2>후기 답글 작성</h2><p>새 후기와 개선 요청을 확인하고 호스트 답변을 남깁니다.</p><div class="task-meta"><span>리뷰 관리</span><strong>12건</strong></div></a>
+<a class="task-card" href="admin-sales.html"><span class="task-priority">P2 · 확인</span><h2>정산 내역 점검</h2><p>예시 매출과 정산 화면의 상태를 확인합니다.</p><div class="task-meta"><span>매출 관리</span><strong>데모</strong></div></a>
+</div></section>
+<nav class="host-simple-nav" aria-label="호스트 관리 메뉴"><a href="admin-camp.html">캠핑장 정보</a><a href="admin-booking.html">예약</a><a href="admin-consult.html">상담</a><a href="admin-review.html">리뷰</a><a href="admin-sales.html">매출·정산</a></nav>
+</div>
+</main>
+</body></html>
