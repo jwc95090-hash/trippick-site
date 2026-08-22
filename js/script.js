@@ -176,23 +176,23 @@ document.addEventListener('DOMContentLoaded', () => {
     return `
     <nav class="bottom-tab" aria-label="하단 탭">
       <button class="tab-item" type="button" data-href="${homeHref}">
-        <svg class="icon" width="19" height="19" viewBox="0 0 22 22" fill="none"><path d="M3 10.5L11 3l8 7.5" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M5 9v9a1 1 0 001 1h3.5v-4h3v4H17a1 1 0 001-1V9" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8" /> <path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /></svg>
         <span>홈</span>
       </button>
       <button class="tab-item" type="button" data-href="${ROOT_PREFIX}types.html">
-        <svg class="icon" width="19" height="19" viewBox="0 0 22 22" fill="none"><circle cx="10" cy="10" r="6" stroke="currentColor" stroke-width="1.5"/><path d="M14.5 14.5L19 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="m21 21-4.34-4.34" /> <circle cx="11" cy="11" r="8" /></svg>
         <span>둘러보기</span>
       </button>
       <button class="tab-item" type="button" data-href="${ROOT_PREFIX}mypage-bookings.html">
-        <svg class="icon" width="19" height="19" viewBox="0 0 22 22" fill="none"><rect x="3" y="4" width="16" height="15" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M3 9h16" stroke="currentColor" stroke-width="1.3"/></svg>
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M8 2v3" /> <path d="M16 2v3" /> <rect x="3" y="3" width="18" height="18" rx="2" /> <path d="M3 9h18" /></svg>
         <span>예약</span>
       </button>
       <button class="tab-item" type="button" data-href="${ROOT_PREFIX}mypage-wishlist.html">
-        <svg class="icon" width="19" height="19" viewBox="0 0 22 22" fill="none"><path d="M11 18s-7-4.5-7-9a4 4 0 018 0 4 4 0 018 0c0 4.5-7 9-7 9z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5" /></svg>
         <span>찜</span>
       </button>
       <button class="tab-item" type="button" data-href="${ROOT_PREFIX}mypage.html">
-        <svg class="icon" width="19" height="19" viewBox="0 0 22 22" fill="none"><path d="M4 19.5c0-3.5 3.134-6.5 7-6.5s7 3 7 6.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><circle cx="11" cy="7.5" r="3.5" stroke="currentColor" stroke-width="1.4"/></svg>
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" /> <circle cx="12" cy="7" r="4" /></svg>
         <span>마이페이지</span>
       </button>
     </nav>`;
@@ -203,7 +203,7 @@ document.addEventListener('DOMContentLoaded', () => {
     <div class="site-popup" id="couponPopup">
       <div class="popup-inner coupon-popup-inner">
         <button class="popup-close" type="button" aria-label="닫기">
-          <svg width="16" height="16" viewBox="0 0 22 22" fill="none"><path d="M4 4l14 14M18 4L4 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18" /> <path d="m6 6 12 12" /></svg>
         </button>
         <div class="coupon-banner">
           <div class="coupon-banner-text">
@@ -212,7 +212,7 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
           <div class="coupon-ticket">
             <span class="coupon-ticket-dl">
-              <svg width="12" height="12" viewBox="0 0 20 20" fill="none"><path d="M10 3v10M6 9l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 16h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3" /> <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /> <path d="m7 10 5 5 5-5" /></svg>
             </span>
             <span class="coupon-ticket-label">첫예약할인쿠폰</span>
             <strong class="coupon-ticket-value">10%<em>쿠폰</em></strong>
@@ -232,7 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
     <div class="site-popup" id="consultPopup">
       <div class="popup-inner consult-popup-inner">
         <button class="popup-close" type="button" aria-label="닫기">
-          <svg width="16" height="16" viewBox="0 0 22 22" fill="none"><path d="M4 4l14 14M18 4L4 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18" /> <path d="m6 6 12 12" /></svg>
         </button>
         <span class="eyebrow"><i></i>AI Consulting</span>
         <h2>트립픽 AI가 궁금한 점에<br>바로 답변해드려요</h2>
@@ -545,19 +545,19 @@ document.addEventListener('DOMContentLoaded', () => {
   document.body.insertAdjacentHTML('beforeend', `
     <div class="fab-stack" id="fabStack">
       <button type="button" class="fab-top" id="fabTopBtn" aria-label="맨 위로 이동">
-        <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M10 15V5M5 9l5-5 5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12" /> <path d="m17 8-5-5-5 5" /> <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /></svg>
       </button>
       <div class="fab-quick-list" id="fabQuickList">
               <a href="${ROOT_PREFIX}login.html" class="fab-quick-item">
-          <svg width="14" height="14" viewBox="0 0 22 22" fill="none"><path d="M9 4H5a1 1 0 00-1 1v12a1 1 0 001 1h4M14 15l4-4-4-4M18 11H8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m16 17 5-5-5-5" /> <path d="M21 12H9" /> <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" /></svg>
           <span class="fab-quick-label">로그인</span>
         </a>
         <a href="${ROOT_PREFIX}mypage.html" class="fab-quick-item">
-          <svg width="14" height="14" viewBox="0 0 22 22" fill="none"><rect x="3" y="4" width="16" height="15" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M3 9h16" stroke="currentColor" stroke-width="1.3"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v3" /> <path d="M16 2v3" /> <rect x="3" y="3" width="18" height="18" rx="2" /> <path d="M3 9h18" /></svg>
           <span class="fab-quick-label">예약확인</span>
         </a>
         <button type="button" class="fab-quick-item" id="fabConsultBtn">
-          <svg width="14" height="14" viewBox="0 0 22 22" fill="none"><path d="M3 5.5A2.5 2.5 0 015.5 3h11A2.5 2.5 0 0119 5.5v6A2.5 2.5 0 0116.5 14H9l-4.5 4v-4H5.5A2.5 2.5 0 013 11.5v-6z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719" /></svg>
           <span class="fab-quick-label">AI 상담</span>
         </button>
       </div>
@@ -810,7 +810,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <a href="${href}" class="p-thumb" onclick="window.trippickOpenSiteById('${cid}')">
             <img src="${img}" alt="${name}" loading="lazy" onerror="this.onerror=null;this.src='${GOCAMPING_FALLBACK_IMG}';">
             <span class="p-tag p-tag-alt">공공데이터</span>
-            <button class="p-like" aria-label="${name} 찜하기" type="button"><svg width="14" height="14" viewBox="0 0 22 22" fill="none"><path d="M11 18s-7-4.5-7-9a4 4 0 018 0 4 4 0 018 0c0 4.5-7 9-7 9z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></button>
+            <button class="p-like" aria-label="${name} 찜하기" type="button"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5" /></svg></button>
           </a>
           <div class="p-body">
             <p class="p-region">${region}</p>
@@ -1191,15 +1191,15 @@ document.addEventListener('DOMContentLoaded', () => {
         <article class="p-card p-card-feature" data-wish-id="api-${cid}">
           <a href="${href}" class="p-thumb" onclick="window.trippickSaveSite(${idx})">
             <img src="${img}" alt="${name}" loading="lazy" onerror="this.onerror=null;this.src='${FALLBACK_IMG}';">
-            <span class="p-tag p-tag-rank"><svg width="10" height="10" viewBox="0 0 20 20" fill="currentColor"><path d="M10 2l1.9 5.8H18l-4.9 3.6 1.9 5.8L10 13.6l-4.9 3.6 1.9-5.8L2 7.8h6.1L10 2z"/></svg>BEST ${rank}</span>
-            <button class="p-like" aria-label="찜하기" onclick="event.preventDefault();"><svg width="15" height="15" viewBox="0 0 22 22" fill="none"><path d="M11 18s-7-4.5-7-9a4 4 0 018 0 4 4 0 018 0c0 4.5-7 9-7 9z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></button>
+            <span class="p-tag p-tag-rank"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z" /></svg>BEST ${rank}</span>
+            <button class="p-like" aria-label="찜하기" onclick="event.preventDefault();"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5" /></svg></button>
             <span class="p-thumb-caption">
               <span class="p-thumb-region">${escapeHtml(shortAddr(item.addr1))}</span>
               <span class="p-thumb-name">${name}</span>
             </span>
           </a>
           <div class="p-body p-body-feature">
-            <p class="p-desc"><svg width="11" height="11" viewBox="0 0 20 20" fill="none" style="vertical-align:-1px; margin-right:4px;"><path d="M10 2c-3 0-5.5 2.4-5.5 5.5C4.5 11.8 10 18 10 18s5.5-6.2 5.5-10.5C15.5 4.4 13 2 10 2z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/><circle cx="10" cy="7.5" r="1.8" stroke="currentColor" stroke-width="1.1"/></svg>${escapeHtml(typeDesc(item.induty))}</p>
+            <p class="p-desc"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px; margin-right:4px;"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" /> <circle cx="12" cy="10" r="3" /></svg>${escapeHtml(typeDesc(item.induty))}</p>
           </div>
         </article>`;
     }
@@ -1302,7 +1302,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <a href="${href}" class="p-thumb" onclick="window.trippickSaveSite(${idx})">
             <img src="${img}" alt="${name}" loading="lazy" onerror="this.onerror=null;this.src='${FALLBACK_IMG}';">
             <span class="p-tag p-tag-alt">공공데이터</span>
-            <button class="p-like" aria-label="찜하기" onclick="event.preventDefault();"><svg width="14" height="14" viewBox="0 0 22 22" fill="none"><path d="M11 18s-7-4.5-7-9a4 4 0 018 0 4 4 0 018 0c0 4.5-7 9-7 9z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></button>
+            <button class="p-like" aria-label="찜하기" onclick="event.preventDefault();"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5" /></svg></button>
           </a>
           <div class="p-body">
             <p class="p-region">${region}</p>
@@ -1397,7 +1397,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function amenityChip(label){
-      return `<div class="amenity-item"><div class="chip-icon"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.4"/></svg></div><span>${escapeHtml(label)}</span></div>`;
+      return `<div class="amenity-item"><div class="chip-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" /></svg></div><span>${escapeHtml(label)}</span></div>`;
     }
 
     function render(item){
@@ -1445,7 +1445,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // 위치
       const mapEl = document.querySelector('.detail-map');
-      if (mapEl) mapEl.innerHTML = `<svg width="18" height="18" viewBox="0 0 22 22" fill="none"><path d="M11 20s6.5-6.2 6.5-11A6.5 6.5 0 004.5 9c0 4.8 6.5 11 6.5 11z" stroke="currentColor" stroke-width="1.4"/><circle cx="11" cy="9" r="2.3" stroke="currentColor" stroke-width="1.4"/></svg>${escapeHtml(addr || '주소 정보 없음')}`;
+      if (mapEl) mapEl.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" /> <circle cx="12" cy="10" r="3" /></svg>${escapeHtml(addr || '주소 정보 없음')}`;
 
       // 이용후기: 실데이터에는 후기가 없으므로 실제 후기처럼 보이는 가짜 텍스트를 넣지 않고 빈 상태로 안내
       // (위치가 아니라 data-block 마커로 찾음 — 아래에 "트립픽 이용후기" 블록이 추가로 붙어도 오작동하지 않도록)
@@ -1542,14 +1542,14 @@ document.addEventListener('DOMContentLoaded', () => {
       <div class="site-popup lightbox-popup" id="detailLightbox">
         <div class="popup-inner lightbox-inner">
           <button class="popup-close" type="button" aria-label="닫기">
-            <svg width="18" height="18" viewBox="0 0 22 22" fill="none"><path d="M4 4l14 14M18 4L4 18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18" /> <path d="m6 6 12 12" /></svg>
           </button>
           <button type="button" class="lightbox-nav lightbox-prev" aria-label="이전 사진">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M12.5 4l-6 6 6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6" /></svg>
           </button>
           <img id="lightboxImg" src="" alt="캠핑장 사진 확대보기">
           <button type="button" class="lightbox-nav lightbox-next" aria-label="다음 사진">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M7.5 4l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6" /></svg>
           </button>
           <span class="lightbox-counter" id="lightboxCounter"></span>
         </div>
