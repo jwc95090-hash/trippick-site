@@ -64,11 +64,10 @@ document.addEventListener('DOMContentLoaded', () => {
     menu.appendChild(link);
   });
 
-  /* ---------- 0-1. 위시리스트 · 리뷰 데이터 레이어 (전 페이지 공통, localStorage 기반) ----------
-     이 사이트는 별도 서버가 없는 정적 사이트이므로, 찜/리뷰 모두 브라우저 localStorage에 저장해
-     페이지를 이동해도(같은 브라우저 안에서는) 유지되도록 한다. */
+  /* ---------- 0-1. 위시리스트 데이터 레이어 ----------
+     위시리스트는 로그인과 무관한 기기별 편의 기능이라 localStorage에만 저장합니다.
+     리뷰와 상담 데이터는 js/supabase-app.js 한 곳에서 관리합니다. */
   const WISHLIST_KEY = 'trippick_wishlist_v1';
-  const REVIEWS_KEY = 'trippick_reviews_v1';
   /* 실제 예약·이용완료 이력을 조회할 백엔드가 없어, 리뷰관리에서 "이용 완료한 캠핑장만 작성 가능"
      조건을 흉내내기 위한 샘플 이용완료 목록. siteId는 아래 wishSlug 규칙과 동일하게 맞춘다. */
   const TRIPPICK_COMPLETED_STAYS = [
@@ -147,24 +146,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  function getAllReviews(){
-    try { return JSON.parse(localStorage.getItem(REVIEWS_KEY)) || []; } catch (e) { return []; }
-  }
-  function saveReviews(list){
-    try { localStorage.setItem(REVIEWS_KEY, JSON.stringify(list)); } catch (e) { /* 저장 실패는 무시 */ }
-  }
-  function getReviewsForSite(siteId){
-    return getAllReviews().filter(r => r.siteId === siteId);
-  }
-  function addReview(entry){
-    const list = getAllReviews();
-    list.unshift(Object.assign({ id: 'rv' + Date.now(), author: '김트립', createdAt: Date.now() }, entry));
-    saveReviews(list);
-    return list;
-  }
   window.trippick = {
     getWishlist, toggleWishlist, cardWishId, renderWishlistState,
-    getAllReviews, getReviewsForSite, addReview, TRIPPICK_COMPLETED_STAYS
+    TRIPPICK_COMPLETED_STAYS
   };
 
   /* ---------- 0-2. 하단 탭 · 상담 팝업 · 쿠폰 팝업 (전 페이지 공통 삽입) ----------
@@ -685,15 +669,13 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ---------- 8-0. 고캠핑(한국관광공사) 공공데이터 공통 로더 ----------
      필터 검색과 "이번 주 가장 많이 찾은 캠핑장" 섹션이 같은 데이터를 함께 사용하도록
      세션 동안 1회만 요청하고 재사용합니다. */
-  const GOCAMPING_SERVICE_KEY = 'c306dc04fc05af17071334c0c38412e0ed9c5b7066c10dfd5bfffeda36aeb8a4';
-  const GOCAMPING_ENDPOINT = 'https://apis.data.go.kr/B551011/GoCamping/basedList';
+  const GOCAMPING_ENDPOINT = 'https://trippick-ai.trippick-jhan.workers.dev/camping';
   const GOCAMPING_FALLBACK_IMG = 'https://images.unsplash.com/photo-1631635589499-afd87d52bf64?auto=format&fit=crop&w=600&q=70';
   let goCampingListPromise = null;
 
   function loadGoCampingList(){
     if (!goCampingListPromise) {
-      const url = `${GOCAMPING_ENDPOINT}?serviceKey=${GOCAMPING_SERVICE_KEY}&numOfRows=300&pageNo=1&MobileOS=ETC&MobileApp=Trippick&_type=json`;
-      goCampingListPromise = fetch(url)
+      goCampingListPromise = fetch(GOCAMPING_ENDPOINT, { headers: { Accept: 'application/json' } })
         .then(res => {
           if (!res.ok) throw new Error('고캠핑 API 요청 실패 (' + res.status + ')');
           return res.json();
@@ -1236,8 +1218,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const gridEl = document.getElementById(gridId);
     const type = TYPE_GRID_IDS[gridId];
 
-    const SERVICE_KEY = 'c306dc04fc05af17071334c0c38412e0ed9c5b7066c10dfd5bfffeda36aeb8a4';
-    const ENDPOINT = 'https://apis.data.go.kr/B551011/GoCamping/basedList';
     const FALLBACK_IMG = 'https://images.unsplash.com/photo-1631635589499-afd87d52bf64?auto=format&fit=crop&w=600&q=70';
     const CACHE_KEY = 'trippick_gocamping_cache_v1';
 
@@ -1260,16 +1240,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (cached) {
         try { return JSON.parse(cached); } catch (e) { /* 캐시 손상 시 재요청 */ }
       }
-      const url = `${ENDPOINT}?serviceKey=${SERVICE_KEY}&numOfRows=300&pageNo=1&MobileOS=ETC&MobileApp=Trippick&_type=json`;
-      const res = await fetch(url);
-      if (!res.ok) throw new Error('고캠핑 API 요청 실패 (' + res.status + ')');
-      const data = await res.json();
-      const header = data && data.response && data.response.header;
-      if (header && header.resultCode && header.resultCode !== '0000') {
-        throw new Error(header.resultMsg || '고캠핑 API 오류');
-      }
-      const items = data && data.response && data.response.body && data.response.body.items && data.response.body.items.item;
-      const list = items ? (Array.isArray(items) ? items : [items]) : [];
+      const list = await loadGoCampingList();
       try { sessionStorage.setItem(CACHE_KEY, JSON.stringify(list)); } catch (e) { /* 저장 실패는 무시 */ }
       return list;
     }
@@ -1354,8 +1325,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const detailHead = document.querySelector('.detail-head');
     if (!detailHead) return; // detail.html이 아니면 종료
 
-    const SERVICE_KEY = 'c306dc04fc05af17071334c0c38412e0ed9c5b7066c10dfd5bfffeda36aeb8a4';
-    const ENDPOINT = 'https://apis.data.go.kr/B551011/GoCamping/basedList';
     const CACHE_KEY = 'trippick_gocamping_cache_v1';
     const FALLBACK_IMG = 'https://images.unsplash.com/photo-1631635589499-afd87d52bf64?auto=format&fit=crop&w=1200&q=75';
 
@@ -1387,12 +1356,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function fetchFresh(){
-      const url = `${ENDPOINT}?serviceKey=${SERVICE_KEY}&numOfRows=300&pageNo=1&MobileOS=ETC&MobileApp=Trippick&_type=json`;
-      const res = await fetch(url);
-      if (!res.ok) throw new Error('고캠핑 API 요청 실패 (' + res.status + ')');
-      const data = await res.json();
-      const items = data && data.response && data.response.body && data.response.body.items && data.response.body.items.item;
-      const list = items ? (Array.isArray(items) ? items : [items]) : [];
+      const list = await loadGoCampingList();
       return list.find(it => encodeURIComponent(String(it.contentId || '')) === contentId) || null;
     }
 
@@ -1488,42 +1452,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   })();
 
-  /* ---------- 11-1. detail.html: 트립픽 이용후기(자체 리뷰) 표시 ----------
-     마이페이지 > 리뷰관리에서 작성한 리뷰를, 같은 캠핑장(siteId)의 상세페이지에 그대로 보여준다.
-     API 연동 페이지는 initApiDetailPage의 render()가 body.dataset.siteId를 늦게 채우므로
-     window.__trippickRenderReviews 훅으로 다시 그릴 수 있게 노출해둔다. */
-  (function initTrippickReviews(){
-    const container = document.getElementById('trippickReviewList');
-    if (!container) return;
-
-    function starStr(n){
-      const r = Math.max(0, Math.min(5, Number(n) || 0));
-      return '★'.repeat(r) + '☆'.repeat(5 - r);
-    }
-    function reviewItemHTML(r){
-      const photos = Array.isArray(r.photos) ? r.photos.filter(Boolean) : [];
-      return `
-        <div class="review-item" style="background:var(--ivory-soft);">
-          <div class="review-foot" style="border-top:none; margin:0 0 8px;">
-            <span class="review-stars" style="color:var(--brass);">${starStr(r.rating)}</span>
-            <span class="who" style="color:var(--text-mute);">${gcEscapeHtml(r.author)} · ${gcEscapeHtml(new Date(r.createdAt).toLocaleDateString('ko-KR'))}</span>
-          </div>
-          <p class="quote" style="color:var(--text-mute); min-height:auto;"><strong style="color:var(--ink);">${gcEscapeHtml(r.title)}</strong><br>${gcEscapeHtml(r.body)}</p>
-          ${photos.length ? `<div style="display:flex; gap:8px; margin-top:12px; flex-wrap:wrap;">${photos.slice(0, 4).map(p => `<img src="${p}" alt="리뷰 사진" style="width:64px; height:64px; object-fit:cover; border-radius:8px;">`).join('')}</div>` : ''}
-        </div>`;
-    }
-    function render(){
-      const siteId = document.body.dataset.siteId || '';
-      const reviews = getReviewsForSite(siteId);
-      container.innerHTML = reviews.length
-        ? reviews.map(reviewItemHTML).join('')
-        : '<p style="color:var(--text-mute); font-size:13px; padding:12px 0;">아직 등록된 트립픽 이용후기가 없습니다. 다녀오신 후 마이페이지 &gt; 리뷰관리에서 첫 리뷰를 남겨보세요.</p>';
-    }
-    window.__trippickRenderReviews = render;
-    render();
-  })();
-
-  /* ---------- 11-2. detail.html: 사진 라이트박스 (모든 사진 클릭 시 확대, 이전/다음 넘기기) ---------- */
+  /* ---------- 11-1. detail.html: 사진 라이트박스 (모든 사진 클릭 시 확대, 이전/다음 넘기기) ---------- */
   (function initDetailLightbox(){
     const gallery = document.querySelector('.detail-gallery');
     if (!gallery) return;
@@ -1641,7 +1570,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const regionSelect = document.getElementById('siteMapRegionSelect');
 
-    const GOOGLE_MAPS_API_KEY = 'AIzaSyAZ_TYSxw9CGvi4dWtzlRHOVM-e_MQoVhU';
+    const GOOGLE_MAPS_API_KEY = String(window.TRIPPICK_GOOGLE_MAPS_KEY || '').trim();
     let mapInstance = null;
     let googleMapsPromise = null;
     let markerClustererPromise = null;
@@ -1673,6 +1602,10 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!googleMapsPromise) {
         googleMapsPromise = new Promise((resolve, reject) => {
           if (window.google && window.google.maps) { resolve(); return; }
+          if (!GOOGLE_MAPS_API_KEY) {
+            reject(new Error('지도 API 키가 설정되지 않았습니다. js/maps-config.example.js를 참고하세요.'));
+            return;
+          }
           window.__trippickGmapsReady = () => resolve();
           const script = document.createElement('script');
           script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&callback=__trippickGmapsReady`;
@@ -1691,7 +1624,7 @@ document.addEventListener('DOMContentLoaded', () => {
         markerClustererPromise = new Promise((resolve) => {
           if (window.markerClusterer) { resolve(); return; }
           const script = document.createElement('script');
-          script.src = 'https://unpkg.com/@googlemaps/markerclusterer/dist/index.min.js';
+          script.src = 'https://unpkg.com/@googlemaps/markerclusterer@2.5.3/dist/index.min.js';
           script.async = true;
           script.onload = () => resolve();
           script.onerror = () => resolve();
@@ -1795,10 +1728,12 @@ document.addEventListener('DOMContentLoaded', () => {
   document.head.appendChild(config);
 })();
 
-// Supabase Auth와 실제 리뷰/게시판 데이터를 전 페이지에서 공유합니다.
+// 인증·리뷰·상담이 필요한 화면에서만 Supabase SDK를 불러옵니다.
 (function loadSupabaseApp() {
   const current = document.currentScript;
   if (!current || !current.src) return;
+  const needsSupabase = /\/pages\/(?:login|signup|mypage(?:-[^/]+)?|community-(?:reviews|qna)|detail)\.html$/.test(location.pathname);
+  if (!needsSupabase) return;
   const sdk = document.createElement('script');
   sdk.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.3/dist/umd/supabase.min.js';
   sdk.onload = function () {

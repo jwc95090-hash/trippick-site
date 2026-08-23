@@ -149,6 +149,15 @@
   async function setupReviewForm() {
     const form = document.getElementById('reviewForm');
     if (!form) return;
+    const siteSelect = document.getElementById('reviewSite');
+    const completedStays = window.trippick?.TRIPPICK_COMPLETED_STAYS || [];
+    completedStays.forEach(stay => {
+      if (!siteSelect || siteSelect.querySelector(`option[value="${CSS.escape(stay.siteId)}"]`)) return;
+      const option = document.createElement('option');
+      option.value = stay.siteId;
+      option.textContent = stay.siteName;
+      siteSelect.appendChild(option);
+    });
     const starButtons = Array.from(document.querySelectorAll('#reviewStars button'));
     starButtons.forEach((button, index) => {
       button.addEventListener('click', () => {
@@ -164,7 +173,7 @@
         location.href = location.pathname.includes('/pages/') ? 'login.html' : 'pages/login.html';
         return;
       }
-      const site = document.getElementById('reviewSite');
+      const site = siteSelect;
       const activeStars = document.querySelectorAll('#reviewStars button.on').length;
       if (!site?.value || !activeStars) return alert('캠핑장과 별점을 선택해주세요.');
       const { error } = await db.from('reviews').insert({
@@ -196,7 +205,10 @@
     const list = document.getElementById('myReviewList');
     if (!list) return;
     const { data, error } = await db.from('reviews').select('*').eq('user_id', userId).order('created_at', { ascending: false });
-    if (error) return;
+    if (error) {
+      list.innerHTML = '<p style="color:var(--secondary);font-size:13px;">리뷰를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.</p>';
+      return;
+    }
     list.innerHTML = data.length ? data.map(review => `<div class="my-review-item">
       <p style="font-size:12px;color:var(--brass);margin-bottom:4px;">${esc(review.site_name)} · ${'★'.repeat(review.rating)}</p>
       <p style="font-family:var(--serif);font-size:15px;font-weight:600;margin-bottom:4px;">${esc(review.title)}</p>
@@ -211,8 +223,11 @@
     if (!list) return;
     const pagination = document.getElementById('reviewPagination');
     if (pagination) pagination.innerHTML = '';
-    const { data } = await db.from('reviews').select('id,author_name,site_id,site_name,rating,title,body,admin_reply,status,created_at').eq('status', 'visible').order('created_at', { ascending: false }).limit(50);
-    if (!data) return;
+    const { data, error } = await db.from('reviews').select('id,author_name,site_id,site_name,rating,title,body,admin_reply,status,created_at').eq('status', 'visible').order('created_at', { ascending: false }).limit(50);
+    if (error || !data) {
+      list.innerHTML = '<div class="review-item" style="background:var(--paper);"><p class="quote" style="min-height:auto;">리뷰를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.</p></div>';
+      return;
+    }
     list.innerHTML = data.length ? data.map(review => `<div class="review-item" style="background:var(--paper);">
       <div class="review-foot" style="border-top:none;margin:0 0 10px;justify-content:flex-start;gap:14px;">
         <span class="review-stars text-brass">${'★'.repeat(review.rating)}${'☆'.repeat(5-review.rating)}</span>
@@ -221,6 +236,35 @@
       ${review.admin_reply ? `<p class="community-host-reply"><strong>호스트 답글</strong>${esc(review.admin_reply)}</p>` : ''}
     </div>`).join('') : '<div class="review-item" style="background:var(--paper);"><p class="quote" style="min-height:auto;">아직 실제 등록된 리뷰가 없습니다. 첫 리뷰를 작성해보세요.</p></div>';
   }
+
+  async function renderDetailReviews() {
+    const list = document.getElementById('trippickReviewList');
+    if (!list) return;
+    const siteId = document.body.dataset.siteId || '';
+    if (!siteId) {
+      list.innerHTML = '<p style="color:var(--text-mute);font-size:13px;padding:12px 0;">캠핑장 정보를 확인하고 있습니다.</p>';
+      return;
+    }
+    const { data, error } = await db.from('reviews')
+      .select('author_name,rating,title,body,admin_reply,created_at')
+      .eq('site_id', siteId)
+      .eq('status', 'visible')
+      .order('created_at', { ascending: false })
+      .limit(20);
+    if (error || !data) {
+      list.innerHTML = '<p style="color:var(--secondary);font-size:13px;padding:12px 0;">이용후기를 불러오지 못했습니다.</p>';
+      return;
+    }
+    list.innerHTML = data.length ? data.map(review => `<article class="review-item" style="background:var(--ivory-soft);">
+      <div class="review-foot" style="border-top:none;margin:0 0 8px;">
+        <span class="review-stars" style="color:var(--brass);">${'★'.repeat(review.rating)}${'☆'.repeat(5-review.rating)}</span>
+        <span class="who" style="color:var(--text-mute);">${esc(review.author_name)} · ${new Date(review.created_at).toLocaleDateString('ko-KR')}</span>
+      </div>
+      <p class="quote" style="color:var(--text-mute);min-height:auto;"><strong style="color:var(--ink);">${esc(review.title)}</strong><br>${esc(review.body)}</p>
+      ${review.admin_reply ? `<p class="community-host-reply"><strong>호스트 답글</strong>${esc(review.admin_reply)}</p>` : ''}
+    </article>`).join('') : '<p style="color:var(--text-mute);font-size:13px;padding:12px 0;">아직 등록된 트립픽 이용후기가 없습니다.</p>';
+  }
+  window.__trippickRenderReviews = renderDetailReviews;
 
   async function setupBoard() {
     const form = document.getElementById('qnaForm');
@@ -246,78 +290,38 @@
           <span>${post.is_secret ? '🔒 ' : ''}${esc(post.title)}</span>
           <span style="font-size:11.5px;color:var(--text-mute);margin-left:auto;">${esc(post.author_name)} · ${new Date(post.created_at).toLocaleDateString('ko-KR')}</span>
         </summary>
-        ${post.is_secret ? `
-          <div class="server-secret-gate" style="padding:18px;background:var(--ivory);text-align:center;">
-            <p style="font-size:12.5px;color:var(--text-mute);margin-bottom:12px;">비밀글입니다. 작성자가 설정한 숫자 비밀번호를 입력해주세요.</p>
-            <div style="display:flex;gap:8px;justify-content:center;max-width:280px;margin:0 auto;">
-              <input type="password" inputmode="numeric" class="server-secret-password" placeholder="비밀번호" style="flex:1;min-width:0;padding:9px 11px;border:1px solid var(--line);">
-              <button type="button" class="btn-ghost server-secret-submit">확인</button>
-            </div>
-            <p class="server-secret-error" style="display:none;color:var(--secondary);font-size:11.5px;margin-top:9px;">비밀번호가 일치하지 않습니다.</p>
-          </div>
-          <div class="server-secret-content" style="display:none;"></div>`
+        ${post.is_secret ? '<p style="padding:18px;background:var(--ivory);color:var(--text-mute);">작성자 개인정보 보호를 위해 비밀글 본문은 공개 목록에서 표시하지 않습니다.</p>'
         : `<p>${esc(post.body)}</p>${post.admin_answer ? `<div style="margin:12px 0;padding:14px;background:var(--ivory);">트립픽 답변: ${esc(post.admin_answer)}</div>` : ''}`}
       </details>`).join('') : '<p>아직 등록된 문의가 없습니다.</p>';
     };
 
-    list.addEventListener('click', async event => {
-      const button = event.target.closest('.server-secret-submit');
-      if (!button) return;
-      event.preventDefault();
-      event.stopImmediatePropagation();
-      const details = button.closest('details');
-      const input = details.querySelector('.server-secret-password');
-      const errorEl = details.querySelector('.server-secret-error');
-      const password = input.value.trim();
-      if (!/^\d{4,12}$/.test(password)) {
-        errorEl.textContent = '숫자 4~12자리를 입력해주세요.';
-        errorEl.style.display = 'block';
-        return;
-      }
-      button.disabled = true;
-      const { data, error } = await db.rpc('unlock_board_post', {
-        p_post_id: Number(details.dataset.serverPostId),
-        p_password: password
-      });
-      button.disabled = false;
-      if (error || !data?.length) {
-        errorEl.textContent = '비밀번호가 일치하지 않습니다.';
-        errorEl.style.display = 'block';
-        input.value = '';
-        input.focus();
-        return;
-      }
-      const post = data[0];
-      details.querySelector('.server-secret-gate').style.display = 'none';
-      const content = details.querySelector('.server-secret-content');
-      content.innerHTML = `<p>${esc(post.body)}</p>${post.admin_answer ? `<div style="margin:12px 0;padding:14px;background:var(--ivory);">트립픽 답변: ${esc(post.admin_answer)}</div>` : ''}`;
-      content.style.display = 'block';
-    }, true);
-
     form.addEventListener('submit', async event => {
       event.preventDefault();
       event.stopImmediatePropagation();
+      if (!user) {
+        alert('상담글 작성은 로그인 후 이용할 수 있습니다.');
+        location.href = 'login.html';
+        return;
+      }
       const rawCategory = document.getElementById('qnaCategory').value;
       const category = /취소|환불/.test(rawCategory) ? '취소/환불' : /이용|시설/.test(rawCategory) ? '시설' : /예약/.test(rawCategory) ? '예약' : '기타';
       const isSecret = document.getElementById('qnaSecretToggle').checked;
-      const password = document.getElementById('qnaSecretPw').value.trim();
       const authorName = authorInput?.value.trim() || '';
       if (authorName.length < 2) return alert('작성자 이름을 2자 이상 입력해주세요.');
-      if (isSecret && !/^\d{4,12}$/.test(password)) return alert('비밀글 비밀번호는 숫자 4~12자리로 입력해주세요.');
 
-      const { error } = await db.rpc('create_board_post', {
-        p_author_name: authorName,
-        p_category: category,
-        p_title: document.getElementById('qnaTitle').value.trim(),
-        p_body: document.getElementById('qnaBody').value.trim(),
-        p_is_secret: isSecret,
-        p_password: isSecret ? password : null
+      const { error } = await db.from('board_posts').insert({
+        user_id: user.id,
+        author_name: authorName,
+        category,
+        title: document.getElementById('qnaTitle').value.trim(),
+        body: document.getElementById('qnaBody').value.trim(),
+        is_secret: isSecret
       });
       if (error) return alert(error.message);
       form.reset();
       if (user && authorInput) authorInput.value = user.user_metadata?.full_name || user.email?.split('@')[0] || '';
-      document.getElementById('qnaSecretPwField').style.display = 'none';
       form.style.display = 'none';
+      document.getElementById('qnaWriteToggle')?.setAttribute('aria-expanded', 'false');
       await render();
     }, true);
     await render();
@@ -330,6 +334,7 @@
     await setupMypageCoupon();
     await setupReviewForm();
     await renderPublicReviews();
+    await renderDetailReviews();
     await setupBoard();
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);

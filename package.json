@@ -1,0 +1,8 @@
+{
+  "name": "trippick-site",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "node tools/check-site.mjs"
+  }
+}

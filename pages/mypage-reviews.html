@@ -201,10 +201,6 @@
               <span>후기 내용</span>
               <textarea id="reviewBody" rows="4" placeholder="다녀오신 캠핑장에 대한 솔직한 후기를 남겨주세요" required></textarea>
             </div>
-            <div class="cf-field">
-              <span>사진 첨부 (선택)</span>
-              <input type="file" id="reviewPhotos" accept="image/*" multiple>
-            </div>
             <button type="submit" class="btn" style="align-self:flex-start;">등록</button>
           </form>
 
@@ -248,73 +244,5 @@
 </footer>
 
 <script src="../js/script.js"></script>
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  const T = window.trippick;
-  if (!T) return;
-  const stays = T.TRIPPICK_COMPLETED_STAYS || [];
-  const siteSelect = document.getElementById('reviewSite');
-  const starWrap = document.getElementById('reviewStars');
-  const form = document.getElementById('reviewForm');
-  const listEl = document.getElementById('myReviewList');
-  let rating = 0;
-
-  siteSelect.innerHTML += stays.map(s => `<option value="${s.siteId}">${s.siteName}</option>`).join('');
-
-  starWrap.addEventListener('click', (e) => {
-    const btn = e.target.closest('button[data-star]');
-    if (!btn) return;
-    rating = Number(btn.dataset.star);
-    Array.from(starWrap.children).forEach(b => b.classList.toggle('on', Number(b.dataset.star) <= rating));
-  });
-
-  function esc(s){
-    return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  }
-  function renderMyReviews(){
-    const all = T.getAllReviews();
-    listEl.innerHTML = all.length ? all.map(r => `
-      <div class="my-review-item">
-        <p style="font-size:12px; color:var(--brass); margin-bottom:4px;">${esc(r.siteName)} · ${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</p>
-        <p style="font-family:var(--serif); font-size:15px; font-weight:600; margin-bottom:4px;">${esc(r.title)}</p>
-        <p style="font-size:13px; color:var(--text-mute); line-height:1.7;">${esc(r.body)}</p>
-      </div>`).join('') : '<p style="color:var(--text-mute); font-size:13px;">아직 작성한 리뷰가 없습니다.</p>';
-  }
-
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const siteId = siteSelect.value;
-    const site = stays.find(s => s.siteId === siteId);
-    if (!site || !rating) { alert('캠핑장과 별점을 선택해주세요.'); return; }
-    const fileInput = document.getElementById('reviewPhotos');
-    const files = Array.from(fileInput.files || []).slice(0, 4);
-
-    function finish(photos){
-      T.addReview({
-        siteId,
-        siteName: site.siteName,
-        rating,
-        title: document.getElementById('reviewTitle').value.trim(),
-        body: document.getElementById('reviewBody').value.trim(),
-        photos
-      });
-      form.reset();
-      rating = 0;
-      Array.from(starWrap.children).forEach(b => b.classList.remove('on'));
-      renderMyReviews();
-    }
-
-    if (!files.length) { finish([]); return; }
-    Promise.all(files.map(f => new Promise(resolve => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = () => resolve(null);
-      reader.readAsDataURL(f);
-    }))).then(results => finish(results.filter(Boolean)));
-  });
-
-  renderMyReviews();
-});
-</script>
 </body>
 </html>

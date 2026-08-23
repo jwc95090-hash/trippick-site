@@ -3,10 +3,28 @@
    ============================================================ */
 document.addEventListener('DOMContentLoaded', () => {
 
-  /* 포트폴리오 공개 모드: 별도 관리자 로그인 없이 전체 화면을 시연합니다. */
+  const main = document.querySelector('main');
+  if (main && !main.id) main.id = 'main-content';
+  if (main && !document.querySelector('.host-skip-link')) {
+    const skip = document.createElement('a');
+    skip.className = 'host-skip-link';
+    skip.href = `#${main.id}`;
+    skip.textContent = '본문 바로가기';
+    document.body.prepend(skip);
+  }
+
+  /* 포트폴리오 데모: 실제 고객·예약·결제 데이터와 연결하지 않는 정적 시연 화면입니다. */
   document.querySelectorAll('.host-logout').forEach(link => link.remove());
-  document.querySelectorAll('.host-account-role').forEach(el => { el.textContent = '포트폴리오 공개 모드'; });
+  document.querySelectorAll('.host-account-role').forEach(el => { el.textContent = '정적 포트폴리오 데모'; });
   document.querySelectorAll('.host-account-name').forEach(el => { el.textContent = 'TRIPPICK 관리자 데모'; });
+  const content = document.querySelector('.host-content');
+  if (content && !document.querySelector('.host-demo-banner')) {
+    const banner = document.createElement('p');
+    banner.className = 'host-demo-banner';
+    banner.setAttribute('role', 'note');
+    banner.textContent = '포트폴리오용 정적 데모입니다. 화면의 회원·예약·상담·매출·리뷰는 모두 예시이며 실제 데이터와 연결되지 않습니다.';
+    content.parentNode.insertBefore(banner, content);
+  }
 
   /* ---------- 모바일 사이드바 ---------- */
   const side = document.getElementById('hostSide');
@@ -204,23 +222,19 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-});
-
-/* Supabase 공개 키로 접속하되, 실제 조회·수정 권한은 로그인 사용자의 admin RLS로 판정합니다. */
-(function loadTrippickHostData() {
-  const current = document.currentScript;
-  if (!current || !current.src) return;
-  const sdk = document.createElement('script');
-  sdk.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.3/dist/umd/supabase.min.js';
-  sdk.onload = function () {
-    const config = document.createElement('script');
-    config.src = '../js/supabase-config.js';
-    config.onload = function () {
-      const data = document.createElement('script');
-      data.src = 'admin-data.js?v=7';
-      document.head.appendChild(data);
-    };
-    document.head.appendChild(config);
+  /* ---------- 회원관리: 정적 예시 데이터 검색·필터 ---------- */
+  const memberSearch = document.getElementById('hostMemberSearch');
+  const memberProvider = document.getElementById('hostMemberProvider');
+  const filterMembers = () => {
+    const query = memberSearch?.value.trim().toLowerCase() || '';
+    const provider = memberProvider?.value || 'all';
+    document.querySelectorAll('.host-member-row[data-provider]').forEach(row => {
+      const matchesText = !query || (row.dataset.memberSearch || '').toLowerCase().includes(query);
+      const matchesProvider = provider === 'all' || row.dataset.provider === provider;
+      row.hidden = !(matchesText && matchesProvider);
+    });
   };
-  document.head.appendChild(sdk);
-})();
+  memberSearch?.addEventListener('input', filterMembers);
+  memberProvider?.addEventListener('change', filterMembers);
+
+});

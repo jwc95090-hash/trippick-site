@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow,noarchive">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700;800&family=Noto+Serif+KR:wght@400;500;600;700&family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
@@ -50,7 +51,7 @@
   </nav>
 
   <div class="host-side-foot">
-    <a href="../index.html" class="host-preview-link" target="_blank">
+    <a href="../index.html" class="host-preview-link" target="_blank" rel="noopener noreferrer">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6" /> <path d="M10 14 21 3" /> <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" /></svg>
       고객 화면 미리보기
     </a>
@@ -82,15 +83,15 @@
   </div>
       <div class="host-content">
         <div class="host-privacy-notice" role="note">
-          <strong>개인정보 보호형 실제 회원 데이터</strong>
-          <p>실제 가입 회원을 기반으로 표시하지만 공개 포트폴리오에서는 이메일과 내부 식별자를 마스킹합니다. 전체 개인정보는 Supabase 관리자 권한이 있는 환경에서만 확인할 수 있습니다.</p>
+          <strong>개인정보 보호형 예시 데이터</strong>
+          <p>아래 회원은 화면 구성을 보여주기 위한 가상 예시입니다. 실제 가입자 정보나 데이터베이스 식별자는 포함하지 않습니다.</p>
         </div>
 
         <div class="host-stat-grid">
-          <div class="host-stat"><div class="host-stat-label">전체 회원</div><div class="host-stat-val">0<small>명</small></div><div class="host-stat-delta up">실제 가입 데이터</div></div>
-          <div class="host-stat"><div class="host-stat-label">이메일 가입</div><div class="host-stat-val">0<small>명</small></div><div class="host-stat-delta">Email</div></div>
-          <div class="host-stat"><div class="host-stat-label">소셜 가입</div><div class="host-stat-val">0<small>명</small></div><div class="host-stat-delta">Google 등</div></div>
-          <div class="host-stat"><div class="host-stat-label">최근 가입</div><div class="host-stat-val host-stat-date">-</div><div class="host-stat-delta">가입일 기준</div></div>
+          <div class="host-stat"><div class="host-stat-label">전체 회원</div><div class="host-stat-val">4<small>명</small></div><div class="host-stat-delta up">예시 데이터</div></div>
+          <div class="host-stat"><div class="host-stat-label">이메일 가입</div><div class="host-stat-val">2<small>명</small></div><div class="host-stat-delta">Email</div></div>
+          <div class="host-stat"><div class="host-stat-label">소셜 가입</div><div class="host-stat-val">2<small>명</small></div><div class="host-stat-delta">Google</div></div>
+          <div class="host-stat"><div class="host-stat-label">최근 가입</div><div class="host-stat-val host-stat-date">08.21</div><div class="host-stat-delta">예시 가입일</div></div>
         </div>
 
         <section class="host-panel" aria-labelledby="memberListTitle">
@@ -110,7 +111,13 @@
             </select>
           </div>
           <div id="hostMemberTable" class="host-member-table-wrap" aria-live="polite">
-            <div class="host-empty-state"><strong>회원 정보를 불러오는 중입니다</strong><p>잠시만 기다려주세요.</p></div>
+            <div class="host-member-table">
+              <div class="host-member-row host-member-head"><span>회원 아이디</span><span>마스킹 이메일</span><span>가입 방법</span><span>가입일</span><span>상태</span></div>
+              <div class="host-member-row" data-provider="email" data-member-search="camp_jin ca***@example.com"><strong>camp_jin</strong><span>ca***@example.com</span><span><i class="host-member-provider">Email</i></span><span>2026.08.21</span><span>활성</span></div>
+              <div class="host-member-row" data-provider="social" data-member-search="forest_park fo***@example.com"><strong>forest_park</strong><span>fo***@example.com</span><span><i class="host-member-provider">Google</i></span><span>2026.08.18</span><span>활성</span></div>
+              <div class="host-member-row" data-provider="email" data-member-search="sunset_choi su***@example.com"><strong>sunset_choi</strong><span>su***@example.com</span><span><i class="host-member-provider">Email</i></span><span>2026.08.14</span><span>활성</span></div>
+              <div class="host-member-row" data-provider="social" data-member-search="trail_kim tr***@example.com"><strong>trail_kim</strong><span>tr***@example.com</span><span><i class="host-member-provider">Google</i></span><span>2026.08.09</span><span>휴면</span></div>
+            </div>
           </div>
         </section>
       </div>

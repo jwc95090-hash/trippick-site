@@ -3,10 +3,8 @@ const SYSTEM_PROMPT = `당신은 한국 캠핑 예약 서비스 TRIPPICK의 친�
 실시간 재고, 실제 가격, 예약 확정 여부를 알고 있다고 주장하지 마세요. 해당 정보는 사이트 상세 페이지에서 확인하도록 안내하세요.
 응급·안전 상황에는 119 또는 관계 기관에 문의하도록 안내하세요. 개인정보나 결제정보를 요청하지 마세요.`;
 
-const requestLog = new Map();
-const RATE_WINDOW_MS = 60_000;
-const RATE_LIMIT = 10;
 const TOSS_CONFIRM_URL = 'https://api.tosspayments.com/v1/payments/confirm';
+const GOCAMPING_URL = 'https://apis.data.go.kr/B551011/GoCamping/basedList';
 const ORDER_ID_PATTERN = /^TRIPPICK_[A-Za-z0-9_-]{6,55}$/;
 
 // 허용할 origin 목록 (배포 주소 + 로컬 개발 주소)
@@ -32,21 +30,51 @@ const json = (body, status, origin) => new Response(JSON.stringify(body), {
     'Content-Type': 'application/json; charset=utf-8',
     'Access-Control-Allow-Origin': origin,
     'Access-Control-Allow-Headers': 'Content-Type',
-    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
     'Vary': 'Origin',
     'Cache-Control': 'no-store'
   }
 });
 
-const isRateLimited = (request, scope) => {
-  const clientId = `${scope}:${request.headers.get('CF-Connecting-IP') || 'unknown'}`;
-  const now = Date.now();
-  const recent = (requestLog.get(clientId) || []).filter(time => now - time < RATE_WINDOW_MS);
+const readJson = async (request, maxBytes) => {
+  if (!request.body) throw new Error('EMPTY_BODY');
+  const reader = request.body.getReader();
+  const chunks = [];
+  let total = 0;
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    total += value.byteLength;
+    if (total > maxBytes) {
+      await reader.cancel();
+      throw new Error('BODY_TOO_LARGE');
+    }
+    chunks.push(value);
+  }
+  const bytes = new Uint8Array(total);
+  let offset = 0;
+  for (const chunk of chunks) {
+    bytes.set(chunk, offset);
+    offset += chunk.byteLength;
+  }
+  return JSON.parse(new TextDecoder().decode(bytes));
+};
 
-  if (recent.length >= RATE_LIMIT) return true;
-  recent.push(now);
-  requestLog.set(clientId, recent);
-  return false;
+const rateLimitKey = async (request, scope) => {
+  const fingerprint = [
+    scope,
+    request.headers.get('CF-Connecting-IP') || 'unknown',
+    request.headers.get('User-Agent') || 'unknown'
+  ].join('|');
+  const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(fingerprint));
+  return Array.from(new Uint8Array(digest), byte => byte.toString(16).padStart(2, '0')).join('');
+};
+
+const isRateLimited = async (request, env, scope) => {
+  const binding = scope === 'payment' ? env.PAYMENT_RATE_LIMITER : env.CHAT_RATE_LIMITER;
+  if (!binding) return false;
+  const { success } = await binding.limit({ key: await rateLimitKey(request, scope) });
+  return !success;
 };
 
 const confirmTossPayment = async (request, env, corsOrigin) => {
@@ -56,13 +84,15 @@ const confirmTossPayment = async (request, env, corsOrigin) => {
 
   const contentLength = Number(request.headers.get('Content-Length') || 0);
   if (contentLength > 4_000) return json({ error: '요청 내용이 너무 깁니다.' }, 413, corsOrigin);
-  if (isRateLimited(request, 'payment')) {
+  if (await isRateLimited(request, env, 'payment')) {
     return json({ error: '결제 승인 요청이 너무 많습니다. 잠시 후 다시 시도해 주세요.' }, 429, corsOrigin);
   }
 
   let body;
-  try { body = await request.json(); }
-  catch (_) { return json({ error: '올바른 JSON 요청이 아닙니다.' }, 400, corsOrigin); }
+  try { body = await readJson(request, 4_000); }
+  catch (error) {
+    return json({ error: error.message === 'BODY_TOO_LARGE' ? '요청 내용이 너무 깁니다.' : '올바른 JSON 요청이 아닙니다.' }, error.message === 'BODY_TOO_LARGE' ? 413 : 400, corsOrigin);
+  }
 
   const paymentKey = typeof body.paymentKey === 'string' ? body.paymentKey.trim() : '';
   const orderId = typeof body.orderId === 'string' ? body.orderId.trim() : '';
@@ -119,13 +149,15 @@ const answerChat = async (request, env, corsOrigin) => {
 
   const contentLength = Number(request.headers.get('Content-Length') || 0);
   if (contentLength > 20_000) return json({ error: '요청 내용이 너무 깁니다.' }, 413, corsOrigin);
-  if (isRateLimited(request, 'chat')) {
+  if (await isRateLimited(request, env, 'chat')) {
     return json({ error: '요청이 너무 많습니다. 1분 후 다시 시도해 주세요.' }, 429, corsOrigin);
   }
 
   let body;
-  try { body = await request.json(); }
-  catch (_) { return json({ error: '올바른 JSON 요청이 아닙니다.' }, 400, corsOrigin); }
+  try { body = await readJson(request, 20_000); }
+  catch (error) {
+    return json({ error: error.message === 'BODY_TOO_LARGE' ? '요청 내용이 너무 깁니다.' : '올바른 JSON 요청이 아닙니다.' }, error.message === 'BODY_TOO_LARGE' ? 413 : 400, corsOrigin);
+  }
 
   const incoming = Array.isArray(body.messages) ? body.messages : [];
   const messages = incoming.slice(-10).map(item => ({
@@ -159,6 +191,41 @@ const answerChat = async (request, env, corsOrigin) => {
   return json({ answer: answer || '답변을 만들지 못했어요. 다시 질문해 주세요.' }, 200, corsOrigin);
 };
 
+const serveCamping = async (env, corsOrigin) => {
+  if (!env.GOCAMPING_SERVICE_KEY) {
+    return json({ error: '서버에 고캠핑 API 키가 설정되지 않았습니다.' }, 500, corsOrigin);
+  }
+  const upstreamUrl = new URL(GOCAMPING_URL);
+  upstreamUrl.search = new URLSearchParams({
+    serviceKey: env.GOCAMPING_SERVICE_KEY,
+    numOfRows: '300',
+    pageNo: '1',
+    MobileOS: 'ETC',
+    MobileApp: 'Trippick',
+    _type: 'json'
+  }).toString();
+
+  let upstream;
+  try {
+    upstream = await fetch(upstreamUrl, { cf: { cacheTtl: 900, cacheEverything: true } });
+  } catch (_) {
+    return json({ error: '고캠핑 데이터 서버에 연결하지 못했습니다.' }, 502, corsOrigin);
+  }
+  if (!upstream.ok) return json({ error: '고캠핑 데이터를 불러오지 못했습니다.' }, 502, corsOrigin);
+  const contentLength = Number(upstream.headers.get('Content-Length') || 0);
+  if (contentLength > 4_000_000) return json({ error: '고캠핑 응답이 허용 크기를 초과했습니다.' }, 502, corsOrigin);
+
+  return new Response(upstream.body, {
+    status: 200,
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+      'Access-Control-Allow-Origin': corsOrigin,
+      'Vary': 'Origin',
+      'Cache-Control': 'public, max-age=900'
+    }
+  });
+};
+
 export default {
   async fetch(request, env) {
     const allowedOrigins = getAllowedOrigins(env);
@@ -173,17 +240,18 @@ export default {
         headers: {
           'Access-Control-Allow-Origin': origin,
           'Access-Control-Allow-Headers': 'Content-Type',
-          'Access-Control-Allow-Methods': 'POST, OPTIONS',
+          'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
           'Access-Control-Max-Age': '86400',
           'Vary': 'Origin'
         }
       });
     }
 
-    if (request.method !== 'POST') return json({ error: 'POST 요청만 지원합니다.' }, 405, corsOrigin);
     if (!isAllowed) return json({ error: '허용되지 않은 출처입니다.' }, 403, corsOrigin);
 
     const pathname = new URL(request.url).pathname.replace(/\/+$/, '') || '/';
+    if (pathname === '/camping' && request.method === 'GET') return serveCamping(env, corsOrigin);
+    if (request.method !== 'POST') return json({ error: '지원하지 않는 요청 방식입니다.' }, 405, corsOrigin);
     if (pathname === '/payments/confirm') return confirmTossPayment(request, env, corsOrigin);
     if (pathname === '/' || pathname === '/chat') return answerChat(request, env, corsOrigin);
     return json({ error: '요청한 API 경로를 찾을 수 없습니다.' }, 404, corsOrigin);

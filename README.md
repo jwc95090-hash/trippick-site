@@ -3,7 +3,7 @@
 > **초보 캠퍼가 캠핑장 탐색부터 비교·예약·준비까지 한 흐름에서 해결하도록 설계한 반응형 캠핑 플랫폼입니다.**  
 > UX 기획, UI 디자인, HTML/CSS/JavaScript 구현과 외부 서비스 연결까지 직접 진행한 신입 UI/UX 디자이너 포트폴리오 프로젝트입니다.
 
-[고객 사이트](https://jwc95090-hash.github.io/trippick-site/) · [UX 포트폴리오](https://jwc95090-hash.github.io/trippick-site/portfolio/) · [호스트센터 데모](https://jwc95090-hash.github.io/trippick-site/trippick-host/admin-camp.html) · [서비스 정책](https://jwc95090-hash.github.io/trippick-site/pages/policy.html)
+[고객 사이트](https://jwc95090-hash.github.io/trippick-site/) · [UX 포트폴리오](https://jwc95090-hash.github.io/portfolio_choijiwoo/trippick-portfolio.html) · [호스트센터 데모](https://jwc95090-hash.github.io/trippick-site/trippick-host/admin-camp.html) · [서비스 정책](https://jwc95090-hash.github.io/trippick-site/pages/policy.html)
 
 
 ## 프로젝트 한눈에 보기
@@ -28,15 +28,15 @@
 ## 주요 기능
 
 - 캠핑·글램핑·카라반·차박 및 테마별 캠핑장 탐색
-- 고캠핑 공공데이터 기반 검색·필터·지도·상세정보
+- Worker 프록시를 거친 고캠핑 공공데이터 기반 검색·필터·지도·상세정보
 - 최대 3곳 비교, 예약·결제 화면과 Toss Payments 테스트 연동
 - Supabase 이메일/Google 로그인, 쿠폰, 리뷰, 상담, 마이페이지
-- 비회원 상담과 숫자 비밀번호로 보호되는 비밀 상담글
+- 로그인 사용자 상담과 공개 목록에서 본문을 제거하는 비밀 상담글
 - 캐릭터 중심의 자체 제작 H.264 MP4 캠핑 가이드 6편
 - 24시간 AI 상담 UI와 Cloudflare Worker 프록시
-- 예약·상담·매출·리뷰를 확인하는 공개 호스트센터 데모
+- 예시 데이터로 예약·상담·매출·리뷰 흐름을 확인하는 정적 호스트센터 데모
 
-> 호스트센터는 채용 검토용 공개 데모입니다. 실제 관리자 권한이나 민감한 데이터는 제공하지 않으며, 실서비스 전환 시 별도의 관리자 인증과 역할 기반 권한이 필요합니다.
+> 호스트센터는 채용 검토용 정적 데모입니다. Supabase나 실제 회원·예약·상담 데이터에 연결하지 않으며, 실서비스 전환 시 별도 비공개 관리자 앱과 역할 기반 권한이 필요합니다.
 
 ## 디자인 의사결정
 
@@ -66,7 +66,7 @@
 
 | 영역 | 기술 |
 |---|---|
-| UI 구현 | HTML5, CSS3, Vanilla JavaScript, jQuery |
+| UI 구현 | HTML5, CSS3, Vanilla JavaScript |
 | 데이터 | Supabase Auth, Postgres, RLS, RPC |
 | 외부 연동 | 고캠핑 공공데이터, Toss Payments |
 | AI 프록시 | Cloudflare Worker |
@@ -87,12 +87,14 @@ trippick-site/
 │   ├── supabase-app.js        # 인증·쿠폰·리뷰·상담 연결
 │   ├── ai-chat.js             # AI 상담 클라이언트
 │   └── toss-payment.js        # 결제 흐름
-├── trippick-host/             # 공개 호스트센터 데모
+├── trippick-host/             # 실제 데이터와 분리된 정적 호스트센터 데모
+├── supabase/                  # 고객 사이트 스키마·RLS 마이그레이션
 ├── assets/, images/, videos/  # 브랜드·이미지·영상 에셋
 ├── design-system/             # 디자인 시스템 문서
 ├── docs/                      # UX 실행 기준
-├── worker/                    # Cloudflare Worker
-└── tools/                     # 영상 제작 보조 스크립트
+├── worker/                    # AI·결제·공공데이터 Cloudflare Worker
+├── tools/                     # 영상 제작·정적 링크 검사 스크립트
+└── .github/workflows/         # 자동 품질 검사
 ```
 
 ### 저장소 정리 기준
@@ -103,6 +105,9 @@ trippick-site/
 - 현재 실제 사용 경로는 `index.html`, `pages/`, `css/`, `js/`, `trippick-host/`입니다.
 - 참조되지 않던 루트 중복 HTML/CSS/JS, 구버전 `admin/`, 초기 영상과 미채택 로고 시안을 제거했습니다.
 - 홈 히어로 이미지는 1600px 기준으로 리사이즈·압축해 시각 품질을 유지하면서 전송 용량을 줄였습니다.
+- 히어로 영상은 포스터와 `preload="metadata"`를 사용해 첫 화면의 불필요한 선로딩을 줄였습니다.
+- 리뷰·상담 저장 경로를 Supabase 한 곳으로 통합하고, RLS 기준안을 저장소에서 함께 관리합니다.
+- Google Maps 키와 고캠핑 서비스 키를 공개 소스에서 제거했습니다.
 
 ## 트러블슈팅과 배운 점
 
@@ -118,7 +123,7 @@ trippick-site/
 
 - 공공데이터에는 실시간 잔여 객실과 최종 요금이 포함되지 않을 수 있습니다.
 - 결제와 AI 상담은 포트폴리오용 테스트 흐름이며 운영 서비스가 아닙니다.
-- 대용량 영상·이미지 최적화와 중복 파일 정리는 다음 개선 과제입니다.
+- 히어로 MP4 자체 인코딩 용량은 후속 배포 전 추가 압축이 필요합니다.
 - 실제 운영 시 관리자 인증, 서버 검증, 모니터링과 보안 정책이 추가로 필요합니다.
 
 ## 로컬 실행과 배포
@@ -129,9 +134,13 @@ python -m http.server 8000
 
 브라우저에서 `http://localhost:8000`을 엽니다. `main` 브랜치가 GitHub Pages의 루트로 설정되어 있어 병합 후 자동으로 공개 사이트에 반영됩니다.
 
+`npm run check`를 실행하면 HTML의 로컬 파일 참조를 확인합니다. 이 수정본은 로컬 검토용이며 자동으로 배포되지 않습니다.
+
 ## 관련 문서
 
 - [고객 사이트 UX 실행 기준](docs/UX_EXECUTION_PLAN.md)
 - [서비스 정책·데이터 안내](pages/policy.html)
 - [호스트센터 상세 안내](trippick-host/README.md)
+- [Supabase RLS 기준](supabase/README.md)
+- [Worker 보안 설정](worker/README.md)
 - [디자인 시스템](design-system/trippick/MASTER.md)
