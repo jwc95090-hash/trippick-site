@@ -195,9 +195,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <h2>첫 예약 누구나<br>즉시할인!</h2>
           </div>
           <div class="coupon-ticket">
-            <span class="coupon-ticket-dl">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3" /> <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /> <path d="m7 10 5 5 5-5" /></svg>
-            </span>
+            <span class="coupon-ticket-dl"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3" /> <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /> <path d="m7 10 5 5 5-5" /></svg></span>
             <span class="coupon-ticket-label">첫예약할인쿠폰</span>
             <strong class="coupon-ticket-value">10%<em>쿠폰</em></strong>
           </div>
@@ -480,15 +478,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const todayStr = () => new Date().toDateString();
 
   if (couponPopup && localStorage.getItem(COUPON_HIDE_KEY) !== todayStr()) {
-    setTimeout(() => {
-      openPopup(couponPopup);
-    }, 900);
+    setTimeout(() => openPopup(couponPopup), 900);
   }
-  if (couponHideTodayBtn) {
-    couponHideTodayBtn.addEventListener('click', () => {
-      localStorage.setItem(COUPON_HIDE_KEY, todayStr());
-    });
-  }
+  couponHideTodayBtn?.addEventListener('click', () => {
+    localStorage.setItem(COUPON_HIDE_KEY, todayStr());
+  });
 
   /* ---------- About Trippick 통계 숫자 카운트업 ---------- */
   const countEls = document.querySelectorAll('.intro-stats strong[data-count-to]');
@@ -567,10 +561,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const statusEl = document.getElementById('consultChatStatus');
     const form = document.getElementById('consultChatForm');
     const input = document.getElementById('consultChatInput');
+    const submitButton = form?.querySelector('button[type="submit"]');
     if (!consultPopup || !thread || !form || !input) return;
 
     const STORE_KEY = 'trippick_ai_consult_chat_v2';
     const GREETING = '안녕하세요! 트립픽 AI 상담이에요. 캠핑장, 예약, 결제, 취소에 관해 무엇이든 물어보세요.';
+    const CONSULT_ENDPOINT = 'https://trippick-ai.trippick-jhan.workers.dev/chat';
     function buildAiReply(question) {
       const text = question.toLowerCase();
       if (/취소|환불/.test(text)) return '예약 취소와 환불 기준은 캠핑장과 이용일까지 남은 기간에 따라 달라요. 마이페이지 예약내역에서 해당 예약의 취소 규정을 확인해주세요.';
@@ -633,6 +629,22 @@ document.addEventListener('DOMContentLoaded', () => {
       thread.scrollTop = thread.scrollHeight;
     }
 
+    async function requestAiAnswer(){
+      const messages = state.messages.slice(-10).map(message => ({
+        role: message.role === 'host' ? 'assistant' : 'user',
+        content: message.text
+      }));
+      const response = await fetch(CONSULT_ENDPOINT, {
+        method:'POST',
+        headers:{ 'Content-Type':'application/json' },
+        body:JSON.stringify({ messages })
+      });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(result.error || 'AI 상담 연결에 실패했습니다.');
+      if (!result.answer) throw new Error('AI 답변이 비어 있습니다.');
+      return String(result.answer).trim();
+    }
+
     function ensureGreeting(){
       if (!state.messages.length) {
         state.messages.push({ role: 'host', text: GREETING, time: nowLabel() });
@@ -650,19 +662,28 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const text = input.value.trim();
-      if (!text) return;
+      if (!text || submitButton?.disabled) return;
       input.value = '';
       clearTimeout(replyTimer);
 
       pushMessage('user', text);
       setStatus('AI가 답변을 작성하고 있어요', 'pending');
-      replyTimer = setTimeout(() => {
-        pushMessage('host', buildAiReply(text));
+      if (submitButton) submitButton.disabled = true;
+      input.disabled = true;
+      try {
+        pushMessage('host', await requestAiAnswer());
         setStatus('AI 답변 완료', 'done');
-      }, 450);
+      } catch (error) {
+        pushMessage('host', buildAiReply(text));
+        setStatus('AI 연결이 원활하지 않아 기본 안내로 답변했어요', 'error');
+      } finally {
+        if (submitButton) submitButton.disabled = false;
+        input.disabled = false;
+        input.focus();
+      }
     });
   })();
 
@@ -1099,6 +1120,38 @@ document.addEventListener('DOMContentLoaded', () => {
       render();
     });
     render();
+  })();
+
+  /* ---------- 홈 캠핑 안전영상 확대 플레이어 ---------- */
+  (function initSafetyVideoStage(){
+    const stage = document.getElementById('safetyVideoStage');
+    const player = document.getElementById('safetyVideoPlayer');
+    const title = document.getElementById('safetyVideoStageTitle');
+    const close = document.getElementById('safetyVideoStageClose');
+    const buttons = [...document.querySelectorAll('.safety-video-select')];
+    if (!stage || !player || !title || !buttons.length) return;
+
+    buttons.forEach(button => button.addEventListener('click', () => {
+      const src = button.dataset.videoSrc;
+      if (!src) return;
+      document.querySelectorAll('.safety-video-card').forEach(card => card.classList.remove('is-active'));
+      button.closest('.safety-video-card')?.classList.add('is-active');
+      title.textContent = button.dataset.videoTitle || '캠핑 안전 영상';
+      player.poster = button.dataset.videoPoster || '';
+      if (player.getAttribute('src') !== src) {
+        player.src = src;
+        player.load();
+      }
+      stage.hidden = false;
+      player.play().catch(() => {});
+      stage.scrollIntoView({ behavior:'smooth', block:'center' });
+    }));
+
+    close?.addEventListener('click', () => {
+      player.pause();
+      stage.hidden = true;
+      document.querySelectorAll('.safety-video-card').forEach(card => card.classList.remove('is-active'));
+    });
   })();
 
   /* ---------- 8-4. 최근 본 캠핑장 ---------- */

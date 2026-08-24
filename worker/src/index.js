@@ -13,7 +13,9 @@ const DEFAULT_ALLOWED_ORIGINS = [
   'http://127.0.0.1:5501',
   'http://localhost:5501',
   'http://127.0.0.1:5500',
-  'http://localhost:5500'
+  'http://localhost:5500',
+  'http://127.0.0.1:4173',
+  'http://localhost:4173'
 ];
 
 const getAllowedOrigins = (env) => {
@@ -167,19 +169,24 @@ const answerChat = async (request, env, corsOrigin) => {
 
   if (!messages.length) return json({ error: '질문을 입력해 주세요.' }, 400, corsOrigin);
 
-  const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${env.GROQ_API_KEY}`,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      model: 'openai/gpt-oss-20b',
-      messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...messages],
-      temperature: 0.6,
-      max_completion_tokens: 500
-    })
-  });
+  let response;
+  try {
+    response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${env.GROQ_API_KEY}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        model: 'openai/gpt-oss-20b',
+        messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...messages],
+        temperature: 0.6,
+        max_completion_tokens: 500
+      })
+    });
+  } catch (_) {
+    return json({ error: 'AI 서버에 연결하지 못했습니다. 잠시 후 다시 시도해 주세요.' }, 502, corsOrigin);
+  }
 
   const result = await response.json().catch(() => ({}));
   if (!response.ok) {

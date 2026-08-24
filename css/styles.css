@@ -689,28 +689,22 @@ textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible{
 .grid{display:grid; grid-template-columns:repeat(2,1fr); gap:28px 22px;}
 @media (min-width:760px){ .grid{grid-template-columns:repeat(4,1fr);} }
 
-/* ---------- 벤토 그리드 (인기 캠핑장) ----------
-   큰 카드 1개(첫번째) + 오른쪽 작은 카드 2개 + 하단 와이드 카드 1개.
-   4개 카드로 비대칭 위계를 만들어 화면에 리듬감을 줌. */
+/* ---------- 박스형 벤토 그리드 (인기 캠핑장) ----------
+   두 줄을 빈틈없이 채우되 7:5 / 5:7 비율로 교차해 자연스러운 리듬을 만듦. */
 @media (min-width:760px){
   .grid.bento-grid{
-    grid-template-columns:1.3fr 1fr 1fr;
-    grid-template-rows:auto auto;
-    grid-template-areas:
-      "featured b c"
-      "featured d d";
-    gap:22px;
+    grid-template-columns:repeat(12,minmax(0,1fr));
+    grid-template-rows:repeat(2,minmax(360px,auto));
+    gap:16px;
   }
-  .grid.bento-grid .p-card:nth-child(1){grid-area:featured; display:flex; flex-direction:column;}
-  .grid.bento-grid .p-card:nth-child(2){grid-area:b;}
-  .grid.bento-grid .p-card:nth-child(3){grid-area:c;}
-  .grid.bento-grid .p-card:nth-child(4){grid-area:d; display:flex; flex-direction:column;}
-  .grid.bento-grid .p-card:nth-child(1) .p-thumb{flex:1; aspect-ratio:auto;}
-  .grid.bento-grid .p-card:nth-child(4) .p-thumb{aspect-ratio:21/9;}
+  .grid.bento-grid .p-card:nth-child(1){grid-column:span 7;}
+  .grid.bento-grid .p-card:nth-child(2){grid-column:span 5;}
+  .grid.bento-grid .p-card:nth-child(3){grid-column:span 5;}
+  .grid.bento-grid .p-card:nth-child(4){grid-column:span 7;}
+  .grid.bento-grid .p-card .p-thumb{height:clamp(220px,24vw,300px); aspect-ratio:auto; flex:none;}
   .grid.bento-grid .p-card:nth-child(1) .p-name,
   .grid.bento-grid .p-card:nth-child(1) .p-desc{font-size:inherit;}
-  .grid.bento-grid .p-card:nth-child(1) .p-name{font-size:19px;}
-  .grid.bento-grid .p-card-feature:nth-child(1) .p-thumb-name{font-size:21px;}
+  .grid.bento-grid .p-card:nth-child(1) .p-name{font-size:18px;}
 }
 .p-card{position:relative;}
 .p-card:not(.p-card-feature){display:flex; flex-direction:column; height:100%;}
@@ -816,6 +810,48 @@ textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible{
 .story-card h3{
   font-family:var(--serif); font-size:18px; font-weight:600; margin-top:8px; line-height:1.4;
   word-break:keep-all; overflow-wrap:break-word; display:-webkit-box; -webkit-line-clamp:2; line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
+}
+
+/* ---------- 홈 안전영상 벤토 그리드 ---------- */
+.safety-video-bento{display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); gap:14px; padding:2px 2px 14px;}
+.safety-video-card{min-width:0; overflow:hidden; display:flex; flex-direction:column; border:1px solid rgba(35,57,43,.12); border-radius:22px; background:var(--paper); color:var(--ink); box-shadow:0 12px 34px rgba(26,42,32,.07); transition:transform .3s ease,box-shadow .3s ease; scroll-snap-align:start;}
+.safety-video-card:hover{transform:translateY(-4px); box-shadow:0 22px 44px rgba(26,42,32,.13);}
+.safety-video-select{width:100%; height:100%; display:flex; flex-direction:column; color:inherit; text-align:left;}
+.safety-video-featured,.safety-video-wide,.safety-video-tall,.safety-video-summary{grid-column:auto; grid-row:auto; background:var(--paper);}
+.safety-video-media{position:relative; overflow:hidden; aspect-ratio:16/9; background:#14271e;}
+.safety-video-featured .safety-video-media,.safety-video-tall .safety-video-media{flex:none; min-height:0; aspect-ratio:16/9;}
+.safety-video-media video{width:100%; height:100%; display:block; object-fit:cover; background:#14271e;}
+.safety-video-media img{width:100%; height:100%; display:block; object-fit:cover; transition:transform .35s ease,filter .35s ease;}
+.safety-video-media i{position:absolute; left:50%; top:50%; width:42px; height:42px; display:grid; place-items:center; transform:translate(-50%,-50%); border-radius:50%; background:rgba(248,245,237,.92); color:var(--forest); font-size:13px; font-style:normal; box-shadow:0 10px 26px rgba(0,0,0,.22); transition:transform .25s ease,background .25s ease;}
+.safety-video-select:hover .safety-video-media img{transform:scale(1.04); filter:brightness(.82);}
+.safety-video-select:hover .safety-video-media i{transform:translate(-50%,-50%) scale(1.08); background:#fff;}
+.safety-video-copy{padding:17px 18px 20px;}
+.safety-video-copy span{display:block; margin-bottom:7px; color:var(--brass); font-size:9px; font-weight:800; letter-spacing:.1em; text-transform:uppercase;}
+.safety-video-copy h3{font-family:var(--serif); font-size:clamp(16px,1.35vw,21px); line-height:1.42; word-break:keep-all;}
+.safety-video-copy p{margin-top:8px; color:var(--text-mute); font-size:11px; line-height:1.65;}
+.safety-video-copy small{display:block; margin-bottom:7px; color:var(--brass); font-size:9px; font-weight:800; letter-spacing:.1em; text-transform:uppercase;}
+.safety-video-copy strong{display:block; font-family:var(--serif); font-size:clamp(16px,1.35vw,21px); line-height:1.42; word-break:keep-all;}
+.safety-video-featured .safety-video-copy{padding:17px 18px 20px;}
+.safety-video-featured .safety-video-copy h3{font-size:clamp(16px,1.35vw,21px); color:var(--ink);}
+.safety-video-featured .safety-video-copy p{color:var(--text-mute);}
+.safety-video-card.is-active{border-color:var(--brass); box-shadow:0 0 0 2px rgba(173,138,76,.18),0 18px 38px rgba(26,42,32,.12);}
+.safety-video-card.is-active .safety-video-media i{background:var(--brass-light);}
+.safety-video-stage{margin-top:22px; padding:18px; border-radius:24px; background:var(--forest-deep); box-shadow:0 28px 60px rgba(14,31,23,.18); animation:safetyStageIn .38s cubic-bezier(.22,1,.36,1);}
+.safety-video-stage[hidden]{display:none;}
+.safety-video-stage-head{display:grid; grid-template-columns:1fr auto; align-items:end; gap:3px 20px; margin-bottom:14px; color:var(--ivory);}
+.safety-video-stage-head span{grid-column:1; color:var(--brass-light); font-size:9px; font-weight:800; letter-spacing:.12em; text-transform:uppercase;}
+.safety-video-stage-head h3{grid-column:1; font-family:var(--serif); font-size:clamp(20px,2.2vw,30px);}
+.safety-video-stage-head button{grid-column:2; grid-row:1 / span 2; width:40px; height:40px; border:1px solid rgba(255,255,255,.18); border-radius:50%; color:var(--ivory); font-size:22px;}
+.safety-video-stage video{width:100%; max-height:70vh; display:block; aspect-ratio:16/9; object-fit:contain; border-radius:15px; background:#08110d;}
+@keyframes safetyStageIn{from{opacity:0;transform:translateY(-10px) scale(.985)}to{opacity:1;transform:none}}
+
+@media (max-width:1024px){.safety-video-bento{grid-template-columns:repeat(3,minmax(0,1fr));}}
+@media (max-width:620px){
+  .safety-video-bento{grid-template-columns:1fr; gap:12px;}
+  .safety-video-card{border-radius:18px;}
+  .safety-video-copy{padding:15px 16px 18px;}
+  .safety-video-featured .safety-video-copy{padding:15px 16px 18px;}
+  .safety-video-featured .safety-video-copy h3{font-size:16px;}
 }
 
 /* ---------- 리뷰 ---------- */
@@ -1524,14 +1560,51 @@ textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible{
 @media (min-width:700px) and (max-width:1099px){
   .grid{grid-template-columns:repeat(3,1fr); gap:26px 20px;}
   .grid.bento-grid{
-    grid-template-columns:1.15fr 1fr 1fr; gap:20px;
+    grid-template-columns:repeat(2,minmax(0,1fr)); grid-template-rows:auto; gap:16px;
   }
+  .grid.bento-grid .p-card:nth-child(n){grid-column:auto;}
   .wrap{padding:0 32px;}
   .intro-inner{gap:48px;}
   .cat-row{grid-template-columns:repeat(auto-fit, minmax(84px, 104px)); gap:20px 12px;}
 }
 @media (min-width:1100px){
   .grid{grid-template-columns:repeat(4,1fr);}
+  .grid.bento-grid{
+    grid-template-columns:repeat(12,minmax(0,1fr));
+    grid-template-rows:repeat(2,280px);
+    grid-auto-flow:dense;
+    gap:16px;
+  }
+  .grid.bento-grid .p-card:nth-child(1){grid-column:span 5; grid-row:span 2;}
+  .grid.bento-grid .p-card:nth-child(2){grid-column:span 4; grid-row:span 1;}
+  .grid.bento-grid .p-card:nth-child(3){grid-column:span 3; grid-row:span 1;}
+  .grid.bento-grid .p-card:nth-child(4){grid-column:span 7; grid-row:span 1;}
+  .grid.bento-grid .p-card{min-height:0; overflow:hidden; border-radius:20px; background:var(--forest-deep); box-shadow:0 16px 36px rgba(20,36,27,.12); isolation:isolate;}
+  .grid.bento-grid .p-card .p-thumb{position:absolute; inset:0; width:100%; height:100%; border-radius:0;}
+  .grid.bento-grid .p-card .p-thumb::after{content:''; position:absolute; inset:0; pointer-events:none; background:linear-gradient(180deg,rgba(8,20,14,.02) 30%,rgba(8,20,14,.88) 100%);}
+  .grid.bento-grid .p-card .p-body{position:absolute; left:0; right:0; bottom:0; z-index:2; width:100%; height:auto; display:block; flex:none; margin:0; padding:68px 24px 22px; color:var(--ivory); background:linear-gradient(180deg,rgba(8,20,14,0),rgba(8,20,14,.86) 48%,rgba(8,20,14,.94));}
+  .grid.bento-grid .p-card .p-region{color:var(--brass-light);}
+  .grid.bento-grid .p-card .p-name{margin-bottom:4px; color:var(--ivory); font-size:clamp(16px,1.45vw,22px);}
+  .grid.bento-grid .p-card .p-desc{color:rgba(246,241,230,.7);}
+  .grid.bento-grid .p-card .p-price{border-top-color:rgba(246,241,230,.2);}
+  .grid.bento-grid .p-card .p-price .old{color:rgba(246,241,230,.48);}
+  .grid.bento-grid .p-card .p-price .pct{color:var(--brass-light);}
+  .grid.bento-grid .p-card .p-price .now{color:var(--ivory);}
+  .grid.bento-grid .p-card:nth-child(2) .p-body,
+  .grid.bento-grid .p-card:nth-child(3) .p-body,
+  .grid.bento-grid .p-card:nth-child(4) .p-body{padding:52px 18px 16px;}
+  .grid.bento-grid .p-card:nth-child(2) .p-desc,
+  .grid.bento-grid .p-card:nth-child(3) .p-desc{display:none;}
+  .grid.bento-grid .p-card:nth-child(2) .p-name,
+  .grid.bento-grid .p-card:nth-child(3) .p-name{font-size:clamp(14px,1.18vw,18px);}
+  .grid.bento-grid .p-card:nth-child(2) .p-price,
+  .grid.bento-grid .p-card:nth-child(3) .p-price{gap:5px; padding-top:7px;}
+  .grid.bento-grid .p-card:nth-child(2) .p-price .old,
+  .grid.bento-grid .p-card:nth-child(2) .p-price .pct,
+  .grid.bento-grid .p-card:nth-child(3) .p-price .old,
+  .grid.bento-grid .p-card:nth-child(3) .p-price .pct{font-size:10px;}
+  .grid.bento-grid .p-card:nth-child(2) .p-price .now,
+  .grid.bento-grid .p-card:nth-child(3) .p-price .now{font-size:13px;}
 }
 
 /* 필터 바: 데스크탑에서도 완전 직각 대신 라운드 + 은은한 보더로 무게감을 덜어줌 */

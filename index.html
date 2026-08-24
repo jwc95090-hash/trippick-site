@@ -147,25 +147,19 @@
 
   <!-- ============ 히어로 ============ -->
   <section class="hero" id="search">
-    <!-- 별도 poster 이미지를 사용하지 않고 영상을 선로딩해 첫 화면에 사진이 먼저 나타나지 않도록 한다. -->
-    <video class="hero-video" autoplay muted loop playsinline preload="metadata" poster="images/denys-nevozhai-63Znf38gnXk-unsplash.jpg" aria-hidden="true">
+    <!-- 영상을 선로딩해 첫 화면에 별도 사진이 먼저 나타나지 않도록 한다. -->
+    <video class="hero-video" autoplay muted loop playsinline preload="auto" aria-hidden="true">
       <source src="videos/hero-video.mp4" type="video/mp4">
     </video>
     <div class="hero-overlay"></div>
     <div class="wrap hero-content">
       <h1>계획 없이 떠나도<br>후회 없는 캠핑</h1>
       <p>검증된 캠핑장 검색부터 비교, 첫 캠핑 준비까지 한곳에서 시작하세요.</p>
-      <div class="hero-actions">
-        <a href="#homeFilterBar" class="btn hero-primary">캠핑장 검색하기</a>
-        <a href="#tripMatch" class="btn hero-secondary">1분 취향 추천</a>
-      </div>
-
     </div>
 
     <div class="scroll-cue"><span></span>Scroll</div>
   </section>
 
-  <section class="section" aria-labelledby="trustTitle"><div class="wrap"><div class="section-head"><div><span class="eyebrow"><i></i>TRUST & DATA</span><h2 id="trustTitle">확인할 수 있는 정보만 정직하게</h2></div><a class="link-underline" href="pages/policy.html">서비스 정책 보기</a></div><div class="trust-summary" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px"><article style="padding:24px;border:1px solid var(--line);background:var(--paper)"><h3>공공데이터 기반</h3><p>한국관광공사 고캠핑 등의 정보를 바탕으로 탐색을 돕습니다.</p></article><article style="padding:24px;border:1px solid var(--line);background:var(--paper)"><h3>실시간 정보는 재확인</h3><p>재고와 최종 요금은 실제 예약처 또는 캠핑장에 확인해 주세요.</p></article><article style="padding:24px;border:1px solid var(--line);background:var(--paper)"><h3>AI는 준비 도우미</h3><p>AI 상담은 준비와 확인사항을 안내하며 예약을 확정하지 않습니다.</p></article></div></div></section>
 
   <!-- ============ 필터 바 ============ -->
   <div class="filter-wrap">
@@ -321,76 +315,6 @@
     </div>
   </section>
 
-  <!-- ============ 취향 추천 · 초보 준비도 ============ -->
-  <section class="section planner-section reveal" id="tripMatch">
-    <div class="wrap">
-      <div class="section-head">
-        <div><span class="eyebrow"><i></i>Personal Planner</span><h2>내 캠핑 취향과 준비도를 한 번에</h2></div>
-        <p class="section-head-note">처음이어도 1분이면 추천과 준비 목록이 완성됩니다.</p>
-      </div>
-      <div class="planner-grid">
-        <article class="planner-card match-card">
-          <div class="planner-card-head">
-            <span class="planner-step">01</span>
-            <div><h3>트립픽 취향 매치</h3><p>세 가지 선택으로 나에게 맞는 캠핑장을 추천해요.</p></div>
-          </div>
-          <form id="tripMatchForm" class="match-form">
-            <fieldset>
-              <legend>어떤 풍경에서 쉬고 싶나요?</legend>
-              <div class="match-options">
-                <label><input type="radio" name="nature" value="forest" checked><span>숲·계곡</span></label>
-                <label><input type="radio" name="nature" value="ocean"><span>바다·노을</span></label>
-                <label><input type="radio" name="nature" value="mountain"><span>산·전망</span></label>
-              </div>
-            </fieldset>
-            <fieldset>
-              <legend>원하는 편안함은 어느 정도인가요?</legend>
-              <div class="match-options">
-                <label><input type="radio" name="comfort" value="camping"><span>직접 텐트</span></label>
-                <label><input type="radio" name="comfort" value="glamping" checked><span>편한 글램핑</span></label>
-                <label><input type="radio" name="comfort" value="caravan"><span>프라이빗 카라반</span></label>
-              </div>
-            </fieldset>
-            <fieldset>
-              <legend>누구와 함께 떠나나요?</legend>
-              <div class="match-options">
-                <label><input type="radio" name="party" value="couple" checked><span>둘이서</span></label>
-                <label><input type="radio" name="party" value="family"><span>아이와 가족</span></label>
-                <label><input type="radio" name="party" value="pet"><span>반려동물과</span></label>
-              </div>
-            </fieldset>
-            <button class="btn match-submit" type="submit">내 취향 캠핑장 추천받기</button>
-          </form>
-          <div class="match-result" id="tripMatchResult" aria-live="polite" hidden></div>
-        </article>
-
-        <article class="planner-card readiness-card">
-          <div class="planner-card-head">
-            <span class="planner-step">02</span>
-            <div><h3>첫 캠핑 준비도</h3><p>체크한 내용은 이 브라우저에 자동 저장됩니다.</p></div>
-          </div>
-          <div class="readiness-score">
-            <div class="readiness-ring" id="readinessRing" style="--progress:0">
-              <strong id="readinessPercent">0%</strong><span>준비 완료</span>
-            </div>
-            <div><strong id="readinessMessage">하나씩 준비해볼까요?</strong><p>준비 항목을 체크하면 상황에 맞는 다음 행동을 안내해요.</p></div>
-          </div>
-          <div class="readiness-list" id="readinessList">
-            <label><input type="checkbox" value="site"><span><strong>캠핑장·날짜 정하기</strong><small>날씨와 이동시간까지 확인</small></span></label>
-            <label><input type="checkbox" value="sleep"><span><strong>텐트·침구 준비</strong><small>최저기온 기준으로 침낭 선택</small></span></label>
-            <label><input type="checkbox" value="cook"><span><strong>취사도구·식재료</strong><small>화기 사용 가능 여부 확인</small></span></label>
-            <label><input type="checkbox" value="safety"><span><strong>랜턴·구급함</strong><small>여분 배터리와 상비약 포함</small></span></label>
-            <label><input type="checkbox" value="policy"><span><strong>매너타임·환불 규정</strong><small>입실 전 운영 정책 확인</small></span></label>
-          </div>
-          <div class="readiness-actions">
-            <a href="pages/guide.html" class="btn-outline">초보 캠핑 가이드 보기</a>
-            <button type="button" class="text-btn" id="readinessReset">체크 초기화</button>
-          </div>
-        </article>
-      </div>
-    </div>
-  </section>
-
   <!-- ============ 인트로 / 브랜드 스토리 ============ -->
   <section class="intro reveal">
     <div class="wrap intro-inner">
@@ -490,29 +414,48 @@
     </div>
   </section>
 
-  <!-- ============ 트립픽 스토리 ============ -->
+  <!-- ============ 캠핑 안전 가이드 ============ -->
   <section class="section story reveal" id="story">
     <div class="wrap">
       <div class="section-head">
-        <div><span class="eyebrow"><i></i>Trippick Story</span><h2>캠핑, 처음이라면 먼저 읽어보세요</h2></div>
-        <a href="pages/guide.html" class="link-underline">매거진 전체보기</a>
+        <div><span class="eyebrow"><i></i>Camping Safety Guide</span><h2>출발 전, 안전 가이드부터 확인하세요</h2></div>
+        <a href="pages/guide.html" class="link-underline">안전 가이드 전체보기</a>
       </div>
-      <div class="story-scroll">
-        <a class="story-card" href="pages/guide.html">
-          <div class="story-thumb"><img src="https://images.unsplash.com/photo-1600452556550-9ff29bb0e6cf?auto=format&fit=crop&w=700&q=70" alt="캠핑 준비물이 놓인 아늑한 캠핑장 풍경" loading="lazy"></div>
-          <span class="story-num">01</span>
-          <h3>첫 캠핑, 준비물 열두 가지면 충분합니다</h3>
-        </a>
-        <a class="story-card" href="pages/guide.html">
-          <div class="story-thumb"><img src="https://images.unsplash.com/photo-1638284647862-0dac1edeb8ab?auto=format&fit=crop&w=700&q=70" alt="캠핑장에서 함께 식사하는 사람들" loading="lazy"></div>
-          <span class="story-num">02</span>
-          <h3>매너타임, 왜 지켜야 다시 초대받을까</h3>
-        </a>
-        <a class="story-card" href="pages/guide.html">
-          <div class="story-thumb"><img src="https://images.unsplash.com/photo-1638284648387-3f946944713e?auto=format&fit=crop&w=700&q=70" alt="숲속에 자리 잡은 여러 대의 캠핑 텐트" loading="lazy"></div>
-          <span class="story-num">03</span>
-          <h3>차박 vs 오토캠핑, 나에게 맞는 스타일 찾기</h3>
-        </a>
+      <div class="safety-video-bento" aria-label="캠핑 안전 영상 6편">
+        <article class="safety-video-card safety-video-featured">
+          <button class="safety-video-select" type="button" data-video-src="videos/trippick-safety-guide.mp4" data-video-poster="images/trippick-safety-guide-poster.jpg" data-video-title="75초로 확인하는 캠핑 안전 핵심 수칙" aria-label="75초로 확인하는 캠핑 안전 핵심 수칙 영상 크게 보기">
+            <span class="safety-video-media"><img src="images/trippick-safety-guide-poster.jpg" alt="" loading="lazy"><i aria-hidden="true">▶</i></span><span class="safety-video-copy"><small>01 · 필수 시청</small><strong>75초로 확인하는 캠핑 안전 핵심 수칙</strong></span>
+          </button>
+        </article>
+        <article class="safety-video-card safety-video-wide">
+          <button class="safety-video-select" type="button" data-video-src="videos/guide/first-camp-essentials.mp4" data-video-poster="videos/guide/posters/first-camp-essentials.jpg" data-video-title="첫 캠핑 필수 준비물 12가지" aria-label="첫 캠핑 필수 준비물 12가지 영상 크게 보기">
+            <span class="safety-video-media"><img src="videos/guide/posters/first-camp-essentials.jpg" alt="" loading="lazy"><i aria-hidden="true">▶</i></span><span class="safety-video-copy"><small>02 · 준비물</small><strong>첫 캠핑 필수 준비물 12가지</strong></span>
+          </button>
+        </article>
+        <article class="safety-video-card">
+          <button class="safety-video-select" type="button" data-video-src="videos/guide/camping-manners.mp4" data-video-poster="videos/guide/posters/camping-manners.jpg" data-video-title="모두가 편안한 매너타임" aria-label="모두가 편안한 매너타임 영상 크게 보기">
+            <span class="safety-video-media"><img src="videos/guide/posters/camping-manners.jpg" alt="" loading="lazy"><i aria-hidden="true">▶</i></span><span class="safety-video-copy"><small>03 · 매너</small><strong>모두가 편안한 매너타임</strong></span>
+          </button>
+        </article>
+        <article class="safety-video-card safety-video-tall">
+          <button class="safety-video-select" type="button" data-video-src="videos/guide/rain-camping-safety.mp4" data-video-poster="videos/guide/posters/rain-camping-safety.jpg" data-video-title="비가 올 때 꼭 지켜야 할 안전 수칙" aria-label="비가 올 때 꼭 지켜야 할 안전 수칙 영상 크게 보기">
+            <span class="safety-video-media"><img src="videos/guide/posters/rain-camping-safety.jpg" alt="" loading="lazy"><i aria-hidden="true">▶</i></span><span class="safety-video-copy"><small>04 · 날씨</small><strong>비가 올 때 꼭 지켜야 할 안전 수칙</strong></span>
+          </button>
+        </article>
+        <article class="safety-video-card">
+          <button class="safety-video-select" type="button" data-video-src="videos/guide/pet-camping-check.mp4" data-video-poster="videos/guide/posters/pet-camping-check.jpg" data-video-title="반려동물과 안전하게 캠핑하기" aria-label="반려동물과 안전하게 캠핑하기 영상 크게 보기">
+            <span class="safety-video-media"><img src="videos/guide/posters/pet-camping-check.jpg" alt="" loading="lazy"><i aria-hidden="true">▶</i></span><span class="safety-video-copy"><small>05 · 반려동물</small><strong>반려동물과 안전하게 캠핑하기</strong></span>
+          </button>
+        </article>
+        <article class="safety-video-card safety-video-wide">
+          <button class="safety-video-select" type="button" data-video-src="videos/guide/camping-style-guide.mp4" data-video-poster="videos/guide/posters/camping-style-guide.jpg" data-video-title="차박과 오토캠핑, 안전 기준부터 비교하기" aria-label="차박과 오토캠핑 안전 비교 영상 크게 보기">
+            <span class="safety-video-media"><img src="videos/guide/posters/camping-style-guide.jpg" alt="" loading="lazy"><i aria-hidden="true">▶</i></span><span class="safety-video-copy"><small>06 · 캠핑 유형</small><strong>차박과 오토캠핑, 안전 기준부터 비교하기</strong></span>
+          </button>
+        </article>
+      </div>
+      <div class="safety-video-stage" id="safetyVideoStage" hidden>
+        <div class="safety-video-stage-head"><span>Now playing</span><h3 id="safetyVideoStageTitle"></h3><button type="button" id="safetyVideoStageClose" aria-label="확대 영상 닫기">×</button></div>
+        <video id="safetyVideoPlayer" controls muted playsinline preload="metadata" controlslist="nodownload"></video>
       </div>
     </div>
   </section>
@@ -550,11 +493,11 @@
       <div>
         <span class="eyebrow eyebrow-light"><i></i>Start Your Trip</span>
         <h2 id="bookingCtaTitle">이번 주말, 나에게 맞는 캠핑장을 찾아보세요</h2>
-        <p>지역과 날짜로 바로 검색하거나, 세 가지 질문으로 취향부터 확인할 수 있어요.</p>
+        <p>지역과 날짜로 캠핑장을 찾고, 출발 전 안전 가이드와 영상까지 확인해 보세요.</p>
       </div>
       <div class="booking-cta-actions">
-        <a href="#homeFilterBar" class="btn booking-cta-primary">캠핑장 검색하기</a>
-        <a href="#tripMatch" class="btn-outline booking-cta-secondary">1분 취향 추천</a>
+        <a href="pages/types.html" class="btn booking-cta-primary">캠핑장 검색하기</a>
+        <a href="pages/guide.html#featured-guide-video" class="btn-outline booking-cta-secondary">캠핑 안전 영상 보기</a>
       </div>
     </div>
   </section>
@@ -680,7 +623,7 @@
 </div>
 
 <!-- ============ 모바일 하단 탭 · 상담/쿠폰 팝업 ============
-     js/script.js가 전 페이지 공통으로 주입합니다 (bottomTabHTML/couponPopupHTML/consultPopupHTML). --><!-- ============ 팝업: 전체 캠핑장 지도 ============ -->
+     js/script.js가 전 페이지 공통으로 주입합니다 (bottomTabHTML/consultPopupHTML). --><!-- ============ 팝업: 전체 캠핑장 지도 ============ -->
 <div class="site-popup" id="siteMapPopup">
   <div class="popup-inner map-popup-inner">
     <button class="popup-close" type="button" aria-label="닫기">
