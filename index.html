@@ -148,13 +148,22 @@
   <!-- ============ 히어로 ============ -->
   <section class="hero" id="search">
     <!-- 영상을 선로딩해 첫 화면에 별도 사진이 먼저 나타나지 않도록 한다. -->
-    <video class="hero-video" autoplay muted loop playsinline preload="auto" aria-hidden="true">
+    <video class="hero-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
       <source src="videos/hero-video.mp4" type="video/mp4">
     </video>
     <div class="hero-overlay"></div>
     <div class="wrap hero-content">
       <h1>계획 없이 떠나도<br>후회 없는 캠핑</h1>
       <p>검증된 캠핑장 검색부터 비교, 첫 캠핑 준비까지 한곳에서 시작하세요.</p>
+      <div class="hero-actions">
+        <a href="#homeFilterBar" class="btn hero-primary">캠핑장 검색하기</a>
+        <a href="#advancedFilter" class="btn hero-secondary" id="heroMatchCta">1분 취향 추천</a>
+      </div>
+      <ul class="hero-proof" aria-label="트립픽 신뢰 요소">
+        <li>한국관광공사 공공데이터 기반</li>
+        <li>초보자 맞춤 준비 가이드</li>
+        <li>가격·시설 비교 예약</li>
+      </ul>
     </div>
 
     <div class="scroll-cue"><span></span>Scroll</div>

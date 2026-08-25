@@ -176,9 +176,9 @@
           </div>
 
           <form class="review-form" style="max-width:480px;" onsubmit="event.preventDefault(); alert('저장되었습니다.');">
-            <div class="cf-field"><span>이름</span><input type="text" value="김트립"></div>
-            <div class="cf-field"><span>이메일</span><input type="email" value="trip_kim@trippick.co.kr"></div>
-            <div class="cf-field"><span>연락처</span><input type="tel" placeholder="010-0000-0000"></div>
+            <div class="cf-field"><label for="settingsName">이름</label><input type="text" id="settingsName" value="김트립"></div>
+            <div class="cf-field"><label for="settingsEmail">이메일</label><input type="email" id="settingsEmail" value="trip_kim@trippick.co.kr"></div>
+            <div class="cf-field"><label for="settingsPhone">연락처</label><input type="tel" id="settingsPhone" placeholder="010-0000-0000"></div>
             <label class="pay-agree" style="border-bottom:none; padding-left:0;">
               <input type="checkbox" checked> 예약·이벤트 알림 메일 수신
             </label>

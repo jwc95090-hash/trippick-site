@@ -210,7 +210,7 @@
       return;
     }
     list.innerHTML = data.length ? data.map(review => `<div class="my-review-item">
-      <p style="font-size:12px;color:var(--brass);margin-bottom:4px;">${esc(review.site_name)} · ${'★'.repeat(review.rating)}</p>
+      <p style="font-size:12px;color:var(--brass);margin-bottom:4px;">${esc(review.site_name)} · ${review.rating}.0 / 5</p>
       <p style="font-family:var(--serif);font-size:15px;font-weight:600;margin-bottom:4px;">${esc(review.title)}</p>
       <p style="font-size:13px;color:var(--text-mute);line-height:1.7;">${esc(review.body)}</p>
       ${review.admin_reply ? `<p style="margin-top:8px;padding:10px;background:var(--ivory);">호스트 답변: ${esc(review.admin_reply)}</p>` : ''}
@@ -230,7 +230,8 @@
     }
     list.innerHTML = data.length ? data.map(review => `<div class="review-item" style="background:var(--paper);">
       <div class="review-foot" style="border-top:none;margin:0 0 10px;justify-content:flex-start;gap:14px;">
-        <span class="review-stars text-brass">${'★'.repeat(review.rating)}${'☆'.repeat(5-review.rating)}</span>
+        <span class="review-stars text-brass" aria-hidden="true">${'★'.repeat(review.rating)}${'☆'.repeat(5-review.rating)}</span>
+        <span class="review-score" aria-label="평점 5점 만점에 ${review.rating}점">${review.rating}.0 / 5</span>
         <span class="who text-mute">${esc(review.site_name)} · ${esc(review.author_name)} · ${new Date(review.created_at).toLocaleDateString('ko-KR')}</span>
       </div><p class="quote" style="color:var(--text-mute);min-height:auto;"><strong style="color:var(--ink);">${esc(review.title)}</strong><br>${esc(review.body)}</p>
       ${review.admin_reply ? `<p class="community-host-reply"><strong>호스트 답글</strong>${esc(review.admin_reply)}</p>` : ''}
@@ -257,7 +258,8 @@
     }
     list.innerHTML = data.length ? data.map(review => `<article class="review-item" style="background:var(--ivory-soft);">
       <div class="review-foot" style="border-top:none;margin:0 0 8px;">
-        <span class="review-stars" style="color:var(--brass);">${'★'.repeat(review.rating)}${'☆'.repeat(5-review.rating)}</span>
+        <span class="review-stars" style="color:var(--brass);" aria-hidden="true">${'★'.repeat(review.rating)}${'☆'.repeat(5-review.rating)}</span>
+        <span class="review-score" aria-label="평점 5점 만점에 ${review.rating}점">${review.rating}.0 / 5</span>
         <span class="who" style="color:var(--text-mute);">${esc(review.author_name)} · ${new Date(review.created_at).toLocaleDateString('ko-KR')}</span>
       </div>
       <p class="quote" style="color:var(--text-mute);min-height:auto;"><strong style="color:var(--ink);">${esc(review.title)}</strong><br>${esc(review.body)}</p>
@@ -287,7 +289,7 @@
       }
       list.innerHTML = data.length ? data.map(post => `<details class="faq-item" data-server-post-id="${post.id}" data-secret="${post.is_secret}">
         <summary>
-          <span>${post.is_secret ? '🔒 ' : ''}${esc(post.title)}</span>
+          <span>${post.is_secret ? '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-1px;margin-right:4px;"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>비밀글 · ' : ''}${esc(post.title)}</span>
           <span style="font-size:11.5px;color:var(--text-mute);margin-left:auto;">${esc(post.author_name)} · ${new Date(post.created_at).toLocaleDateString('ko-KR')}</span>
         </summary>
         ${post.is_secret ? '<p style="padding:18px;background:var(--ivory);color:var(--text-mute);">작성자 개인정보 보호를 위해 비밀글 본문은 공개 목록에서 표시하지 않습니다.</p>'

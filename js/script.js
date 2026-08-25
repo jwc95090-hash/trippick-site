@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function cardSnapshot(card){
     /* link.href(프로퍼티)는 항상 완전한 절대 URL로 해석되므로, 나중에 마이페이지 위시리스트처럼
        다른 폴더 깊이의 페이지에서 렌더링해도 상대경로가 어긋나지 않는다 */
-    const link = card.querySelector('.p-thumb') || card.querySelector('.p-name a');
+    const link = card.querySelector('.p-thumb-link') || card.querySelector('.p-thumb') || card.querySelector('.p-name a');
     return {
       name: card.querySelector('.p-name')?.textContent.trim() || '이름 미상 캠핑장',
       region: card.querySelector('.p-region')?.textContent.trim() || '',
@@ -107,17 +107,22 @@ document.addEventListener('DOMContentLoaded', () => {
       href: link ? link.href : ''
     };
   }
+  function setLikePressed(likeBtn, on){
+    likeBtn.classList.toggle('on', on);
+    likeBtn.setAttribute('aria-pressed', on ? 'true' : 'false');
+  }
+
   function renderWishlistState(){
     const wished = getWishlist().map(w => w.id);
     document.querySelectorAll('.p-card').forEach(card => {
       const likeBtn = card.querySelector('.p-like');
-      if (likeBtn) likeBtn.classList.toggle('on', wished.includes(cardWishId(card)));
+      if (likeBtn) setLikePressed(likeBtn, wished.includes(cardWishId(card)));
     });
     const detailHead = document.querySelector('.detail-head');
     const detailLike = detailHead?.querySelector('.p-like');
     if (detailLike) {
       const id = document.body.dataset.siteId || ('static-' + wishSlug(detailHead.querySelector('h1')?.textContent));
-      detailLike.classList.toggle('on', wished.includes(id));
+      setLikePressed(detailLike, wished.includes(id));
     }
   }
   renderWishlistState();
@@ -130,7 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const detailHead = !card ? likeBtn.closest('.detail-head') : null;
     if (card) {
       const nowOn = toggleWishlist(cardWishId(card), cardSnapshot(card));
-      likeBtn.classList.toggle('on', nowOn);
+      setLikePressed(likeBtn, nowOn);
     } else if (detailHead) {
       const id = document.body.dataset.siteId || ('static-' + wishSlug(detailHead.querySelector('h1')?.textContent));
       const snapshot = {
@@ -142,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
         href: location.href
       };
       const nowOn = toggleWishlist(id, snapshot);
-      likeBtn.classList.toggle('on', nowOn);
+      setLikePressed(likeBtn, nowOn);
     }
   });
 
@@ -810,11 +815,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const tags = gcFeatureTags(item).map(tag => `<span>${gcEscapeHtml(tag)}</span>`).join('');
     return `
         <article class="p-card result-card" data-wish-id="api-${cid}" data-compare-id="${cid}">
-          <a href="${href}" class="p-thumb" onclick="window.trippickOpenSiteById('${cid}')">
-            <img src="${img}" alt="${name}" loading="lazy" onerror="this.onerror=null;this.src='${GOCAMPING_FALLBACK_IMG}';">
+          <div class="p-thumb">
+            <a href="${href}" class="p-thumb-link" onclick="window.trippickOpenSiteById('${cid}')"><img src="${img}" alt="${name}" loading="lazy" onerror="this.onerror=null;this.src='${GOCAMPING_FALLBACK_IMG}';"></a>
             <span class="p-tag p-tag-alt">공공데이터</span>
-            <button class="p-like" aria-label="${name} 찜하기" type="button"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5" /></svg></button>
-          </a>
+            <button class="p-like" aria-label="${name} 찜하기" type="button" aria-pressed="false"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5" /></svg></button>
+          </div>
           <div class="p-body">
             <p class="p-region">${region}</p>
             <h3 class="p-name"><a href="${href}" onclick="window.trippickOpenSiteById('${cid}')">${name}</a></h3>
@@ -887,6 +892,15 @@ document.addEventListener('DOMContentLoaded', () => {
     updateAdvancedCount();
   }
   document.getElementById('advancedFilterReset')?.addEventListener('click', resetAdvancedFilters);
+
+  document.getElementById('heroMatchCta')?.addEventListener('click', (e) => {
+    const details = document.getElementById('advancedFilter');
+    if (!details) return;
+    e.preventDefault();
+    details.open = true;
+    details.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.getElementById('beginnerInput')?.focus({ preventScroll: true });
+  });
 
   function renderActiveFilters(regionLabel, styleLabel, advanced, checkin, checkout){
     if (!activeFilterChips) return;
@@ -1224,15 +1238,17 @@ document.addEventListener('DOMContentLoaded', () => {
       const href = `${ROOT_PREFIX}detail.html?src=api&contentId=${cid}`;
       return `
         <article class="p-card p-card-feature" data-wish-id="api-${cid}">
-          <a href="${href}" class="p-thumb" onclick="window.trippickSaveSite(${idx})">
-            <img src="${img}" alt="${name}" loading="lazy" onerror="this.onerror=null;this.src='${FALLBACK_IMG}';">
+          <div class="p-thumb">
+            <a href="${href}" class="p-thumb-link" onclick="window.trippickSaveSite(${idx})">
+              <img src="${img}" alt="${name}" loading="lazy" onerror="this.onerror=null;this.src='${FALLBACK_IMG}';">
+              <span class="p-thumb-caption">
+                <span class="p-thumb-region">${escapeHtml(shortAddr(item.addr1))}</span>
+                <span class="p-thumb-name">${name}</span>
+              </span>
+            </a>
             <span class="p-tag p-tag-rank"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z" /></svg>BEST ${rank}</span>
-            <button class="p-like" aria-label="찜하기" onclick="event.preventDefault();"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5" /></svg></button>
-            <span class="p-thumb-caption">
-              <span class="p-thumb-region">${escapeHtml(shortAddr(item.addr1))}</span>
-              <span class="p-thumb-name">${name}</span>
-            </span>
-          </a>
+            <button class="p-like" type="button" aria-label="찜하기" aria-pressed="false"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5" /></svg></button>
+          </div>
           <div class="p-body p-body-feature">
             <p class="p-desc"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px; margin-right:4px;"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" /> <circle cx="12" cy="10" r="3" /></svg>${escapeHtml(typeDesc(item.induty))}</p>
           </div>
@@ -1323,11 +1339,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const href = `detail.html?src=api&contentId=${cid}`;
       return `
         <article class="p-card" data-wish-id="api-${cid}">
-          <a href="${href}" class="p-thumb" onclick="window.trippickSaveSite(${idx})">
-            <img src="${img}" alt="${name}" loading="lazy" onerror="this.onerror=null;this.src='${FALLBACK_IMG}';">
+          <div class="p-thumb">
+            <a href="${href}" class="p-thumb-link" onclick="window.trippickSaveSite(${idx})"><img src="${img}" alt="${name}" loading="lazy" onerror="this.onerror=null;this.src='${FALLBACK_IMG}';"></a>
             <span class="p-tag p-tag-alt">공공데이터</span>
-            <button class="p-like" aria-label="찜하기" onclick="event.preventDefault();"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5" /></svg></button>
-          </a>
+            <button class="p-like" type="button" aria-label="찜하기" aria-pressed="false"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5" /></svg></button>
+          </div>
           <div class="p-body">
             <p class="p-region">${region}</p>
             <h3 class="p-name"><a href="${href}" onclick="window.trippickSaveSite(${idx})">${name}</a></h3>

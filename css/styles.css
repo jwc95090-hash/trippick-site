@@ -609,7 +609,7 @@ textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible{
 .consult-form{display:flex; flex-direction:column; gap:16px; max-width:520px;}
 .cf-row{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
 .cf-field{display:flex; flex-direction:column; gap:6px;}
-.cf-field span{
+.cf-field span, .cf-field label{
   font-family:var(--caps); font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--text-mute);
 }
 .cf-field input, .cf-field select, .cf-field textarea{
@@ -2028,6 +2028,8 @@ textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible{
 .advanced-reset{align-self:end; min-height:44px; padding:0 12px; color:var(--text-mute); text-decoration:underline; text-underline-offset:3px; font-size:11.5px;}
 .filter-assist{margin:8px 4px 0; color:rgba(246,241,230,.82); font-size:11px; text-align:right; text-shadow:0 1px 4px rgba(0,0,0,.35);}
 .filter-assist:empty{display:none;}
+.form-status{margin:10px 0 0; color:var(--secondary-deep); font-size:12.5px; line-height:1.5;}
+.form-status:empty{display:none;}
 .result-summary-row{display:flex; align-items:flex-start; justify-content:space-between; gap:24px; margin:-22px 0 18px;}
 #filterResultsNote{margin:0;}
 .result-data-badge{flex-shrink:0; padding:5px 9px; border:1px solid var(--line); border-radius:999px; color:var(--text-mute); font-size:10.5px;}
@@ -2344,13 +2346,13 @@ a[aria-disabled="true"]{cursor:not-allowed; opacity:.62;}
 }
 .booking-cta-primary{
   border-radius:999px;
-  background:var(--brass-light);
-  border-color:var(--brass-light);
-  color:var(--forest-deep);
+  background:var(--secondary);
+  border-color:var(--secondary);
+  color:#fff;
 }
 .booking-cta-primary:hover{
-  background:var(--ivory);
-  border-color:var(--ivory);
+  background:var(--secondary-deep);
+  border-color:var(--secondary-deep);
 }
 .booking-cta-secondary{
   border-radius:999px;
@@ -2370,7 +2372,7 @@ a[aria-disabled="true"]{cursor:not-allowed; opacity:.62;}
   .booking-cta-inner{align-items:flex-start; flex-direction:column; gap:28px;}
 }
 @media (max-width:640px){
-  .hero{height:calc(100svh - var(--header-h,64px)); min-height:620px; max-height:760px;}
+  .hero{height:min(560px,calc(100svh - var(--header-h,64px) - 64px)); min-height:440px; max-height:600px;}
   .hero-content{justify-content:flex-end; padding:0 20px 44px; gap:14px;}
   .hero-content h1{font-size:clamp(32px,10vw,44px);}
   .hero-content p{font-size:14px; line-height:1.7;}
@@ -2491,10 +2493,10 @@ a[aria-disabled="true"]{cursor:not-allowed; opacity:.62;}
 .guide-tab:hover{color:var(--ink); border-bottom-color:var(--brass);}
 
 .guide-tabs{margin-bottom:24px; padding:0 2px;}
-.guide-course-grid{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:clamp(30px,2.4vw,42px) clamp(20px,1.8vw,30px); align-items:start;}
-.guide-video-grid{display:contents;}
+.guide-course-grid{display:flex; flex-direction:column; gap:clamp(36px,3.2vw,56px);}
 .guide-featured{scroll-margin-top:190px;}
 .guide-featured-player{aspect-ratio:16/9;}
+.guide-featured .video-meta{margin:9px 2px 0; color:var(--text-mute); font-size:clamp(13px,.95vw,15px);}
 .guide-video-label{
   display:inline-block;
   margin:0 2px 7px;
@@ -2505,12 +2507,14 @@ a[aria-disabled="true"]{cursor:not-allowed; opacity:.62;}
   letter-spacing:.12em;
 }
 .guide-course-grid .video-card h3{padding:0 2px; font-size:clamp(17px,1.25vw,20px); line-height:1.5; word-break:keep-all;}
+.guide-course-grid .guide-featured h3{font-size:clamp(22px,1.8vw,28px);}
 .guide-course-grid .video-meta{margin:7px 2px 0; color:var(--text-mute); font-size:clamp(11.5px,.82vw,13px);}
 .guide-page .fab-stack{display:none;}
+.guide-page .site-header{background:rgba(19,32,24,.62); backdrop-filter:blur(10px);}
+.guide-page .site-header.scrolled{background:rgba(36,61,46,.9);}
 
 .guide-course-grid > .video-card,
 .guide-video-grid .video-card{
-  grid-column:auto;
   min-width:0;
   padding:0;
   border:0;
@@ -2535,7 +2539,6 @@ a[aria-disabled="true"]{cursor:not-allowed; opacity:.62;}
 @media (max-width:900px){
   .guide-service-hero-inner{min-height:480px; background-position:62% center;}
   .guide-learning-shell{width:auto;}
-  .guide-course-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
 }
 @media (max-width:640px){
   .guide-service-hero{padding-top:10px;}
@@ -2556,7 +2559,7 @@ a[aria-disabled="true"]{cursor:not-allowed; opacity:.62;}
   .guide-learning-shell{margin-left:14px; margin-right:14px; padding:22px 18px 30px; border-radius:18px;}
   .guide-learning-head{display:block;}
   .guide-learning-head .section-head-note{margin-top:8px; text-align:left;}
-  .guide-course-grid{grid-template-columns:1fr; gap:26px;}
+  .guide-course-grid{gap:28px;}
   .guide-course-grid .video-card h3{font-size:17px;}
 }
 
@@ -2567,7 +2570,7 @@ a[aria-disabled="true"]{cursor:not-allowed; opacity:.62;}
    ============================================================ */
 @media (min-width:1280px){
   body{font-size:18px;}
-  .wrap{max-width:1860px; padding-left:40px; padding-right:40px;}
+  .wrap{max-width:1560px; padding-left:40px; padding-right:40px;}
   .section{padding:112px 0;}
   .eyebrow{gap:12px; font-size:14.5px;}
   .eyebrow i{width:28px;}
@@ -2669,7 +2672,7 @@ a[aria-disabled="true"]{cursor:not-allowed; opacity:.62;}
   .faq-item summary{font-size:18.5px;}
   .faq-item p,.consult-map p{font-size:16.5px;}
   .consult-form{max-width:660px;}
-  .book-field span,.cf-field span{font-size:12px;}
+  .book-field span,.cf-field span,.cf-field label{font-size:12px;}
   .book-field input,.book-field select,.book-field textarea,.cf-field input,.cf-field textarea{font-size:16px;}
 
   .subhero{padding:76px 0 52px;}
@@ -2944,7 +2947,7 @@ a[aria-disabled="true"]{cursor:not-allowed; opacity:.62;}
   .guide-course-grid .video-card h3{font-size:19px;}
   .guide-course-grid .video-meta{font-size:14px;}
 
-  .cf-field span,.book-field span{font-size:12.5px;}
+  .cf-field span,.cf-field label,.book-field span{font-size:12.5px;}
   .cf-field input,.cf-field select,.cf-field textarea,
   .book-field input,.book-field select,.book-field textarea{font-size:16px;}
   .quick-book-info h3{font-size:21px;}

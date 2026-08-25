@@ -150,7 +150,7 @@
 
   <section class="section" style="padding-top:24px;">
     <div class="wrap">
-      <form id="bookingForm" class="detail-layout" onsubmit="location.href='payment.html'; return false;">
+      <form id="bookingForm" class="detail-layout" onsubmit="return handleBookingSubmit(event);">
 
         <div class="detail-main">
 
@@ -159,7 +159,7 @@
             <div>
               <p class="p-region">충남 태안</p>
               <h3>태안 선셋 캠프사이트</h3>
-              <span class="detail-rating">★ 4.8 <em>(review 126)</em></span>
+              <span class="detail-rating"><span aria-hidden="true">★</span> 4.8 / 5 <em>(리뷰 126개)</em></span>
             </div>
           </div>
 
@@ -214,6 +214,7 @@
             <div class="detail-book-row detail-book-total"><span>총 결제 금액</span><strong id="bTotal">71,200원</strong></div>
             <button type="submit" class="btn btn-block">결제하기</button>
             <p class="detail-book-note">예약 확정 전에는 결제되지 않습니다.</p>
+            <p id="bookingFormStatus" class="form-status" aria-live="polite"></p>
           </div>
         </aside>
 
@@ -224,6 +225,21 @@
 </main>
 
 <script>
+  function handleBookingSubmit(event){
+    var form = document.getElementById('bookingForm');
+    var status = document.getElementById('bookingFormStatus');
+    if (!form.checkValidity()){
+      event.preventDefault();
+      var invalid = form.querySelector(':invalid');
+      if (status) status.textContent = '입력하지 않은 필수 항목이 있습니다. 표시된 항목을 확인해 주세요.';
+      if (invalid) invalid.focus();
+      form.reportValidity();
+      return false;
+    }
+    if (status) status.textContent = '예약 정보를 확인했습니다. 결제 화면으로 이동합니다.';
+    location.href = 'payment.html';
+    return false;
+  }
   var bUnit = 35600, bCount = 2;
   function bUpdate(){
     var el = document.getElementById('bTotal');
