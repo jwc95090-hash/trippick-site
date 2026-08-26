@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const banner = document.createElement('p');
     banner.className = 'host-demo-banner';
     banner.setAttribute('role', 'note');
-    banner.textContent = '포트폴리오용 정적 데모입니다. 화면의 회원·예약·상담·매출·리뷰는 모두 예시이며 실제 데이터와 연결되지 않습니다.';
+    banner.textContent = '포트폴리오용 공개 데모입니다. 이 호스트 화면의 회원·예약·상담·매출·리뷰는 예시 데이터입니다. 고객 사이트의 회원가입과 상담게시판은 Supabase에 연결되어 있으며, 실제 회원·상담 내용은 개인정보 보호를 위해 이 공개 데모에 표시하지 않습니다.';
     content.parentNode.insertBefore(banner, content);
   }
 
