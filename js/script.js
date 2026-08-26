@@ -559,8 +559,12 @@ document.addEventListener('DOMContentLoaded', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 
-  /* AI 상담 팝업: 24시간 즉시 답변하는 말풍선 채팅형. 대화는 브라우저에 저장되어 다시 열어도 이어진다. */
-  (function initConsultChat(){
+  /*
+   * 이전 인라인 상담 구현입니다. 실제 상담은 아래에서 불러오는 ai-chat.js가
+   * 단일하게 처리합니다. 중복 이벤트 등록으로 같은 질문이 두 번 전송되는 일을
+   * 막기 위해 이 레거시 구현은 실행하지 않습니다.
+   */
+  if (false) (function initConsultChat(){
     const consultPopup = document.getElementById('consultPopup');
     const thread = document.getElementById('consultChatThread');
     const statusEl = document.getElementById('consultChatStatus');
