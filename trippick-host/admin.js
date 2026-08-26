@@ -14,8 +14,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* 포트폴리오 데모: 실제 고객·예약·결제 데이터와 연결하지 않는 정적 시연 화면입니다. */
-  document.querySelectorAll('.host-account-role').forEach(el => { el.textContent = 'Supabase 관리자'; });
-  document.querySelectorAll('.host-account-name').forEach(el => { el.textContent = 'TRIPPICK 관리자'; });
+  document.querySelectorAll('.host-logout').forEach(link => link.remove());
+  document.querySelectorAll('.host-account-role').forEach(el => { el.textContent = '정적 포트폴리오 데모'; });
+  document.querySelectorAll('.host-account-name').forEach(el => { el.textContent = 'TRIPPICK 관리자 데모'; });
   const content = document.querySelector('.host-content');
   if (content && !document.querySelector('.host-demo-banner')) {
     const banner = document.createElement('p');
