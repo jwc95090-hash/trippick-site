@@ -190,7 +190,13 @@ const answerChat = async (request, env, corsOrigin) => {
 
   const result = await response.json().catch(() => ({}));
   if (!response.ok) {
-    const message = response.status === 429 ? '무료 사용량 요청 한도에 도달했습니다. 잠시 후 다시 시도해 주세요.' : 'AI 응답을 가져오지 못했습니다.';
+    const message = response.status === 401 || response.status === 403
+      ? 'Groq API 키가 유효하지 않거나 권한이 없습니다. Worker Secret을 새 키로 교체해 주세요.'
+      : response.status === 429
+        ? '무료 사용량 요청 한도에 도달했습니다. 잠시 후 다시 시도해 주세요.'
+        : response.status === 404
+          ? 'Groq 모델을 찾을 수 없습니다. Worker의 모델 설정을 확인해 주세요.'
+          : 'AI 응답을 가져오지 못했습니다.';
     return json({ error: message }, response.status === 429 ? 429 : 502, corsOrigin);
   }
 
