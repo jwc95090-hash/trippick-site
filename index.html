@@ -667,8 +667,8 @@
   </div>
 </div>
 
-<!-- 실제 브라우저 키는 js/maps-config.js에만 넣고 Git에는 올리지 않습니다. -->
-<script src="js/maps-config.js" onerror="this.remove()"></script>
+<!-- Google Maps 브라우저 키는 HTTP referrer와 Maps JavaScript API로 제한합니다. -->
+<script src="js/maps-config.js?v=2" onerror="this.remove()"></script>
 <script src="js/script.js?v=19"></script>
 <script>
   /* 공통 스크립트의 상세 조건 초기화 뒤에도 보조 문구 영역을 비워 둔다. */
