@@ -1681,7 +1681,7 @@ document.addEventListener('DOMContentLoaded', () => {
           }
           window.__trippickGmapsReady = () => resolve();
           const script = document.createElement('script');
-          script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&callback=__trippickGmapsReady`;
+          script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&callback=__trippickGmapsReady&loading=async`;
           script.async = true;
           script.defer = true;
           script.onerror = () => reject(new Error('구글 지도를 불러오지 못했습니다 (API 키 또는 네트워크 문제)'));
