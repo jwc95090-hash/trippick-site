@@ -3028,3 +3028,117 @@ a[aria-disabled="true"]{cursor:not-allowed; opacity:.62;}
   .planner-card{padding:26px 18px;}
   .planner-card h3{font-size:22px;}
 }
+
+
+/* === 2026 TYPOGRAPHY · SPACING · BACKGROUND CONSISTENCY REFRESH === */
+/* 참고 사이트의 단정한 편집 위계를 반영하되 TRIPPICK의 따뜻한 색감은 유지한다. */
+:root{
+  --page-bg:#F6F2E9;
+  --display:'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --serif:var(--display);
+  --sans:'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --caps:var(--sans);
+}
+
+body{
+  font-family:var(--sans);
+  font-size:16px;
+  line-height:1.7;
+  letter-spacing:-.012em;
+  background:var(--page-bg);
+}
+body.home-page{background:var(--page-bg);}
+
+/* 제목도 본문과 같은 Pretendard 계열로 묶고 두께로만 자연스럽게 위계를 만든다. */
+h1,h2,h3,h4,h5,h6,
+.logo-word,
+.section-head h2,
+.faq-head h3{
+  font-family:var(--display);
+  letter-spacing:-.035em;
+  word-break:keep-all;
+}
+.hero h1{font-weight:800; line-height:1.13; letter-spacing:-.045em;}
+.section-head h2{font-weight:700; line-height:1.28;}
+h3,.faq-head h3{font-weight:700; line-height:1.4;}
+h4,h5,h6{font-weight:600; line-height:1.45;}
+p,li,dd,dt,input,select,textarea,button{font-weight:400;}
+strong,b{font-weight:600;}
+.eyebrow{
+  font-weight:600;
+  letter-spacing:.14em;
+  line-height:1.4;
+}
+
+/* 히어로·푸터를 제외한 홈 본문은 하나의 아이보리 배경으로 이어 보이게 한다. */
+.home-page main > section:not(.hero),
+.home-page .section,
+.home-page .intro,
+.home-page .recent-section,
+.home-page .story,
+.home-page .dark-section,
+.home-page .filter-wrap,
+.home-page .map-banner-wrap{
+  background:var(--page-bg) !important;
+}
+.home-page .dark-section{color:var(--ink);}
+.home-page .dark-section .section-head{border-bottom-color:var(--line);}
+.home-page .dark-section .section-head h2,
+.home-page .dark-section .link-underline{color:var(--ink);}
+.home-page .dark-section .link-underline{border-bottom-color:var(--ink);}
+.home-page .dark-section .eyebrow-light{color:var(--ember);}
+.home-page .dark-section .eyebrow-light i{background:var(--ember);}
+.home-page .dark-section .review-item{
+  background:rgba(255,255,255,.72);
+  border:1px solid var(--line);
+  color:var(--ink);
+}
+
+/* 콘텐츠가 숨 쉴 수 있도록 공통 폭과 수직 간격을 정리한다. */
+.wrap{max-width:1440px; padding-left:64px; padding-right:64px;}
+.section{padding-top:128px; padding-bottom:128px;}
+.section-head{
+  gap:40px;
+  margin-bottom:56px;
+  padding-bottom:28px;
+}
+.section-head h2{
+  margin-top:14px;
+  font-size:clamp(32px,3.2vw,52px);
+}
+.intro{padding-top:128px !important; padding-bottom:128px !important;}
+.cat-row,.grid,.review-grid,.trust-row{row-gap:40px; column-gap:28px;}
+.faq-list{margin-top:40px;}
+.faq-item{padding-top:26px; padding-bottom:26px;}
+.site-footer{margin-top:0;}
+
+@media (min-width:960px){
+  .hero h1{font-size:clamp(56px,5.1vw,80px);}
+  .hero-content p{font-size:18px; line-height:1.75; margin-top:28px;}
+  .main-nav a{font-weight:500; letter-spacing:-.01em;}
+}
+
+@media (max-width:959px){
+  .wrap{padding-left:32px; padding-right:32px;}
+  .section{padding-top:96px; padding-bottom:96px;}
+  .section-head{margin-bottom:44px; padding-bottom:22px;}
+  .section-head h2{font-size:clamp(28px,6vw,40px);}
+  .intro{padding-top:96px !important; padding-bottom:96px !important;}
+}
+
+@media (max-width:640px){
+  body{font-size:15px; line-height:1.65;}
+  .wrap{padding-left:20px; padding-right:20px;}
+  .section{padding-top:76px; padding-bottom:76px;}
+  .section-head{
+    align-items:flex-start;
+    gap:20px;
+    margin-bottom:36px;
+    padding-bottom:18px;
+  }
+  .section-head h2{font-size:30px; line-height:1.3;}
+  .hero h1{font-size:clamp(38px,11vw,52px);}
+  .hero-content p{font-size:16px; line-height:1.7; margin-top:20px;}
+  .intro{padding-top:76px !important; padding-bottom:76px !important;}
+  .cat-row,.grid,.review-grid,.trust-row{row-gap:28px;}
+}
