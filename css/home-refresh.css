@@ -38,12 +38,16 @@
 .home-page .trust-item h3{font-family:var(--sans);font-size:24px;line-height:1.35;letter-spacing:-.035em}
 .home-page .trust-item p{font-size:15px;line-height:1.8}
 
-.home-page .review-grid{grid-template-columns:1.15fr .85fr;gap:18px;border:0}
-.home-page .dark-section .review-item{min-height:220px;padding:34px;background:rgba(255,255,255,.68);border:1px solid rgba(220,215,206,.8);border-radius:20px;box-shadow:0 16px 44px rgba(34,45,36,.06);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
-.home-page .dark-section .review-item:first-child{grid-row:span 2;min-height:458px;padding:46px;background:#274936}
-.home-page .dark-section .review-item:first-child .quote{color:#fff;font-size:clamp(26px,2.2vw,36px);font-weight:550;line-height:1.55}
-.home-page .dark-section .review-item:first-child .who,.home-page .dark-section .review-item:first-child .review-score strong{color:rgba(255,255,255,.72)}
-.home-page .dark-section .review-item:first-child .review-score{color:#e9b96d}
+.home-page .review-grid{grid-template-columns:repeat(3,minmax(0,1fr));align-items:stretch;gap:18px;border:0;background:transparent}
+.home-page .dark-section .review-item{display:flex;min-height:280px;padding:34px;flex-direction:column;background:rgba(255,255,255,.68);border:1px solid rgba(220,215,206,.8);border-radius:20px;box-shadow:0 16px 44px rgba(34,45,36,.06);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+.home-page .dark-section .review-item:first-child{grid-row:auto;min-height:280px;padding:34px;background:rgba(255,255,255,.68)}
+.home-page .dark-section .review-item:first-child .quote{color:#252525;font-size:17px;font-weight:400;line-height:1.8}
+.home-page .dark-section .review-item:first-child .who{color:#66645f}
+.home-page .dark-section .review-item:first-child .review-score{color:#9a6c18}
+.home-page .dark-section .review-item:first-child .review-score strong{color:var(--ink)}
+.home-page .dark-section .review-item:last-child{border:1px solid rgba(220,215,206,.8)}
+.home-page .dark-section .review-item:hover{background:rgba(255,255,255,.78)}
+.home-page .dark-section .review-foot{margin-top:auto;padding-top:30px}
 
 /* 문의 카드의 hover 언어를 모든 벤토 카드에 동일하게 확장한다. */
 .home-page :is(
@@ -97,7 +101,9 @@
   .home-page #benefit .bento-grid{grid-template-columns:1fr}
   .home-page #benefit .bento-grid .p-card,.home-page #benefit .bento-grid .p-card:first-child{grid-column:auto}
   .home-page #benefit .bento-grid .p-card:first-child .p-thumb,.home-page #benefit .bento-grid .p-card:not(:first-child) .p-thumb{height:260px}
-  .home-page .trust-row,.home-page .review-grid{grid-template-columns:1fr}
+  .home-page .trust-row{grid-template-columns:1fr}
+  .home-page .review-grid{display:flex;gap:14px;overflow-x:auto;overscroll-behavior-inline:contain;scroll-snap-type:inline mandatory;scrollbar-width:thin}
+  .home-page .dark-section .review-item{box-sizing:border-box;flex:0 0 82vw;max-width:330px;min-height:260px;scroll-snap-align:start}
   .home-page .trust-item:first-child{grid-row:auto;min-height:360px;padding:34px}
-  .home-page .dark-section .review-item:first-child{grid-row:auto;min-height:350px;padding:34px}
+  .home-page .dark-section .review-item:first-child{min-height:260px;padding:34px}
 }
