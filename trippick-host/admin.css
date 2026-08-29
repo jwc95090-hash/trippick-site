@@ -682,3 +682,138 @@ button.host-consult-item{width:100%; color:inherit; text-align:left; background:
   .host-member-toolbar{align-items:stretch; flex-direction:column;}
   .host-member-toolbar .host-search{max-width:none;}
 }
+
+
+/* === 2026 HOST TYPOGRAPHY · LAYOUT REFRESH === */
+/* 호스트 콘솔의 혼합 서체를 제거하고 운영 화면에 맞는 단정한 Pretendard 위계로 통일한다. */
+:root{
+  --serif:'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --sans:'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --caps:'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+body{font-family:var(--sans); font-size:15px; letter-spacing:-.012em;}
+.host-brand{gap:12px; padding:22px 20px 18px;}
+.host-brand svg{width:30px; height:30px;}
+.host-brand-word{
+  font-family:var(--sans);
+  font-size:18px;
+  font-weight:700;
+  letter-spacing:.015em;
+}
+.host-badge{
+  margin-top:5px;
+  font-family:var(--sans);
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:.12em;
+}
+.host-nav-label{
+  font-family:var(--sans);
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:.04em;
+  text-transform:none;
+}
+.host-nav a{font-size:14px; font-weight:500;}
+.host-crumb{
+  font-family:var(--sans);
+  font-size:11px;
+  font-weight:500;
+  letter-spacing:.02em;
+  text-transform:none;
+}
+.host-title{
+  font-family:var(--sans);
+  font-size:24px;
+  font-weight:700;
+  letter-spacing:-.035em;
+}
+.host-account-name{font-size:13px; font-weight:600;}
+.host-account-role{font-size:11px;}
+
+/* 상단 소개는 왼쪽 설명, 오른쪽 2×2 핵심 기능으로 배치한다. */
+.host-content{
+  width:100%;
+  max-width:1680px;
+  margin:0 auto;
+  padding:34px 40px 96px;
+}
+.host-core-intro{
+  display:grid;
+  grid-template-columns:minmax(300px,.72fr) minmax(560px,1.28fr);
+  align-items:stretch;
+  gap:32px;
+  padding:32px;
+  border-radius:16px;
+}
+.host-core-intro-copy{
+  justify-content:center;
+  gap:14px;
+  padding:10px 8px;
+}
+.host-core-kicker{
+  font-family:var(--sans);
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.1em;
+}
+.host-core-intro-copy h2{
+  max-width:430px;
+  font-family:var(--sans);
+  font-size:28px;
+  font-weight:700;
+  line-height:1.35;
+  letter-spacing:-.04em;
+}
+.host-core-intro-copy p{
+  max-width:460px;
+  font-size:14px;
+  line-height:1.8;
+}
+.host-core-grid{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+}
+.host-core-card{
+  min-height:160px;
+  gap:10px;
+  padding:18px 20px;
+  border-radius:12px;
+}
+.host-core-no{
+  font-family:var(--sans);
+  font-size:18px;
+  font-weight:700;
+}
+.host-core-tag{
+  font-family:var(--sans);
+  font-size:10px;
+  font-weight:600;
+  letter-spacing:.08em;
+}
+.host-core-card h3{
+  font-family:var(--sans);
+  font-weight:700;
+  letter-spacing:-.02em;
+}
+.host-core-card p{font-size:13px; line-height:1.65;}
+.host-panel{border-radius:14px;}
+.host-panel-head h2,
+.host-panel h2,
+.host-panel h3,
+.host-panel h4{font-family:var(--sans); font-weight:700; letter-spacing:-.025em;}
+.host-field > span{font-weight:600;}
+input,select,textarea,button{font-family:var(--sans);}
+
+@media (max-width:1180px){
+  .host-content{padding:28px 28px 88px;}
+  .host-core-intro{grid-template-columns:1fr; gap:24px;}
+  .host-core-intro-copy p{max-width:760px;}
+}
+@media (max-width:760px){
+  .host-content{padding:22px 16px 80px;}
+  .host-core-intro{padding:22px; border-radius:12px;}
+  .host-core-intro-copy h2{font-size:24px;}
+  .host-core-grid{grid-template-columns:1fr;}
+  .host-core-card{min-height:0;}
+}
