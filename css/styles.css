@@ -3589,3 +3589,98 @@ body.home-page{background:#FFFFFF; color:var(--ink);}
   .home-page .map-banner-wrap{padding-top:48px !important;}
   .home-page .section-head h2{font-size:28px !important;}
 }
+
+
+/* === 2026 ABOUT TRIPPICK TYPOGRAPHY · LAYOUT === */
+/* 브랜드 소개를 사진 중심의 편집형 2단 레이아웃으로 정리한다. */
+.home-page .intro-inner{
+  display:grid;
+  grid-template-columns:minmax(0,1.15fr) minmax(360px,.85fr);
+  align-items:center;
+  gap:clamp(56px,6vw,96px);
+}
+.home-page .intro-media{
+  aspect-ratio:4 / 3;
+  min-height:460px;
+  border-radius:18px;
+  box-shadow:none;
+}
+.home-page .intro-copy{max-width:560px;}
+.home-page .intro-copy .eyebrow{
+  display:inline-flex;
+  margin-bottom:18px;
+  color:#8F4B31;
+  font-family:var(--sans);
+  font-size:13px;
+  font-weight:600;
+  letter-spacing:.02em;
+  text-transform:none;
+}
+.home-page .intro-copy .eyebrow i{width:28px;}
+.home-page .intro-copy h2{
+  margin:0 0 26px;
+  font-family:var(--sans);
+  font-size:32px;
+  font-weight:700;
+  line-height:1.4;
+  letter-spacing:-.04em;
+}
+.home-page .intro-copy p{
+  max-width:540px;
+  color:#555750;
+  font-family:var(--sans);
+  font-size:16px;
+  font-weight:400;
+  line-height:1.85;
+}
+.home-page .intro-stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:0;
+  margin-top:42px;
+  padding-top:26px;
+  border-top:1px solid #DCD7CD;
+}
+.home-page .intro-stats > div{
+  padding-right:20px;
+  border-right:1px solid #E3DED5;
+}
+.home-page .intro-stats > div:not(:first-child){padding-left:20px;}
+.home-page .intro-stats > div:last-child{border-right:0;}
+.home-page .intro-stats strong{
+  margin-bottom:6px;
+  color:#274936;
+  font-family:var(--sans);
+  font-size:20px;
+  font-weight:600;
+  line-height:1.35;
+}
+.home-page .intro-stats span{
+  color:#75766F;
+  font-size:12px;
+  font-weight:400;
+  line-height:1.5;
+}
+
+@media (max-width:959px){
+  .home-page .intro-inner{
+    grid-template-columns:1fr;
+    gap:48px;
+  }
+  .home-page .intro-media{min-height:0; aspect-ratio:16 / 10;}
+  .home-page .intro-copy{max-width:680px;}
+}
+@media (max-width:640px){
+  .home-page .intro-inner{gap:36px;}
+  .home-page .intro-media{aspect-ratio:4 / 3; border-radius:12px;}
+  .home-page .intro-copy h2{font-size:28px; margin-bottom:20px;}
+  .home-page .intro-copy p{font-size:15px;}
+  .home-page .intro-stats{grid-template-columns:1fr; gap:16px; margin-top:32px;}
+  .home-page .intro-stats > div,
+  .home-page .intro-stats > div:not(:first-child){
+    padding:0 0 16px;
+    border-right:0;
+    border-bottom:1px solid #E3DED5;
+  }
+  .home-page .intro-stats > div:last-child{padding-bottom:0; border-bottom:0;}
+}
