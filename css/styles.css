@@ -3142,3 +3142,62 @@ strong,b{font-weight:600;}
   .intro{padding-top:76px !important; padding-bottom:76px !important;}
   .cat-row,.grid,.review-grid,.trust-row{row-gap:28px;}
 }
+
+
+/* === 2026 REVIEW READABILITY · EDITORIAL CARD REFRESH === */
+/* 밝은 배경에서 후기 텍스트 대비를 확보하고, 장식적인 AI 카드 느낌을 덜어낸다. */
+.home-page .review-grid{
+  gap:24px;
+  background:transparent;
+}
+.home-page .dark-section .review-item{
+  position:relative;
+  overflow:visible;
+  padding:32px 30px 28px;
+  background:#FFFDF9;
+  border:1px solid #D8CEBB;
+  border-top:3px solid var(--secondary);
+  border-radius:4px;
+  box-shadow:none;
+  color:var(--ink);
+  transition:border-color .2s ease, transform .2s ease;
+}
+.home-page .dark-section .review-item::before{display:none;}
+.home-page .dark-section .review-item:hover{
+  background:#FFFDF9;
+  border-color:#BFAF93;
+  border-top-color:var(--secondary-deep);
+  transform:translateY(-2px);
+}
+.home-page .dark-section .quote-mark{display:none;}
+.home-page .dark-section .quote{
+  min-height:112px;
+  color:#2D332C;
+  font-size:17px;
+  font-weight:500;
+  line-height:1.8;
+  letter-spacing:-.018em;
+}
+.home-page .dark-section .review-foot{
+  margin-top:28px;
+  padding-top:18px;
+  border-top:1px solid #DED5C4;
+}
+.home-page .dark-section .review-score{
+  border-color:#C98A63;
+  background:#FFF8F1;
+  color:#8C452C;
+}
+.home-page .dark-section .who{
+  color:#5F625B;
+  font-family:var(--sans);
+  font-weight:500;
+  letter-spacing:-.01em;
+  text-transform:none;
+}
+
+@media (max-width:759px){
+  .home-page .review-grid{gap:16px;}
+  .home-page .dark-section .review-item{padding:26px 24px 24px;}
+  .home-page .dark-section .quote{min-height:auto; font-size:16px;}
+}
