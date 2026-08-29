@@ -3567,3 +3567,25 @@ body.home-page{background:#FFFFFF; color:var(--ink);}
   .home-page .filter-wrap{margin-bottom:20px !important;}
   .home-page .map-banner{padding:18px 0;}
 }
+
+
+/* === 2026 FINAL MAP SEPARATION · 28PX SECTION TITLES === */
+/* 지도 안내 자체를 아래로 내려 이전 검색 패널의 레이아웃 영향과 무관하게 분리한다. */
+.home-page .filter-wrap{margin-bottom:0 !important;}
+.home-page .map-banner-wrap{
+  margin-top:0 !important;
+  padding-top:80px !important;
+  clear:both;
+}
+.home-page .section-head h2{
+  font-size:28px !important;
+  line-height:1.35;
+  letter-spacing:-.035em;
+}
+@media (max-width:959px){
+  .home-page .map-banner-wrap{padding-top:64px !important;}
+}
+@media (max-width:640px){
+  .home-page .map-banner-wrap{padding-top:48px !important;}
+  .home-page .section-head h2{font-size:28px !important;}
+}
