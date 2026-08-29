@@ -1,9 +1,8 @@
 /* TRIPPICK home refresh: typography hierarchy, bento grid and restrained glass surfaces. */
 .home-page .hero-content{max-width:980px;gap:0}
-.home-page .hero-kicker{display:block;margin-bottom:24px;color:rgba(255,255,255,.72);font-size:12px;font-weight:600;letter-spacing:.18em}
 .home-page .hero-content h1{max-width:920px;margin:0;font-family:var(--sans);font-size:clamp(58px,6.25vw,96px);font-weight:300;line-height:1.04;letter-spacing:-.062em}
 .home-page .hero-title-light{font-weight:300;color:rgba(255,255,255,.88)}
-.home-page .hero-content h1 strong{font-weight:800;color:#fff}
+.home-page .hero-content h1 strong{font-weight:650;color:#fff}
 .home-page .hero-content p{margin-top:34px;color:rgba(255,255,255,.72);font-size:17px;font-weight:400;line-height:1.72;letter-spacing:-.02em}
 .home-page .hero-content p strong{color:#fff;font-weight:650}
 
@@ -13,14 +12,14 @@
 .home-page .section-head{align-items:flex-end;gap:48px;margin-bottom:58px}
 .home-page .section-head>div{max-width:880px}
 .home-page .section-head .eyebrow,.home-page .dark-section .section-head .eyebrow{display:inline-flex;margin-bottom:15px;color:#8d563b;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
-.home-page .section-head h2{font-family:var(--sans);font-size:clamp(40px,4.3vw,64px)!important;font-weight:750;line-height:1.12;letter-spacing:-.055em}
+.home-page .section-head h2{font-family:var(--sans);font-size:clamp(40px,4.3vw,64px)!important;font-weight:650;line-height:1.12;letter-spacing:-.055em}
 .home-page .section-head h2 span{font-weight:300;color:#6b706a}
-.home-page .section-head h2 strong{font-weight:800;color:#171a17}
+.home-page .section-head h2 strong{font-weight:650;color:#171a17}
 .home-page .section-summary{max-width:620px;margin-top:18px;color:#73746f;font-size:15px;line-height:1.75;letter-spacing:-.015em}
 
-.home-page .intro-copy h2{font-family:var(--sans);font-size:clamp(38px,3.5vw,56px);font-weight:750;line-height:1.18;letter-spacing:-.055em}
+.home-page .intro-copy h2{font-family:var(--sans);font-size:clamp(38px,3.5vw,56px);font-weight:650;line-height:1.18;letter-spacing:-.055em}
 .home-page .intro-copy h2 span{font-weight:300;color:#70746e}
-.home-page .intro-copy h2 strong{font-weight:750;color:#151915}
+.home-page .intro-copy h2 strong{font-weight:650;color:#151915}
 .home-page .intro-stats{gap:10px;margin-top:38px;padding:0;border:0}
 .home-page .intro-stats>div,.home-page .intro-stats>div:not(:first-child){min-height:112px;padding:22px 20px;background:rgba(255,255,255,.58);border:1px solid rgba(255,255,255,.82);border-radius:16px;box-shadow:0 12px 34px rgba(34,48,37,.07);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
 .home-page .intro-stats strong{font-family:var(--sans);font-size:24px;font-weight:750;letter-spacing:-.035em}
