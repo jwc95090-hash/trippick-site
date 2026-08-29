@@ -528,7 +528,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.body.insertAdjacentHTML('beforeend', `
     <div class="fab-stack" id="fabStack">
       <button type="button" class="fab-top" id="fabTopBtn" aria-label="맨 위로 이동">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12" /> <path d="m17 8-5-5-5 5" /> <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /></svg>
+        <span aria-hidden="true">↑</span><span>위로</span>
       </button>
       <div class="fab-quick-list" id="fabQuickList">
               <a href="${ROOT_PREFIX}login.html" class="fab-quick-item">
