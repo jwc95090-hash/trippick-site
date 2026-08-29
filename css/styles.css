@@ -3334,3 +3334,163 @@ body.home-page{background:#FFFFFF; color:var(--ink);}
   .home-page .dark-section .review-item:last-child{border-bottom:0;}
   .home-page .dark-section .quote{min-height:auto; font-size:16px;}
 }
+
+
+/* === 2026 SEARCH PANEL VISUAL HIERARCHY === */
+/* 검색·상세조건·지도 안내가 같은 네모 상자로 보이지 않도록 역할별 표면을 구분한다. */
+.home-page .filter-wrap{
+  position:relative;
+  z-index:12;
+  margin-top:-58px;
+  padding:0 0 4px;
+  background:transparent !important;
+}
+.home-page .filter-bar{
+  display:grid;
+  grid-template-columns:minmax(180px,1.2fr) minmax(150px,.9fr) minmax(150px,.9fr) minmax(175px,1.1fr) auto;
+  align-items:center;
+  padding:18px;
+  background:#FFFFFF;
+  border:1px solid #E3DDD2;
+  border-radius:20px;
+  box-shadow:0 20px 50px rgba(28,37,29,.14), 0 3px 10px rgba(28,37,29,.05);
+}
+.home-page .filter-div{display:none;}
+.home-page .filter-field{
+  min-width:0;
+  padding:8px 20px;
+  border-right:1px solid #E8E2D8;
+}
+.home-page .filter-field label{
+  margin-bottom:8px;
+  color:#6C6B65;
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:.02em;
+  text-transform:none;
+}
+.home-page .filter-field label svg{color:#506353;}
+.home-page .filter-field input,
+.home-page .filter-field select{
+  min-height:26px;
+  color:#171A17;
+  font-size:16px;
+  font-weight:500;
+}
+.home-page .filter-field input::placeholder,
+.home-page .filter-field select:invalid{color:#9A968C;}
+.home-page .filter-submit{
+  align-self:stretch;
+  min-width:150px;
+  min-height:62px;
+  justify-content:center;
+  margin:0 0 0 16px;
+  padding:0 24px;
+  background:#274936;
+  border:1px solid #274936;
+  border-radius:12px;
+  color:#FFFFFF;
+  font-size:14px;
+  font-weight:700;
+  box-shadow:none;
+}
+.home-page .filter-submit:hover{
+  background:#1D392A;
+  border-color:#1D392A;
+  color:#FFFFFF;
+  box-shadow:none;
+}
+
+/* 상세조건은 주 검색창보다 가벼운 보조 도구로 보이게 한다. */
+.home-page .filter-more{
+  margin-top:14px;
+  background:#F8F5EF;
+  border:1px solid #E4DED3;
+  border-radius:14px;
+  box-shadow:none;
+}
+.home-page .filter-more summary{
+  min-height:58px;
+  padding:14px 20px;
+  color:#304C3A;
+  font-size:14px;
+}
+.home-page .filter-more summary::after{
+  width:30px;
+  height:30px;
+  border-color:#D8D0C2;
+  background:#FFFFFF;
+}
+.home-page .advanced-filter-grid{border-radius:0 0 14px 14px;}
+
+/* 지도 안내는 색면을 사용해 검색 도구와 확실히 구분한다. */
+.home-page .map-banner-wrap{padding-top:20px; background:#FFFFFF !important;}
+.home-page .map-banner{
+  padding:26px 30px;
+  gap:22px;
+  background:#274936;
+  border:1px solid #274936;
+  border-radius:18px;
+  color:#FFFFFF;
+  box-shadow:none;
+}
+.home-page .map-banner:hover{
+  transform:none;
+  background:#213F2F;
+  border-color:#213F2F;
+  box-shadow:none;
+}
+.home-page .map-banner-icon{
+  width:50px;
+  height:50px;
+  background:#F5EFE3;
+  color:#274936;
+}
+.home-page .map-banner-text strong{color:#FFFFFF; font-size:19px;}
+.home-page .map-banner-text em{color:rgba(255,255,255,.72); font-size:13px;}
+.home-page .map-banner-cta{
+  padding:11px 18px;
+  background:transparent;
+  border:1px solid rgba(255,255,255,.5);
+  border-radius:10px;
+  color:#FFFFFF;
+  font-family:var(--sans);
+  font-weight:600;
+  letter-spacing:0;
+  text-transform:none;
+}
+.home-page .map-banner:hover .map-banner-cta{
+  background:#FFFFFF;
+  border-color:#FFFFFF;
+  color:#274936;
+}
+
+@media (max-width:1180px){
+  .home-page .filter-wrap{margin-top:-36px;}
+  .home-page .filter-bar{
+    grid-template-columns:1fr 1fr;
+    gap:0 20px;
+    padding:22px;
+  }
+  .home-page .filter-field{
+    padding:15px 4px;
+    border-right:0;
+    border-bottom:1px solid #E8E2D8;
+  }
+  .home-page .filter-field-wide{grid-column:auto;}
+  .home-page .filter-submit{
+    grid-column:1 / -1;
+    min-height:52px;
+    margin:18px 0 0;
+  }
+}
+
+@media (max-width:640px){
+  .home-page .filter-wrap{margin-top:-20px; padding-left:14px; padding-right:14px;}
+  .home-page .filter-bar{grid-template-columns:1fr; padding:20px; border-radius:16px;}
+  .home-page .filter-field{padding:14px 2px;}
+  .home-page .filter-submit{grid-column:auto; border-radius:10px;}
+  .home-page .filter-more{border-radius:12px;}
+  .home-page .map-banner{padding:24px 22px; border-radius:14px;}
+  .home-page .map-banner-text strong{font-size:17px;}
+}
