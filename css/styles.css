@@ -3201,3 +3201,136 @@ strong,b{font-weight:600;}
   .home-page .dark-section .review-item{padding:26px 24px 24px;}
   .home-page .dark-section .quote{min-height:auto; font-size:16px;}
 }
+
+
+/* === 2026 KTIEC-INSPIRED CLEAN EDITORIAL DIRECTION === */
+/* 참고 사이트의 큰 활자·흰 배경·160px 수직 리듬을 TRIPPICK 콘텐츠에 맞게 재해석한다. */
+:root{
+  --page-bg:#FFFFFF;
+  --paper:#FFFFFF;
+  --ink:#151515;
+  --text-mute:#66645F;
+  --line:#E2DED6;
+  --line-soft:#EEEAE3;
+  --radius-sm:4px;
+  --radius-md:8px;
+  --radius-lg:12px;
+}
+
+body,
+body.home-page{background:#FFFFFF; color:var(--ink);}
+.home-page main > section:not(.hero),
+.home-page .section,
+.home-page .intro,
+.home-page .recent-section,
+.home-page .story,
+.home-page .dark-section,
+.home-page .filter-wrap,
+.home-page .map-banner-wrap{
+  background:#FFFFFF !important;
+}
+
+/* 작은 영문 장식 대신 큰 한국어 제목이 바로 보이도록 한다. */
+.home-page .section-head{align-items:flex-end; margin-bottom:64px; padding-bottom:0; border-bottom:0;}
+.home-page .section-head h2{
+  margin-top:0;
+  max-width:900px;
+  font-size:clamp(44px,4.2vw,60px);
+  font-weight:700;
+  line-height:1.17;
+  letter-spacing:-.045em;
+}
+.home-page .section-head .eyebrow{display:none;}
+.home-page .section{padding-top:160px; padding-bottom:160px;}
+.home-page .intro{padding-top:160px !important; padding-bottom:160px !important;}
+
+/* 둥근 자동 생성형 UI 인상을 줄이고 평면적인 웹 편집 스타일로 정리한다. */
+.home-page .p-card,
+.home-page .story-card,
+.home-page .trust-item,
+.home-page .map-banner,
+.home-page .filter-bar{
+  border-radius:4px;
+  box-shadow:none;
+}
+.home-page .btn,
+.home-page .btn-outline,
+.home-page .header-cta,
+.home-page .filter-submit{
+  border-radius:4px;
+  font-family:var(--sans);
+  font-weight:600;
+  letter-spacing:-.01em;
+  text-transform:none;
+}
+.home-page .p-card:hover,
+.home-page .story-card:hover,
+.home-page .trust-item:hover{transform:none;}
+
+/* 후기: 카드 장식을 없애고 실제 서비스에서 익숙한 단순 목록 형태로 표시한다. */
+.home-page .review-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:0;
+  border-top:1px solid #CFC9BE;
+  border-bottom:1px solid #CFC9BE;
+}
+.home-page .dark-section .review-item{
+  padding:38px 36px 34px;
+  background:transparent;
+  border:0;
+  border-right:1px solid #DED9D0;
+  border-radius:0;
+  box-shadow:none;
+  color:var(--ink);
+  transform:none;
+}
+.home-page .dark-section .review-item:last-child{border-right:0;}
+.home-page .dark-section .review-item:hover{
+  background:transparent;
+  border-top-color:transparent;
+  transform:none;
+}
+.home-page .dark-section .review-item::before,
+.home-page .dark-section .quote-mark,
+.home-page .dark-section .review-score{display:none;}
+.home-page .dark-section .quote{
+  min-height:118px;
+  color:#252525;
+  font-size:17px;
+  font-weight:400;
+  line-height:1.8;
+}
+.home-page .dark-section .review-foot{
+  justify-content:flex-start;
+  margin-top:28px;
+  padding-top:0;
+  border-top:0;
+}
+.home-page .dark-section .who{
+  color:#66645F;
+  font-size:14px;
+  font-weight:500;
+}
+
+@media (max-width:959px){
+  .home-page .section{padding-top:112px; padding-bottom:112px;}
+  .home-page .intro{padding-top:112px !important; padding-bottom:112px !important;}
+  .home-page .section-head{margin-bottom:48px;}
+  .home-page .section-head h2{font-size:clamp(38px,7vw,52px);}
+}
+
+@media (max-width:759px){
+  .home-page .section{padding-top:88px; padding-bottom:88px;}
+  .home-page .intro{padding-top:88px !important; padding-bottom:88px !important;}
+  .home-page .section-head{margin-bottom:36px;}
+  .home-page .section-head h2{font-size:36px;}
+  .home-page .review-grid{grid-template-columns:1fr;}
+  .home-page .dark-section .review-item{
+    padding:28px 0;
+    border-right:0;
+    border-bottom:1px solid #DED9D0;
+  }
+  .home-page .dark-section .review-item:last-child{border-bottom:0;}
+  .home-page .dark-section .quote{min-height:auto; font-size:16px;}
+}
