@@ -34,12 +34,11 @@
 <meta property="og:title" content="TRIPPICK — 초보자를 위한 감성 캠핑 예약">
 <meta property="og:description" content="초보 캠퍼를 위한 감성 캠핑·글램핑·카라반 예약 서비스 TRIPPICK. 전국 캠핑장을 한눈에 비교하고 간편하게 예약하세요.">
 <meta property="og:image" content="https://jwc95090-hash.github.io/trippick-site/images/og-desktop.jpg">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700;800&family=Noto+Serif+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
 <link rel="stylesheet" href="css/styles.css?v=20260820-responsive3">
 </head>
-<body>
+<body class="home-page">
 
 <!-- ============ 헤더 ============ -->
 <header class="site-header" id="siteHeader">
@@ -89,6 +88,7 @@
       <button class="icon-btn burger" id="menuOpen" aria-label="메뉴 열기">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16" /> <path d="M4 12h16" /> <path d="M4 19h16" /></svg>
       </button>
+      <a href="pages/types.html" class="header-cta">예약하기</a>
     </div>
   </div>
 </header>
@@ -153,15 +153,7 @@
     <div class="wrap hero-content">
       <h1>계획 없이 떠나도<br>후회 없는 캠핑</h1>
       <p>검증된 캠핑장 검색부터 비교, 첫 캠핑 준비까지 한곳에서 시작하세요.</p>
-      <div class="hero-actions">
-        <a href="#homeFilterBar" class="btn hero-primary">캠핑장 검색하기</a>
-        <a href="#advancedFilter" class="btn hero-secondary" id="heroMatchCta">1분 취향 추천</a>
-      </div>
-      <ul class="hero-proof" aria-label="트립픽 신뢰 요소">
-        <li>한국관광공사 공공데이터 기반</li>
-        <li>초보자 맞춤 준비 가이드</li>
-        <li>가격·시설 비교 예약</li>
-      </ul>
+
     </div>
 
     <div class="scroll-cue"><span></span>Scroll</div>
@@ -495,7 +487,7 @@
   </section>
 
   <!-- ============ 후기 다음 예약 CTA ============ -->
-  <section class="booking-cta-section" aria-labelledby="bookingCtaTitle">
+  <!-- <section class="booking-cta-section" aria-labelledby="bookingCtaTitle">
     <div class="wrap booking-cta-inner">
       <div>
         <span class="eyebrow eyebrow-light"><i></i>Start Your Trip</span>
@@ -507,7 +499,7 @@
         <a href="pages/guide.html#featured-guide-video" class="btn-outline booking-cta-secondary">캠핑 안전 영상 보기</a>
       </div>
     </div>
-  </section>
+  </section> -->
 
   <!-- ============ 신뢰요소 · FAQ ============ -->
   <section class="section reveal" id="faq">

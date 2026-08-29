@@ -1,42 +1,60 @@
 /* ==================================================================
-   TRIPPICK — Editorial Resort Redesign
-   Direction: Cruziana Golf & Resort 특유의 절제된 럭셔리 리조트 무드를
-   초보 캠퍼를 위한 감성 캠핑 예약 서비스에 맞게 재해석.
-   깊은 포레스트 그린 + 아이보리 캔버스 + 브라스 골드 악센트,
-   한글 세리프 헤드라인과 얇은 룰 라인, 넉넉한 여백으로 구성.
+   TRIPPICK — Camping & Outdoor Booking Redesign
+   Direction: 자연스럽고 따뜻한 캠핑/아웃도어 무드.
+   딥그린 + 우드브라운 + 캠프파이어 앰버 악센트, 밝은 아이보리 캔버스,
+   둥근 임팩트 헤드라인(Jalnan2)과 가독성 좋은 본문(Pretendard),
+   넉넉한 radius와 부드러운 카드 레이아웃으로 구성.
    ================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700;800&family=Noto+Serif+KR:wght@400;500;600;700&display=swap');
+/* Pretendard는 Google Fonts 카탈로그에 없어(family=Pretendard 파라미터는 조용히
+   무시됨) 공식 배포 CDN에서 직접 불러온다. 본문/설명/숫자(가격·날짜)에 사용. */
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+/* Jalnan2(여기어때 잘난체) — 둥글고 친근한 임팩트 헤드라인 서체. h1~h3, 로고 등
+   "제목"에만 사용하고 본문·숫자에는 쓰지 않는다. */
+@font-face{
+  font-family:'Jalnan2';
+  src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.2/JalnanOTF00.woff') format('woff');
+  font-weight:normal;
+  font-style:normal;
+  font-display:swap;
+}
 
 :root{
-  --ink:#181712;
-  /* ---------- 브랜드 컬러 시스템 ---------- */
-  /* Primary — 트립픽 포레스트 그린 (자연·신뢰). 헤더/CTA 등 위계가 높은 곳에만 사용 */
-  --brand:#2E4A3A;
-  --brand-light:#4C6B56;
-  --forest:#132018;      /* 버튼 등 진한 포인트용 (기존값 유지) */
-  --forest-deep:#0c1710; /* 푸터 전용 최심도 톤 */
-  /* Secondary — 캠프파이어 테라코타 (포인트·CTA 강조) */
+  --ink:#20261F;
+  /* ---------- 브랜드 컬러 시스템 (캠핑/아웃도어) ---------- */
+  /* Primary — 딥그린 (자연·신뢰). 헤더/CTA 등 위계가 높은 곳에만 사용 */
+  --brand:#2F5233;
+  --brand-light:#4F7350;
+  --forest:#26421F;      /* 버튼 등 진한 포인트용 */
+  --forest-deep:#182B16; /* 푸터 전용 최심도 톤 */
+  /* Secondary — 캠프파이어 앰버(포인트·CTA 강조) */
   --secondary:#C1663E;
   --secondary-deep:#9C4A30;
-  /* Neutral — 아이보리/페이퍼 (본문 배경 기본) */
-  --ivory:#F6F1E6;
-  --ivory-soft:#EFE7D4;
-  --paper:#FBF8F1;
-  /* Accent — 브라스 골드 (디테일 포인트) */
-  --brass:#AD8A4C;
-  --brass-light:#D8BE87;
+  /* Neutral — 아이보리/화이트 (본문 배경 기본, 여백감 있게) */
+  --ivory:#FBF7EF;
+  --ivory-soft:#F3ECDD;
+  --paper:#FFFFFF;
+  /* Accent — 우드브라운 (디테일 포인트) */
+  --brass:#A9713A;
+  --brass-light:#D3A671;
   --ember:#9C4A30;
-  --line:#DCD3BC;
-  --line-soft:#E9E1CC;
-  --line-dark:rgba(246,241,230,.18);
-  --text-mute:#6E6656;
-  --serif:'Noto Serif KR', serif;
+  --line:#E4DCC9;
+  --line-soft:#EFE8D8;
+  --line-dark:rgba(251,247,239,.18);
+  --text-mute:#726A57;
+  /* 제목(h1~h3) 전용 — 둥글고 친근한 임팩트 폰트 */
+  --display:'Jalnan2', 'Pretendard', -apple-system, sans-serif;
+  --serif:var(--display);
   --sans:'Pretendard', -apple-system, sans-serif;
   /* 라벨/캡션용 서체도 본문과 동일한 Pretendard로 통일 (영문·국문 혼용 시 서체가
      달라 보이는 것을 방지 — 자간만 넓혀 캡션 느낌을 살림) */
   --caps:'Pretendard', -apple-system, sans-serif;
-  --shadow: 0 20px 50px rgba(19,32,24,.14);
+  --shadow: 0 20px 50px rgba(32,38,31,.14);
+  /* ---------- radius 토큰 — 부드럽고 넉넉한 캠핑 무드 ---------- */
+  --radius-sm:12px;
+  --radius-md:18px;
+  --radius-lg:26px;
+  --radius-pill:999px;
   /* ---------- 버튼 상호작용 공통 토큰 ----------
      Primary/Secondary(.btn, .btn-outline, .btn-ghost, .quick-book-btn,
      .auth-mini-btn, .login-outline)와 유틸리티 컨트롤(.qb-stepper button,
@@ -59,6 +77,9 @@ body{
   -webkit-font-smoothing:antialiased;
   line-height:1.6;
 }
+/* 메인페이지: 단일 배경톤(#F3ECDD)으로 통일. 흰색(--paper)·딥그린(--forest)은
+   실제로 구분이 필요한 카드·CTA·다크 섹션에만 남긴다. */
+body.home-page{background:var(--ivory-soft);}
 img{display:block; max-width:100%;}
 a{color:inherit; text-decoration:none;}
 /* ---------- 글꼴 통일: 모든 폼/버튼 요소가 사이트 서체를 그대로 상속 ---------- */
@@ -119,7 +140,7 @@ textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible{
   display:inline-flex; align-items:center; gap:8px;
   font-family:var(--caps); font-size:12.5px; letter-spacing:.14em; text-transform:uppercase;
   color:var(--ivory); background:var(--forest);
-  border:1px solid var(--forest); padding:16px 30px;
+  border:1px solid var(--forest); padding:16px 30px; border-radius:var(--radius-pill);
   transition:var(--btn-transition);
 }
 .btn:hover{background:var(--brass-light); border-color:var(--brass-light); color:var(--forest-deep);}
@@ -128,51 +149,59 @@ textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible{
 .hero .btn:hover, .dark-section .btn:hover{background:var(--brass-light); border-color:var(--brass-light); color:var(--forest-deep);}
 .btn-ghost{
   font-family:var(--caps); font-size:12px; letter-spacing:.12em; text-transform:uppercase;
-  border:1px solid var(--line); padding:9px 18px; transition:var(--btn-transition);
+  border:1px solid var(--line); padding:9px 18px; border-radius:var(--radius-pill); transition:var(--btn-transition);
 }
 .btn-ghost:hover{border-color:var(--brass); color:var(--forest);}
 .btn-ghost:active{transform:scale(var(--btn-scale-press));}
 .btn-outline{
   display:inline-flex; align-items:center; gap:8px;
   font-family:var(--caps); font-size:12.5px; letter-spacing:.14em; text-transform:uppercase;
-  color:var(--ink); background:transparent; border:1px solid var(--line); padding:16px 30px;
+  color:var(--ink); background:transparent; border:1px solid var(--line); padding:16px 30px; border-radius:var(--radius-pill);
   transition:var(--btn-transition);
 }
 .btn-outline:hover{border-color:var(--brass); color:var(--forest); background:var(--ivory-soft);}
 .btn-outline:active{transform:scale(var(--btn-scale-press));}
 
 /* ---------- 헤더 ----------
-   기본 상태: 짙은 포레스트 그라데이션.
-   스크롤 상태: 은은한 글래스모피즘(반투명 + 블러)으로 전환해
-   콘텐츠 위에 가볍게 떠 있는 느낌을 줌 (2026 트렌드 중 톤에 맞는 요소만 채택). */
+   기본 상태: 반투명 딥그린 스크림(콘텐츠가 무엇이든 라이트 텍스트가 항상 읽히도록) —
+   히어로/서브히어로 위에서는 사실상 투명하게 녹아든다.
+   스크롤 상태(40px~): 화이트 배경 + 은은한 그림자로 전환, 로고·메뉴·아이콘 색도
+   함께 짙은 톤으로 반전된다. */
 .site-header{
   position:sticky; top:0; z-index:60;
-  background:linear-gradient(180deg,#345945,var(--brand));
-  border-bottom:1px solid var(--line-dark);
+  background:linear-gradient(180deg, rgba(24,43,22,.5), rgba(24,43,22,.16));
+  border-bottom:1px solid transparent;
+  backdrop-filter:blur(3px);
+  -webkit-backdrop-filter:blur(3px);
   /* 모바일 상태바(Safe Area) 영역까지 헤더 배경이 이어지도록 상단 여백을 더함
      (노치가 없는 기기에서는 env()가 0px로 계산되어 기존 레이아웃과 동일) */
   padding-top:env(safe-area-inset-top, 0px);
-  transition:background .3s ease, box-shadow .3s ease, backdrop-filter .3s ease;
+  transition:background .3s ease, box-shadow .3s ease, backdrop-filter .3s ease, border-color .3s ease;
 }
 .site-header.scrolled{
-  background:rgba(46,74,58,.78);
-  backdrop-filter:blur(14px) saturate(140%);
-  -webkit-backdrop-filter:blur(14px) saturate(140%);
-  box-shadow:0 8px 24px rgba(6,12,8,.28);
+  background:var(--paper);
+  border-bottom-color:var(--line);
+  backdrop-filter:none;
+  -webkit-backdrop-filter:none;
+  box-shadow:0 8px 24px rgba(32,38,31,.08);
 }
 .header-inner{
   display:flex; align-items:center; justify-content:space-between;
   gap:32px; padding:11px 0;
 }
-.logo{display:flex; flex-direction:row; align-items:center; gap:10px; color:var(--ivory); text-align:left;}
-.logo-icon{width:28px; height:28px; color:var(--ivory); flex-shrink:0;}
+.logo{display:flex; flex-direction:row; align-items:center; gap:10px; color:var(--ivory); text-align:left; transition:color .3s ease;}
+.logo-icon{width:28px; height:28px; color:var(--ivory); flex-shrink:0; transition:color .3s ease;}
 .logo-word{
-  font-family:var(--serif); font-weight:700; font-size:17px; letter-spacing:.1em; color:var(--brass-light);
+  font-family:var(--display); font-weight:400; font-size:19px; letter-spacing:.02em; color:var(--brass-light);
+  transition:color .3s ease;
 }
 /* 로고 산 아이콘에 은은한 그린 컬러 워시 — 골드 링 + 앰버 선(sun)과 어우러지는 캠핑 배지 느낌 */
 .logo-icon path:first-of-type{fill:var(--brand-light); fill-opacity:.4;}
+.site-header.scrolled .logo,
+.site-header.scrolled .logo-icon{color:var(--brand);}
+.site-header.scrolled .logo-word{color:var(--brand);}
 .site-header.scrolled .logo-icon{width:24px; height:24px;}
-.site-header.scrolled .logo-word{font-size:15.5px;}
+.site-header.scrolled .logo-word{font-size:17px;}
 
 .main-nav{display:none;}
 @media (min-width:960px){
@@ -182,34 +211,55 @@ textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible{
   }
   .nav-top > li{position:relative;}
   .nav-top > li > a{
-    font-family:var(--serif); font-size:15px; letter-spacing:.03em; color:var(--ivory-soft);
+    font-family:var(--sans); font-weight:600; font-size:15px; letter-spacing:-.01em; color:var(--ivory-soft);
     padding:8px 0; display:inline-block; position:relative; transition:color .2s;
   }
   .nav-top > li > a.active, .nav-top > li > a:hover{color:var(--ivory);}
   .nav-top > li > a::after{
-    content:''; position:absolute; left:0; right:0; bottom:4px; height:1px;
+    content:''; position:absolute; left:0; right:0; bottom:4px; height:2px; border-radius:2px;
     background:var(--brass-light); transform:scaleX(0); transform-origin:left;
     transition:transform .25s;
   }
   .nav-top > li:hover > a::after{transform:scaleX(1);}
+  .site-header.scrolled .nav-top > li > a{color:var(--ink);}
+  .site-header.scrolled .nav-top > li > a.active,
+  .site-header.scrolled .nav-top > li > a:hover{color:var(--brand);}
+  .site-header.scrolled .nav-top > li > a::after{background:var(--brass);}
   /* 서브메뉴: 링크와 서브메뉴 사이 여백을 padding으로 만들어 호버 영역이 끊기지 않도록 함
      (margin-top 갭이 있으면 마우스가 그 사이를 지나갈 때 :hover 가 풀려 메뉴가 닫혀버림) */
   .sub{
     display:none; position:absolute; top:100%; left:50%; transform:translateX(-50%);
-    margin-top:0; padding:20px 20px 14px; min-width:160px; z-index:61;
-    background:var(--brand); box-shadow:var(--shadow); list-style:none;
+    margin-top:12px; padding:14px 22px; min-width:170px; z-index:61;
+    background:var(--paper); border-radius:var(--radius-md); box-shadow:var(--shadow); list-style:none;
   }
   .nav-top > li:hover .sub,
   .nav-top > li:focus-within .sub,
   .nav-top > li.sub-open .sub,
   .sub:hover{display:block;}
   .sub a{
-    display:block; padding:7px 0; font-size:14px; color:var(--brass-light);
-    border-bottom:1px solid var(--line-dark); white-space:nowrap; text-align:center;
+    display:block; padding:9px 0; font-size:14px; font-weight:500; color:var(--text-mute);
+    border-bottom:1px solid var(--line-soft); white-space:nowrap; text-align:center;
     transition:color .2s;
   }
   .sub li:last-child a{border-bottom:none;}
-  .sub a:hover{color:var(--ivory);}
+  .sub a:hover{color:var(--brand);}
+}
+
+/* ---------- 헤더 CTA: 예약하기 ---------- */
+.header-cta{
+  display:none;
+}
+@media (min-width:960px){
+  .header-cta{
+    display:inline-flex; align-items:center; gap:6px; white-space:nowrap;
+    font-family:var(--sans); font-weight:700; font-size:14px;
+    color:#fff; background:var(--brass);
+    border:1px solid var(--brass); border-radius:var(--radius-pill);
+    padding:11px 22px; margin-right:2px;
+    transition:var(--btn-transition);
+  }
+  .header-cta:hover{background:var(--secondary-deep); border-color:var(--secondary-deep);}
+  .header-cta:active{transform:scale(var(--btn-scale-press));}
 }
 
 /* ---------- 상단 네비 하단 스크롤 진행바 ---------- */
@@ -228,28 +278,31 @@ textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible{
 }
 .icon-btn{
   width:44px; height:44px; display:inline-flex; align-items:center; justify-content:center;
-  color:var(--ivory); transition:var(--btn-transition-opacity);
+  color:var(--ivory); transition:var(--btn-transition-opacity), color .3s ease;
 }
 .icon-btn:hover{color:var(--brass-light);}
 .icon-btn:active{transform:scale(var(--btn-scale-press-sm));}
 .icon-btn svg{width:18px; height:18px;}
 .burger{display:inline-flex;}
+.site-header.scrolled .icon-btn{color:var(--brand);}
+.site-header.scrolled .icon-btn:hover{color:var(--ember);}
 
 /* ---------- 계정 메뉴 (Login / Join / My Page 통합) ---------- */
 .account-menu{position:relative;}
 .account-btn{border:none; transition:var(--btn-transition-opacity);}
 .account-btn[aria-expanded="true"]{opacity:.6;}
 .account-dropdown{
-  display:none; position:absolute; top:calc(100% + 10px); right:0;
-  min-width:148px; padding:8px; z-index:70;
-  background:var(--brand); border:1px solid var(--line-dark); box-shadow:var(--shadow);
+  display:none; position:absolute; top:calc(100% + 12px); right:0;
+  min-width:150px; padding:8px; z-index:70; border-radius:var(--radius-md);
+  background:var(--paper); border:1px solid var(--line); box-shadow:var(--shadow);
 }
 .account-menu.open .account-dropdown{display:block;}
 .account-dropdown a{
-  display:block; padding:9px 10px; font-family:var(--caps); font-size:12px; letter-spacing:.05em;
-  color:var(--ivory-soft); transition:background .15s, color .15s;
+  display:block; padding:10px 12px; border-radius:var(--radius-sm);
+  font-family:var(--sans); font-weight:500; font-size:13px; letter-spacing:.01em;
+  color:var(--text-mute); transition:background .15s, color .15s;
 }
-.account-dropdown a:hover{background:rgba(246,241,230,.08); color:var(--ivory);}
+.account-dropdown a:hover{background:var(--ivory-soft); color:var(--brand);}
 @media (max-width:959px){
   .header-inner{padding:10px 0; padding-left:20px; padding-right:20px;}
   .logo-icon{width:24px; height:24px;}
@@ -271,11 +324,11 @@ textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible{
 .mobile-menu-top button{color:var(--ivory);}
 .mobile-menu nav{display:flex; flex-direction:column; gap:4px;}
 .mobile-menu nav a{
-  font-family:var(--serif); font-size:clamp(18px, 5vw, 22px); padding:14px 0;
+  font-family:var(--sans); font-weight:700; font-size:clamp(18px, 5vw, 22px); padding:14px 0;
   border-bottom:1px solid var(--line-dark); color:var(--ivory);
 }
 .mobile-nav-toggle{
-  font-family:var(--serif); font-size:26px; padding:14px 0;
+  font-family:var(--sans); font-weight:700; font-size:26px; padding:14px 0;
   border-bottom:1px solid var(--line-dark); color:var(--ivory);
   display:flex; align-items:center; justify-content:space-between; width:100%;
   background:none; border-left:none; border-right:none; border-top:none; text-align:left;
@@ -306,9 +359,12 @@ textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible{
 }
 .hero-overlay{
   position:absolute; inset:0; z-index:2;
+  /* 히어로 하단이 아래 필터바(--ivory-soft)와 만나는 경계가 뚝 끊기지 않도록,
+     맨 밑단만 같은 톤으로 살짝 물들여 자연스럽게 이어지게 한다. */
   background:
     linear-gradient(90deg, rgba(8,15,11,.8) 0%, rgba(8,15,11,.52) 38%, rgba(8,15,11,.08) 66%),
-    linear-gradient(0deg, rgba(8,15,11,.55) 0%, rgba(8,15,11,0) 32%);
+    linear-gradient(0deg, rgba(8,15,11,.55) 0%, rgba(8,15,11,0) 32%),
+    linear-gradient(0deg, rgba(243,236,221,.9) 0%, rgba(243,236,221,0) 9%);
 }
 .hero-content{
   position:relative; z-index:3; height:100%;
@@ -326,8 +382,8 @@ textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible{
   .hero-content .btn{padding:15px 30px;}
 }
 .hero-content h1{
-  font-family:var(--serif); font-weight:600; font-size:clamp(34px,6.2vw,64px);
-  line-height:1.28; letter-spacing:-.02em;
+  font-family:var(--sans); font-weight:800; font-size:clamp(26px,3.6vw,40px);
+  line-height:1.32; letter-spacing:-.01em;
   text-shadow:0 4px 24px rgba(0,0,0,.4), 0 1px 4px rgba(0,0,0,.5);
 }
 .hero-content p{
@@ -368,7 +424,7 @@ textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible{
   margin-top:-46px;
 }
 .filter-bar{
-  background:var(--paper); box-shadow:var(--shadow);
+  background:var(--ivory-soft); box-shadow:var(--shadow); border-radius:var(--radius-lg);
   display:flex; align-items:stretch; flex-wrap:wrap;
   padding:18px 18px 18px 36px;
 }
@@ -403,7 +459,7 @@ textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible{
 .filter-submit{
   display:flex; align-items:center; gap:8px; white-space:nowrap;
   font-family:var(--caps); font-size:12.5px; letter-spacing:.1em; text-transform:uppercase;
-  background:var(--ember); color:var(--ivory); padding:0 36px; margin:8px;
+  background:var(--ember); color:var(--ivory); padding:0 36px; margin:8px; border-radius:var(--radius-pill);
   transition:var(--btn-transition), box-shadow .22s var(--btn-ease);
 }
 .filter-submit:hover{background:var(--brass-light); color:var(--forest-deep); box-shadow:0 10px 24px -8px rgba(173,138,76,.45);}
@@ -438,6 +494,7 @@ textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible{
 .map-banner{
   width:100%; display:flex; align-items:center; gap:20px; text-align:left;
   background:var(--ivory-soft); color:var(--ink); border:1px solid var(--line); padding:22px 28px;
+  border-radius:var(--radius-lg);
   box-shadow:0 6px 18px rgba(19,32,24,.05);
   transition:var(--btn-transition), box-shadow .22s var(--btn-ease);
 }
@@ -449,7 +506,7 @@ textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible{
   background:var(--paper); color:var(--forest);
 }
 .map-banner-text{flex:1; display:flex; flex-direction:column; gap:4px; min-width:0;}
-.map-banner-text strong{font-family:var(--serif); font-size:16px; font-weight:600; color:var(--ink);}
+.map-banner-text strong{font-family:var(--sans); font-size:16px; font-weight:700; color:var(--ink);}
 .map-banner-text em{font-style:normal; font-size:12px; color:var(--text-mute);}
 .map-banner-cta{
   flex-shrink:0; display:flex; align-items:center; gap:6px;
@@ -554,7 +611,7 @@ textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible{
 .consult-quick-actions{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:14px;}
 .consult-quick-btn{
   display:flex; align-items:center; gap:14px; padding:18px 20px;
-  background:var(--paper); border:1px solid var(--line);
+  background:var(--paper); border:1px solid var(--line); border-radius:var(--radius-md);
   box-shadow:0 6px 18px rgba(19,32,24,.05);
   transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease;
 }
@@ -805,7 +862,7 @@ textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible{
 .story-thumb img{width:100%; height:100%; object-fit:cover; transition:transform .6s ease;}
 .story-card:hover .story-thumb img{transform:scale(1.06);}
 .story-num{
-  font-family:var(--serif); font-size:13px; color:var(--brass); letter-spacing:.06em;
+  font-family:var(--sans); font-weight:800; font-size:13px; color:var(--brass); letter-spacing:.06em;
 }
 .story-card h3{
   font-family:var(--serif); font-size:18px; font-weight:600; margin-top:8px; line-height:1.4;
@@ -965,7 +1022,7 @@ textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible{
 }
 .popup-inner{
   position:relative; background:var(--paper); max-width:400px; width:100%;
-  padding:40px 32px 32px; text-align:center;
+  padding:40px 32px 32px; text-align:center; border-radius:var(--radius-lg);
 }
 .popup-close{position:absolute; top:16px; right:16px; color:var(--text-mute);}
 .popup-close::after{content:''; position:absolute; inset:50% auto auto 50%; transform:translate(-50%,-50%); width:44px; height:44px;}
@@ -1079,7 +1136,7 @@ textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible{
   color:var(--text-mute); margin-bottom:6px; border-bottom:1px dashed var(--line); padding-bottom:8px;
 }
 .coupon-ticket-value{
-  display:block; font-family:var(--serif); font-size:22px; font-weight:700; color:var(--ember);
+  display:block; font-family:var(--sans); font-size:22px; font-weight:800; color:var(--ember);
 }
 .coupon-ticket-value em{display:block; font-style:normal; font-size:12px; color:var(--ink); margin-top:2px;}
 .coupon-ticket-dl{
@@ -1204,11 +1261,11 @@ textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible{
 .detail-book-price{display:flex; align-items:baseline; gap:9px; margin-bottom:22px; padding-bottom:22px; border-bottom:1px solid var(--line);}
 .detail-book-price .old{font-size:13px; color:#B4AB93; text-decoration:line-through;}
 .detail-book-price .pct{font-size:13px; color:var(--ember); font-weight:700;}
-.detail-book-price .now{font-family:var(--serif); font-size:24px; font-weight:600;}
+.detail-book-price .now{font-family:var(--sans); font-size:24px; font-weight:800;}
 .detail-book-price .now em{font-size:12px; color:var(--text-mute); font-style:normal; font-weight:400;}
 .detail-book-row{display:flex; justify-content:space-between; align-items:center; padding:12px 0; font-size:13.5px;}
 .detail-book-total{border-top:1px solid var(--line); margin-top:6px; padding-top:16px;}
-.detail-book-total strong{font-family:var(--serif); font-size:19px; color:var(--ember);}
+.detail-book-total strong{font-family:var(--sans); font-weight:800; font-size:19px; color:var(--ember);}
 .detail-book-note{font-size:12px; color:var(--text-mute); text-align:center; margin-top:12px;}
 .book-site-card{display:flex; gap:16px; align-items:center; padding-bottom:24px; margin-bottom:24px; border-bottom:1px solid var(--line);}
 .book-site-card img{width:76px; height:76px; object-fit:cover; flex-shrink:0;}
@@ -1330,7 +1387,7 @@ textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible{
 .mypage-profile{display:flex; align-items:center; gap:14px; padding-bottom:24px; border-bottom:1px solid var(--line); margin-bottom:20px;}
 .mypage-avatar{
   width:48px; height:48px; border-radius:50%; background:var(--forest); color:var(--ivory);
-  display:flex; align-items:center; justify-content:center; font-family:var(--serif); font-size:18px; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center; font-family:var(--sans); font-weight:800; font-size:18px; flex-shrink:0;
 }
 .mypage-name{font-weight:600; font-size:14.5px;}
 .mypage-email{font-size:12px; color:var(--text-mute);}
@@ -1444,7 +1501,7 @@ textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible{
 .notfound-main{min-height:64vh; display:flex; align-items:center; justify-content:center; padding:60px 24px;}
 .notfound-card{text-align:center; max-width:420px;}
 .notfound-icon{margin-bottom:8px;}
-.notfound-code{font-family:var(--serif); font-size:88px; font-weight:600; color:var(--brass); line-height:1;}
+.notfound-code{font-family:var(--sans); font-size:88px; font-weight:800; color:var(--brass); line-height:1;}
 .notfound-card h1{font-family:var(--serif); font-size:24px; font-weight:600; margin:14px 0 10px;}
 .notfound-desc{font-size:13.5px; color:var(--text-mute); line-height:1.8; margin-bottom:28px;}
 .notfound-actions{display:flex; gap:12px; justify-content:center; flex-wrap:wrap;}
@@ -1828,7 +1885,7 @@ textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible{
 @media (max-width:900px){ .carousel-nav{display:none;} }
 
 .board-toolbar{display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; margin-bottom:18px;}
-.board-count{font-family:var(--serif); font-size:15px; font-weight:600; color:var(--ink);}
+.board-count{font-family:var(--sans); font-weight:800; font-size:15px; color:var(--ink);}
 .board-count em{font-style:normal; color:var(--ember);}
 .board-sort{display:flex; gap:6px;}
 .board-sort button{
@@ -1942,7 +1999,7 @@ textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible{
 
 .payment-result-card h1 {
   margin: 14px 0 12px;
-  font-family: 'Noto Serif KR', serif;
+  font-family: var(--serif);
   font-size: clamp(26px, 5vw, 36px);
 }
 
@@ -1982,8 +2039,8 @@ textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible{
    2026-08 Discovery upgrade: 상세 검색 · 취향 매치 · 비교함 · 준비도
    ================================================================== */
 .filter-more{
-  margin:10px 0 0; background:rgba(251,248,241,.97); border:1px solid var(--line);
-  box-shadow:0 12px 30px rgba(19,32,24,.08);
+  margin:10px 0 0; background:var(--ivory-soft); border:1px solid var(--line); border-radius:var(--radius-md);
+  box-shadow:0 12px 30px rgba(19,32,24,.06);
 }
 .filter-more summary{
   min-height:48px; display:flex; align-items:center; justify-content:space-between; gap:16px;
@@ -2051,7 +2108,7 @@ textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible{
 .planner-card{position:relative; overflow:hidden; min-width:0; padding:34px; border:1px solid rgba(173,138,76,.35); border-radius:22px; background:rgba(251,248,241,.88); box-shadow:0 20px 50px rgba(19,32,24,.08);}
 .planner-card::before{content:''; position:absolute; width:180px; height:180px; right:-90px; top:-100px; border:1px solid rgba(173,138,76,.2); border-radius:50%;}
 .planner-card-head{display:flex; gap:14px; align-items:flex-start; margin-bottom:28px;}
-.planner-step{width:40px; height:40px; display:grid; place-items:center; flex:0 0 40px; border-radius:50%; background:var(--forest); color:var(--brass-light); font-family:var(--serif); font-size:13px;}
+.planner-step{width:40px; height:40px; display:grid; place-items:center; flex:0 0 40px; border-radius:50%; background:var(--forest); color:var(--brass-light); font-family:var(--sans); font-weight:800; font-size:13px;}
 .planner-card h3{font-family:var(--serif); font-size:22px; font-weight:650; color:var(--ink);}
 .planner-card-head p{margin-top:3px; color:var(--text-mute); font-size:12.5px;}
 .match-form{display:grid; gap:18px;}
@@ -2063,7 +2120,7 @@ textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible{
 .match-submit{width:100%; justify-content:center; margin-top:3px; border-radius:10px;}
 .match-result{margin-top:22px; padding-top:22px; border-top:1px solid var(--line);}
 .match-result-head{display:flex; justify-content:space-between; gap:18px; margin-bottom:14px;}
-.match-result-head strong{font-family:var(--serif); font-size:17px;}
+.match-result-head strong{font-family:var(--sans); font-weight:800; font-size:17px;}
 .match-result-head span{color:var(--ember); font-size:12px;}
 .match-result-list{display:grid; gap:9px;}
 .match-mini-card{display:grid; grid-template-columns:68px 1fr auto; align-items:center; gap:12px; padding:9px; border:1px solid var(--line-soft); border-radius:12px; background:#fffdf8;}
@@ -2077,9 +2134,9 @@ textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible{
 .readiness-ring{width:104px; aspect-ratio:1; display:grid; place-content:center; text-align:center; border-radius:50%; background:conic-gradient(var(--secondary) calc(var(--progress) * 1%),var(--line-soft) 0); position:relative;}
 .readiness-ring::before{content:''; position:absolute; inset:9px; border-radius:50%; background:var(--paper);}
 .readiness-ring strong,.readiness-ring span{position:relative; z-index:1; display:block;}
-.readiness-ring strong{font-family:var(--serif); font-size:23px; color:var(--forest);}
+.readiness-ring strong{font-family:var(--sans); font-weight:800; font-size:23px; color:var(--forest);}
 .readiness-ring span{font-size:9px; color:var(--text-mute);}
-.readiness-score > div:last-child > strong{font-family:var(--serif); font-size:17px;}
+.readiness-score > div:last-child > strong{font-family:var(--sans); font-weight:800; font-size:17px;}
 .readiness-score p{margin-top:6px; color:var(--text-mute); font-size:11.5px; line-height:1.7;}
 .readiness-list{display:grid; gap:8px;}
 .readiness-list label{min-height:54px; display:flex; align-items:center; gap:12px; padding:9px 12px; border:1px solid var(--line-soft); border-radius:10px; background:#fffdf8; cursor:pointer;}
@@ -2099,7 +2156,7 @@ textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible{
 .recent-card{flex:0 0 min(330px,82vw); display:grid; grid-template-columns:104px 1fr; gap:14px; align-items:center; padding:12px; border:1px solid var(--line); border-radius:14px; background:var(--paper);}
 .recent-card img{width:104px; height:82px; object-fit:cover; border-radius:10px;}
 .recent-card strong,.recent-card span{display:block;}
-.recent-card strong{font-family:var(--serif); font-size:13px;}
+.recent-card strong{font-family:var(--sans); font-weight:700; font-size:13px;}
 .recent-card span{margin-top:5px; color:var(--text-mute); font-size:12px;}
 
 .compare-tray{position:fixed; left:50%; bottom:24px; z-index:120; width:min(900px,calc(100% - 32px)); transform:translateX(-50%); display:flex; align-items:center; gap:14px; padding:13px 16px; border:1px solid rgba(216,190,135,.5); border-radius:16px; background:rgba(19,32,24,.96); color:var(--ivory); box-shadow:0 24px 55px rgba(0,0,0,.3); backdrop-filter:blur(16px);}
@@ -2195,12 +2252,6 @@ a[aria-disabled="true"]{cursor:not-allowed; opacity:.62;}
    - 자동 모달 대신 비차단형 CTA
    - 후기 다음 행동 유도 및 데이터 투명성 보강
    ============================================================ */
-.site-header{
-  background:linear-gradient(180deg,#345945 0%,#2E4A3A 100%);
-}
-.site-header.scrolled{
-  background:rgba(36,61,46,.94);
-}
 
 .hero{
   height:min(780px,calc(100svh - var(--header-h,64px)));
@@ -2374,7 +2425,7 @@ a[aria-disabled="true"]{cursor:not-allowed; opacity:.62;}
 @media (max-width:640px){
   .hero{height:min(560px,calc(100svh - var(--header-h,64px) - 64px)); min-height:440px; max-height:600px;}
   .hero-content{justify-content:flex-end; padding:0 20px 44px; gap:14px;}
-  .hero-content h1{font-size:clamp(32px,10vw,44px);}
+  .hero-content h1{font-size:clamp(24px,7.5vw,30px);}
   .hero-content p{font-size:14px; line-height:1.7;}
   .hero-actions{width:100%;}
   .hero-content .hero-actions .btn{justify-content:center; flex:1 1 150px; padding:14px 18px;}
@@ -2510,8 +2561,6 @@ a[aria-disabled="true"]{cursor:not-allowed; opacity:.62;}
 .guide-course-grid .guide-featured h3{font-size:clamp(22px,1.8vw,28px);}
 .guide-course-grid .video-meta{margin:7px 2px 0; color:var(--text-mute); font-size:clamp(11.5px,.82vw,13px);}
 .guide-page .fab-stack{display:none;}
-.guide-page .site-header{background:rgba(19,32,24,.62); backdrop-filter:blur(10px);}
-.guide-page .site-header.scrolled{background:rgba(36,61,46,.9);}
 
 .guide-course-grid > .video-card,
 .guide-video-grid .video-card{
@@ -2603,7 +2652,7 @@ a[aria-disabled="true"]{cursor:not-allowed; opacity:.62;}
   .hero{height:min(880px,calc(100svh - var(--header-h,72px))); min-height:700px;}
   .hero-content{max-width:920px; gap:20px; padding-bottom:58px;}
   .hero-kicker{min-height:34px; padding:7px 14px; font-size:13px;}
-  .hero-content h1{max-width:940px; font-size:clamp(64px,4.7vw,88px); line-height:1.2;}
+  .hero-content h1{max-width:760px; font-size:clamp(32px,2.6vw,46px); line-height:1.3;}
   .hero-content p{max-width:760px; font-size:21px; line-height:1.75;}
   .hero-proof{gap:10px 22px; font-size:15px;}
   .scroll-cue{left:calc(max(0px, (100vw - 1860px) / 2) + 44px); bottom:78px; font-size:13px;}
@@ -2865,7 +2914,6 @@ a[aria-disabled="true"]{cursor:not-allowed; opacity:.62;}
   .mobile-nav-sub a{font-size:14.5px; padding:11px 0 11px 8px;}
   .mobile-menu-login{font-size:14px;}
 
-  .hero-content h1{font-size:clamp(38px,11vw,48px);}
   .hero-content p{font-size:16px; line-height:1.75;}
   .hero-content .hero-actions .btn{font-size:14.5px;}
   .hero-proof{font-size:12px; line-height:1.5;}
