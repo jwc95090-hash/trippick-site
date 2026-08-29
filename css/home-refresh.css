@@ -1,0 +1,71 @@
+/* TRIPPICK home refresh: typography hierarchy, bento grid and restrained glass surfaces. */
+.home-page .hero-content{max-width:980px;gap:0}
+.home-page .hero-kicker{display:block;margin-bottom:24px;color:rgba(255,255,255,.72);font-size:12px;font-weight:600;letter-spacing:.18em}
+.home-page .hero-content h1{max-width:920px;margin:0;font-family:var(--sans);font-size:clamp(58px,6.25vw,96px);font-weight:300;line-height:1.04;letter-spacing:-.062em}
+.home-page .hero-title-light{font-weight:300;color:rgba(255,255,255,.88)}
+.home-page .hero-content h1 strong{font-weight:800;color:#fff}
+.home-page .hero-content p{margin-top:34px;color:rgba(255,255,255,.72);font-size:17px;font-weight:400;line-height:1.72;letter-spacing:-.02em}
+.home-page .hero-content p strong{color:#fff;font-weight:650}
+
+.home-page .filter-bar{background:rgba(255,255,255,.80);border-color:rgba(255,255,255,.72);box-shadow:0 24px 70px rgba(17,31,23,.18),inset 0 1px 0 rgba(255,255,255,.75);-webkit-backdrop-filter:blur(24px) saturate(135%);backdrop-filter:blur(24px) saturate(135%)}
+.home-page .filter-more{background:rgba(247,244,237,.84);border-color:rgba(255,255,255,.74);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px)}
+
+.home-page .section-head{align-items:flex-end;gap:48px;margin-bottom:58px}
+.home-page .section-head>div{max-width:880px}
+.home-page .section-head .eyebrow,.home-page .dark-section .section-head .eyebrow{display:inline-flex;margin-bottom:15px;color:#8d563b;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
+.home-page .section-head h2{font-family:var(--sans);font-size:clamp(40px,4.3vw,64px)!important;font-weight:750;line-height:1.12;letter-spacing:-.055em}
+.home-page .section-head h2 span{font-weight:300;color:#6b706a}
+.home-page .section-head h2 strong{font-weight:800;color:#171a17}
+.home-page .section-summary{max-width:620px;margin-top:18px;color:#73746f;font-size:15px;line-height:1.75;letter-spacing:-.015em}
+
+.home-page .intro-copy h2{font-family:var(--sans);font-size:clamp(38px,3.5vw,56px);font-weight:750;line-height:1.18;letter-spacing:-.055em}
+.home-page .intro-copy h2 span{font-weight:300;color:#70746e}
+.home-page .intro-copy h2 strong{font-weight:750;color:#151915}
+.home-page .intro-stats{gap:10px;margin-top:38px;padding:0;border:0}
+.home-page .intro-stats>div,.home-page .intro-stats>div:not(:first-child){min-height:112px;padding:22px 20px;background:rgba(255,255,255,.58);border:1px solid rgba(255,255,255,.82);border-radius:16px;box-shadow:0 12px 34px rgba(34,48,37,.07);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+.home-page .intro-stats strong{font-family:var(--sans);font-size:24px;font-weight:750;letter-spacing:-.035em}
+
+.home-page #benefit .bento-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:20px}
+.home-page #benefit .bento-grid .p-card{grid-column:span 4;overflow:hidden;border:1px solid #e4e0d8;border-radius:22px;background:#fff;box-shadow:0 18px 50px rgba(34,45,36,.08)}
+.home-page #benefit .bento-grid .p-card:first-child{grid-column:span 8;grid-row:span 2}
+.home-page #benefit .bento-grid .p-card:first-child .p-thumb{height:520px}
+.home-page #benefit .bento-grid .p-card:not(:first-child) .p-thumb{height:230px}
+
+.home-page .trust-row{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.home-page .trust-item{min-height:250px;padding:36px;background:linear-gradient(145deg,rgba(246,249,245,.92),rgba(255,255,255,.66));border:1px solid rgba(204,216,205,.74);border-radius:22px;box-shadow:0 18px 50px rgba(35,51,39,.07);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px)}
+.home-page .trust-item:first-child{grid-row:span 2;min-height:520px;padding:46px;background:linear-gradient(150deg,rgba(38,73,54,.96),rgba(49,88,66,.82));color:#fff}
+.home-page .trust-item:first-child h3{max-width:420px;color:#fff;font-size:clamp(30px,3vw,46px);line-height:1.2}
+.home-page .trust-item:first-child p{max-width:480px;color:rgba(255,255,255,.72);font-size:16px}
+.home-page .trust-item h3{font-family:var(--sans);font-size:24px;line-height:1.35;letter-spacing:-.035em}
+.home-page .trust-item p{font-size:15px;line-height:1.8}
+
+.home-page .review-grid{grid-template-columns:1.15fr .85fr;gap:18px;border:0}
+.home-page .dark-section .review-item{min-height:220px;padding:34px;background:rgba(255,255,255,.68);border:1px solid rgba(220,215,206,.8);border-radius:20px;box-shadow:0 16px 44px rgba(34,45,36,.06);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+.home-page .dark-section .review-item:first-child{grid-row:span 2;min-height:458px;padding:46px;background:#274936}
+.home-page .dark-section .review-item:first-child .quote{color:#fff;font-size:clamp(26px,2.2vw,36px);font-weight:550;line-height:1.55}
+.home-page .dark-section .review-item:first-child .who,.home-page .dark-section .review-item:first-child .review-score strong{color:rgba(255,255,255,.72)}
+.home-page .dark-section .review-item:first-child .review-score{color:#e9b96d}
+
+@media(max-width:959px){
+  .home-page .hero-content h1{font-size:clamp(48px,8vw,72px)}
+  .home-page #benefit .bento-grid .p-card,.home-page #benefit .bento-grid .p-card:first-child{grid-column:span 6;grid-row:auto}
+  .home-page #benefit .bento-grid .p-card:first-child .p-thumb{height:360px}
+  .home-page .trust-item:first-child{min-height:460px}
+}
+@media(max-width:640px){
+  .home-page .hero-kicker{margin-bottom:17px;font-size:10px}
+  .home-page .hero-content h1{font-size:clamp(40px,12vw,56px);line-height:1.08}
+  .home-page .hero-content p{margin-top:24px;font-size:15px}
+  .home-page .section-head{align-items:flex-start;margin-bottom:36px}
+  .home-page .section-head h2{font-size:34px!important;line-height:1.2}
+  .home-page .section-summary{font-size:14px}
+  .home-page .intro-copy h2{font-size:34px}
+  .home-page .intro-stats{grid-template-columns:1fr}
+  .home-page .intro-stats>div,.home-page .intro-stats>div:not(:first-child){min-height:0;padding:20px;border:1px solid rgba(255,255,255,.82)}
+  .home-page #benefit .bento-grid{grid-template-columns:1fr}
+  .home-page #benefit .bento-grid .p-card,.home-page #benefit .bento-grid .p-card:first-child{grid-column:auto}
+  .home-page #benefit .bento-grid .p-card:first-child .p-thumb,.home-page #benefit .bento-grid .p-card:not(:first-child) .p-thumb{height:260px}
+  .home-page .trust-row,.home-page .review-grid{grid-template-columns:1fr}
+  .home-page .trust-item:first-child{grid-row:auto;min-height:360px;padding:34px}
+  .home-page .dark-section .review-item:first-child{grid-row:auto;min-height:350px;padding:34px}
+}
