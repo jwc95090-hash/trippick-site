@@ -3116,6 +3116,17 @@ strong,b{font-weight:600;}
 .faq-item{padding-top:26px; padding-bottom:26px;}
 .site-footer{margin-top:0;}
 
+/* 신뢰 카드에서 FAQ로 이어지는 흐름이 답답하지 않도록 간격을 단계별로 분리한다. */
+.home-page #faq .faq-head{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:14px;
+  margin:104px 0 0;
+}
+.home-page #faq .faq-head h3{margin:0;}
+.home-page #faq .faq-list{margin-top:48px;}
+
 @media (min-width:960px){
   .hero h1{font-size:clamp(56px,5.1vw,80px);}
   .hero-content p{font-size:18px; line-height:1.75; margin-top:28px;}
@@ -3145,6 +3156,8 @@ strong,b{font-weight:600;}
   .hero-content p{font-size:16px; line-height:1.7; margin-top:20px;}
   .intro{padding-top:76px !important; padding-bottom:76px !important;}
   .cat-row,.grid,.review-grid,.trust-row{row-gap:28px;}
+  .home-page #faq .faq-head{gap:10px; margin-top:68px;}
+  .home-page #faq .faq-list{margin-top:32px;}
 }
 
 
