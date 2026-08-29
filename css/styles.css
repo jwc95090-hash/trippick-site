@@ -3541,3 +3541,29 @@ body.home-page{background:#FFFFFF; color:var(--ink);}
 @media (max-width:640px){
   .home-page .filter-wrap{margin-bottom:36px !important;}
 }
+
+
+/* === 2026 MAP BANNER MINIMAL SURFACE === */
+/* 지도 안내의 진한 외곽 색면을 제거하고 상세조건 아래에 가볍게 배치한다. */
+.home-page .filter-wrap{margin-bottom:28px !important;}
+.home-page .map-banner-wrap{margin-top:0 !important; padding-top:0 !important;}
+.home-page .map-banner{
+  padding:18px 4px;
+  background:transparent;
+  border:0;
+  border-bottom:1px solid #E2DED6;
+  border-radius:0;
+  color:var(--ink);
+  box-shadow:none;
+}
+.home-page .map-banner:hover{background:transparent; border-color:#D2CCC1;}
+.home-page .map-banner-icon{width:46px; height:46px; background:#EEF3EE; color:#274936;}
+.home-page .map-banner-text strong{color:var(--ink); font-size:18px;}
+.home-page .map-banner-text em{color:#686862; font-size:13px;}
+.home-page .map-banner-cta{background:#FFFFFF; border:1px solid #9BAB9F; border-radius:8px; color:#274936;}
+.home-page .map-banner:hover .map-banner-cta{background:#274936; border-color:#274936; color:#FFFFFF;}
+@media (max-width:959px){.home-page .filter-wrap{margin-bottom:24px !important;}}
+@media (max-width:640px){
+  .home-page .filter-wrap{margin-bottom:20px !important;}
+  .home-page .map-banner{padding:18px 0;}
+}
