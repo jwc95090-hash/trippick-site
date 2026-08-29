@@ -3526,3 +3526,18 @@ body.home-page{background:#FFFFFF; color:var(--ink);}
   .home-page .filter-wrap{margin-bottom:20px;}
   .home-page .section-head h2{font-size:28px;}
 }
+
+
+/* === 2026 MAP BANNER CLEARANCE FIX === */
+/* 상세조건 패널과 지도 배너 사이에 명시적인 안전 간격을 둔다. */
+.home-page .filter-wrap{margin-bottom:72px !important;}
+.home-page .map-banner-wrap{
+  margin-top:0 !important;
+  padding-top:0 !important;
+}
+@media (max-width:959px){
+  .home-page .filter-wrap{margin-bottom:52px !important;}
+}
+@media (max-width:640px){
+  .home-page .filter-wrap{margin-bottom:36px !important;}
+}
