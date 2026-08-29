@@ -45,6 +45,39 @@
 .home-page .dark-section .review-item:first-child .who,.home-page .dark-section .review-item:first-child .review-score strong{color:rgba(255,255,255,.72)}
 .home-page .dark-section .review-item:first-child .review-score{color:#e9b96d}
 
+/* 문의 카드의 hover 언어를 모든 벤토 카드에 동일하게 확장한다. */
+.home-page :is(
+  #benefit .bento-grid .p-card,
+  .safety-video-bento .safety-video-card,
+  .review-grid .review-item,
+  .trust-row .trust-item
+){
+  transition:translate .2s ease,scale .2s ease,box-shadow .2s ease,border-color .2s ease;
+  will-change:translate;
+}
+.home-page :is(
+  #benefit .bento-grid .p-card,
+  .safety-video-bento .safety-video-card,
+  .review-grid .review-item,
+  .trust-row .trust-item
+):hover{
+  translate:0 -3px;
+  border-color:var(--brass-light);
+  box-shadow:0 14px 30px rgba(19,32,24,.1);
+}
+.home-page :is(
+  #benefit .bento-grid .p-card,
+  .safety-video-bento .safety-video-card,
+  .review-grid .review-item,
+  .trust-row .trust-item
+):active{translate:0 -1px;scale:.98}
+.home-page :is(.trust-icon,.safety-video-media i,.p-like){
+  transition:transform .3s cubic-bezier(.22,1,.36,1);
+}
+.home-page :is(.trust-item,.safety-video-card,.p-card):hover :is(.trust-icon,.safety-video-media i,.p-like){
+  transform:rotate(-6deg) scale(1.06);
+}
+
 @media(max-width:959px){
   .home-page .hero-content h1{font-size:clamp(48px,8vw,72px)}
   .home-page #benefit .bento-grid .p-card,.home-page #benefit .bento-grid .p-card:first-child{grid-column:span 6;grid-row:auto}
